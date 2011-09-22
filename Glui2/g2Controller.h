@@ -74,6 +74,15 @@ public:
     
     // Get x and y position
     void GetPos(int* x, int* y);
+    
+    /*** Active State Management ***/
+    
+    // Returns a pointer to an intersecting controller either owned
+    // by this controller, the controller itself, or null. An active
+    // controller is the controller that can be directly clicked on
+    // as determined using "InController(...)" and the the lowesr-rendering
+    // order which means the visibility top-most layer
+    g2Controller* GetController(int x, int y);
 	
 protected:
 	
@@ -161,7 +170,7 @@ private:
 	
 	// Glut mouse event callback for a drag
 	void __MouseDrag(int x, int y);
-	
+    
 	/*** Managed Child Objects ***/
 	
     // Current window sizes

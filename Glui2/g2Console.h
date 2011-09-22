@@ -1,5 +1,3 @@
-#ifdef __DO_NOT_COMPILE__
-
 /***************************************************************
  
  GLUI 2 - OpenGL User Interface Library 2
@@ -29,7 +27,21 @@ public:
     // Console constructor
     g2Console(g2Controller* Parent, g2Theme* MainTheme);
     
+    // Release the i/o buffers
+    ~g2Console();
+    
+    // Print to the buffer
+    void printf(const char* format, ...);
+    
+    // Read off the latest string command the user as typed in; based on FIFO order
+    // May return null if there is nothing in the buffer
+    // Note that the returned buffer MUST be released when you are done with it
+    char* gets();
+    
 protected:
+    
+    // Update
+    void Update(float dT);
     
     // Render
     void Render();
@@ -37,7 +49,19 @@ protected:
     // Define controller geometry
     bool InController(int x, int y);
     
+    // Gets the screen width and heigh
+    void WindowResizeEvent(int NewWidth, int NewHeight);
+    
+    // Handle user inputs
+    void KeyEvent(unsigned char key);
+    
 private:
+    
+    // Active width and height
+    int WindowWidth, WindowHeight;
+    
+    // Current input buffer (on-screen)
+    char InputBuffer[1024];
     
     // Input and output queues
     // Note that the out console might also retain
@@ -46,9 +70,15 @@ private:
     std::queue<char*> ConsoleIn;
     std::queue<char*> ConsoleOut;
     
+    // The total time the cursor has been in the current cursor style
+    float CursorTime;
+    
+    // The current cursor state (on is '_', off is ' ')
+    bool CursorState;
+    
+    // Maximum input length
+    static const int MaxInputLength = 1024;
 };
 
 // End of inclusion guard
-#endif
-
 #endif

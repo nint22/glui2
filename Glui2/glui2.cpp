@@ -41,7 +41,7 @@ Glui2::Glui2(int ParentID, const char* ThemeFile, void (*GlutIdleFunc)(void), vo
     else
         MainTheme.Load(ThemeFile);
     
-    // Default root to have no ownership
+    // Default root to have no ownership and active controller to none
     RootController = new g2Controller(NULL, &MainTheme);
 }
 
@@ -76,6 +76,33 @@ g2CheckBox* Glui2::AddCheckBox(int x, int y, const char* Text)
     NewCheckBox->SetPos(x, y);
     
     return NewCheckBox;
+}
+
+g2Console* Glui2::AddConsole()
+{
+    // Allocate a new console and return
+    g2Console* NewConsole = new g2Console(RootController, &MainTheme);
+    
+    return NewConsole;
+}
+
+g2TextField* Glui2::AddTextField(int x, int y)
+{
+    // Allocate a new text field
+    g2TextField* NewTextField = new g2TextField(RootController, &MainTheme);
+    NewTextField->SetPos(x, y);
+    
+    return NewTextField;
+}
+
+g2RadioGroup* Glui2::AddRadioGroup(int x, int y, const char** Options, int OptionCount)
+{
+    // Allocate a new radio group
+    g2RadioGroup* NewRadioGroup = new g2RadioGroup(RootController, &MainTheme);
+    NewRadioGroup->SetOptions(Options, OptionCount);
+    NewRadioGroup->SetPos(x, y);
+    
+    return NewRadioGroup;
 }
 
 void Glui2::Render()
@@ -142,21 +169,23 @@ void Glui2::__ReshapeFunc(int width, int height)
 
 void Glui2::__KeyboardFunc(unsigned char key, int x, int y)
 {
-    // Keyboard self
-    __G2_HANDLE__->RootController->__KeyEvent(key);
+    // Keyboard child if it has focus
+    if(__G2_HANDLE__->ActiveController != NULL)
+        __G2_HANDLE__->ActiveController->KeyEvent(key);
     
-    // Keyboard host
-    if(__G2_HANDLE__->GlutKeyboardFunc != NULL)
+    // Special Keyboard host (if the GUI is not focused)
+    else if(__G2_HANDLE__->GlutKeyboardFunc != NULL)
         __G2_HANDLE__->GlutKeyboardFunc(key, x, y);
 }
 
 void Glui2::__SpecialFunc(int key, int x, int y)
 {
-    // Special Keyboard self
-    __G2_HANDLE__->RootController->__KeyEvent(key);
+    // Special Keyboard if it has focus
+    if(__G2_HANDLE__->ActiveController != NULL)
+        __G2_HANDLE__->ActiveController->KeyEvent(key);
     
-    // Special Keyboard host
-    if(__G2_HANDLE__->GlutSpecialFunc != NULL)
+    // Special Keyboard host (if the GUI is not focused)
+    else if(__G2_HANDLE__->GlutSpecialFunc != NULL)
         __G2_HANDLE__->GlutSpecialFunc(key, x, y);
 }
 
@@ -164,6 +193,7 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
 {
     // Mouse self
     __G2_HANDLE__->RootController->__MouseClick(g2MouseButton(button), g2MouseClick(state), x, y);
+    __G2_HANDLE__->ActiveController = __G2_HANDLE__->RootController->GetController(x, y);
     
     // Mouse host
     if(__G2_HANDLE__->GlutMouseFunc != NULL)

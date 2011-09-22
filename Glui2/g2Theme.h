@@ -72,7 +72,7 @@
 #include "SOIL.h"
 
 // Total number of element types
-static const unsigned int g2ThemeElement_Count = 7;
+static const unsigned int g2ThemeElement_Count = 13;
 
 // Enumerate all theme options
 enum g2ThemeElement
@@ -87,6 +87,16 @@ enum g2ThemeElement
     g2Theme_CheckBox_Disabled,
     g2Theme_CheckBox_Pressed,
     g2Theme_CheckBox_Pressed_Disabled,
+    
+    // Text field (same as text box)
+    g2Theme_TextField,
+    g2Theme_TextField_Disabled,
+    
+    // Radiobutton states
+    g2Theme_RadioButton,
+    g2Theme_RadioButton_Disabled,
+    g2Theme_RadioButton_Pressed,
+    g2Theme_RadioButton_Pressed_Disabled,
 };
 
 // Look-up table between the theme enumeration and
@@ -100,6 +110,12 @@ static const char g2ThemeElement_Names[g2ThemeElement_Count][__G2CONFIG_KEYSIZE_
     "CheckBox_Disabled",
     "CheckBox_Pressed",
     "CheckBox_Pressed_Disabled",
+    "TextField",
+    "TextField_Disabled",
+    "RadioButton",
+    "RadioButton_Disabled",
+    "RadioButton_Pressed",
+    "RadioButton_Pressed_Disabled",
 };
 
 // Theme implementation class

@@ -47,6 +47,9 @@
 #include "g2Button.h"
 #include "g2Label.h"
 #include "g2CheckBox.h"
+#include "g2Console.h"
+#include "g2TextField.h"
+#include "g2RadioGroup.h"
 
 // Window configuration types
 // This is the "anchor" point, so if oriented
@@ -81,6 +84,12 @@ public:
     g2Label* AddLabel(int x, int y, const char* Text);
     
     g2CheckBox* AddCheckBox(int x, int y, const char* Text);
+    
+    g2Console* AddConsole();
+    
+    g2TextField* AddTextField(int x, int y);
+    
+    g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount);
     
     /*
     g2RadioButton* AddRadioButton(int XOffset, int YOffset, const char* Label, g2Anchor anchor = g2Anchor_Top);
@@ -134,9 +143,13 @@ private:
     static void __HoverFunc(int x, int y);
     static void __DragFunc(int x, int y);
     
-    /*** Root GUI Tree Node ***/
+    /*** Root GUI Tree Node & Active Node ***/
     
+    // Root GUI node
     g2Controller* RootController;
+    
+    // Active controller (last controller clicked)
+    g2Controller* ActiveController;
     
 };
 

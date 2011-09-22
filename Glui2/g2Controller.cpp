@@ -148,6 +148,37 @@ void g2Controller::GetPos(int* x, int* y)
     *y = this->y;
 }
 
+g2Controller* g2Controller::GetController(int x, int y)
+{
+    // Assume nothing intersects
+    g2Controller* ActiveController = NULL;
+    
+    // Check all children, do we interest?
+    // We go through all of them as we don't want to change
+    // the ordering which is important to rendering
+    int QueueSize = ChildObjects.size();
+    for(int i = 0; i < QueueSize; i++)
+    {
+        // Get child
+        g2Controller* Child = ChildObjects.front();
+        ChildObjects.pop();
+        
+        // Check but stop once at least one is found
+        if(ActiveController == NULL)
+            ActiveController = Child->GetController(x, y);
+        
+        // Put back
+        ChildObjects.push(Child);
+    }
+    
+    // No children have an interesection, as the parent do we intersect?
+    if(ActiveController == NULL && InController(x, y))
+        ActiveController = this;
+    
+    // All done
+    return ActiveController;
+}
+
 void g2Controller::Update(float dT)
 {
     // Allow the user to overload as needed...
