@@ -50,7 +50,13 @@
 #include "g2Console.h"
 #include "g2TextField.h"
 #include "g2RadioGroup.h"
-
+#include "g2TextBox.h"
+#include "g2DropDown.h"
+#include "g2Dialog.h"
+#include "g2Panel.h"
+#include "g2Slider.h"
+#include "g2ProgressBar.h"
+    
 // Window configuration types
 // This is the "anchor" point, so if oriented
 // left, it will move aling with left window
@@ -90,6 +96,18 @@ public:
     g2TextField* AddTextField(int x, int y);
     
     g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount);
+    
+    g2TextBox* AddTextBox(int x, int y);
+    
+    g2DropDown* AddDropDown(int x, int y);
+    
+    g2Dialog* AddDialog(g2DialogType Type, const char* Message);
+    
+    g2Panel* AddPanel(int x, int y);
+    
+    g2Slider* AddSlider(int x, int y);
+    
+    g2ProgressBar* AddProgressBar(int x, int y);
     
     /*
     g2RadioButton* AddRadioButton(int XOffset, int YOffset, const char* Label, g2Anchor anchor = g2Anchor_Top);

@@ -72,7 +72,7 @@
 #include "SOIL.h"
 
 // Total number of element types
-static const unsigned int g2ThemeElement_Count = 13;
+static const unsigned int g2ThemeElement_Count = 27;
 
 // Enumerate all theme options
 enum g2ThemeElement
@@ -97,6 +97,30 @@ enum g2ThemeElement
     g2Theme_RadioButton_Disabled,
     g2Theme_RadioButton_Pressed,
     g2Theme_RadioButton_Pressed_Disabled,
+    
+    // ProgressBar states
+    g2Theme_ProgressBar,
+    g2Theme_ProgressBar_Fill,
+    g2Theme_ProgressBar_Disabled,
+    
+    // DropDown states
+    g2Theme_DropDown,
+    g2Theme_DropDown_Pressed,
+    g2Theme_DropDown_Disabled,
+    
+    // Spinner states (note the graphics are paired, but internally split)
+    g2Theme_Spinner,
+    g2Theme_Spinner_Pressed,
+    g2Theme_Spinner_Disabled,
+    
+    // Panel background (gets repeated, not stretched)
+    g2Theme_Panel,
+    
+    // Slider
+    g2Theme_Slider,
+    g2Theme_SliderButton,
+    g2Theme_SliderButton_Pressed,
+    g2Theme_SliderButton_Disabled,
 };
 
 // Look-up table between the theme enumeration and
@@ -116,6 +140,20 @@ static const char g2ThemeElement_Names[g2ThemeElement_Count][__G2CONFIG_KEYSIZE_
     "RadioButton_Disabled",
     "RadioButton_Pressed",
     "RadioButton_Pressed_Disabled",
+    "ProgressBar",
+    "ProgressBar_Fill",
+    "ProgressBar_Disabled",
+    "DropDown",
+    "DropDown_Pressed",
+    "DropDown_Disabled",
+    "Spinner",
+    "Spinner_Pressed",
+    "Spinner_Disabled",
+    "Panel",
+    "Slider",
+    "SliderButton",
+    "SliderButton_Pressed",
+    "SliderButton_Disabled",
 };
 
 // Theme implementation class

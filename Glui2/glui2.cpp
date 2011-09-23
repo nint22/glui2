@@ -52,7 +52,6 @@ Glui2::~Glui2()
 
 g2Button* Glui2::AddButton(int x, int y, const char* Label)
 {
-    // Allocate a new button and add to parent
     g2Button* NewButton = new g2Button(RootController, &MainTheme);
     NewButton->SetPos(x, y);
     
@@ -61,7 +60,6 @@ g2Button* Glui2::AddButton(int x, int y, const char* Label)
 
 g2Label* Glui2::AddLabel(int x, int y, const char* Text)
 {
-    // Allocate a new label and add to parent
     g2Label* NewLabel = new g2Label(RootController, &MainTheme);
     NewLabel->SetPos(x, y);
     NewLabel->SetText(Text);
@@ -71,38 +69,72 @@ g2Label* Glui2::AddLabel(int x, int y, const char* Text)
 
 g2CheckBox* Glui2::AddCheckBox(int x, int y, const char* Text)
 {
-    // Allocate a new checkbox and add to parent
     g2CheckBox* NewCheckBox = new g2CheckBox(RootController, &MainTheme);
     NewCheckBox->SetPos(x, y);
-    
     return NewCheckBox;
 }
 
 g2Console* Glui2::AddConsole()
 {
-    // Allocate a new console and return
     g2Console* NewConsole = new g2Console(RootController, &MainTheme);
-    
     return NewConsole;
 }
 
 g2TextField* Glui2::AddTextField(int x, int y)
 {
-    // Allocate a new text field
     g2TextField* NewTextField = new g2TextField(RootController, &MainTheme);
     NewTextField->SetPos(x, y);
-    
     return NewTextField;
 }
 
 g2RadioGroup* Glui2::AddRadioGroup(int x, int y, const char** Options, int OptionCount)
 {
-    // Allocate a new radio group
     g2RadioGroup* NewRadioGroup = new g2RadioGroup(RootController, &MainTheme);
     NewRadioGroup->SetOptions(Options, OptionCount);
     NewRadioGroup->SetPos(x, y);
     
     return NewRadioGroup;
+}
+
+g2TextBox* Glui2::AddTextBox(int x, int y)
+{
+    g2TextBox* NewTextBox = new g2TextBox(RootController, &MainTheme);
+    NewTextBox->SetPos(x, y);
+    return NewTextBox;
+}
+
+g2DropDown* Glui2::AddDropDown(int x, int y)
+{
+    g2DropDown* NewDropDown = new g2DropDown(RootController, &MainTheme);
+    NewDropDown->SetPos(x, y);
+    return NewDropDown;
+}
+
+g2Dialog* Glui2::AddDialog(g2DialogType Type, const char* Message)
+{
+    g2Dialog* NewDialog = new g2Dialog(Type, Message);
+    return NewDialog;
+}
+
+g2Panel* Glui2::AddPanel(int x, int y)
+{
+    g2Panel* NewPanel = new g2Panel(RootController, &MainTheme);
+    NewPanel->SetPos(x, y);
+    return NewPanel;
+}
+
+g2Slider* Glui2::AddSlider(int x, int y)
+{
+    g2Slider* NewSlider = new g2Slider(RootController, &MainTheme);
+    NewSlider->SetPos(x, y);
+    return NewSlider;
+}
+
+g2ProgressBar* Glui2::AddProgressBar(int x, int y)
+{
+    g2ProgressBar* NewProgress = new g2ProgressBar(RootController, &MainTheme);
+    NewProgress->SetPos(x, y);
+    return NewProgress;
 }
 
 void Glui2::Render()
