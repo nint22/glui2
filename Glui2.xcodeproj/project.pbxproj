@@ -64,6 +64,8 @@
 		4872FEFB142D4B4100D74141 /* stb_image_aug.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF1142D4B4100D74141 /* stb_image_aug.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4872FEFC142D4B4100D74141 /* stbi_DDS_aug_c.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF2142D4B4100D74141 /* stbi_DDS_aug_c.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4872FEFD142D4B4100D74141 /* stbi_DDS_aug.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF3142D4B4100D74141 /* stbi_DDS_aug.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		48E527F5142D803000775F4D /* g2AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 48E527F4142D803000775F4D /* g2AppKit.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		48E527FF142D8C4500775F4D /* g2AppKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48E527FE142D8C4500775F4D /* g2AppKit.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +130,8 @@
 		4872FEF1142D4B4100D74141 /* stb_image_aug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_image_aug.h; path = SOIL/stb_image_aug.h; sourceTree = "<group>"; };
 		4872FEF2142D4B4100D74141 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stbi_DDS_aug_c.h; path = SOIL/stbi_DDS_aug_c.h; sourceTree = "<group>"; };
 		4872FEF3142D4B4100D74141 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stbi_DDS_aug.h; path = SOIL/stbi_DDS_aug.h; sourceTree = "<group>"; };
+		48E527F4142D803000775F4D /* g2AppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2AppKit.h; sourceTree = "<group>"; };
+		48E527FE142D8C4500775F4D /* g2AppKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = g2AppKit.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +253,8 @@
 				4872FE8E142D406200D74141 /* g2TextBox.h */,
 				4872FE8F142D406200D74141 /* g2TextField.cpp */,
 				4872FE90142D406200D74141 /* g2TextField.h */,
+				48E527FE142D8C4500775F4D /* g2AppKit.mm */,
+				48E527F4142D803000775F4D /* g2AppKit.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -292,6 +298,7 @@
 				4872FEC4142D406300D74141 /* g2Theme.h in Headers */,
 				4872FEC6142D406300D74141 /* g2Utilities.h in Headers */,
 				4872FEC8142D406300D74141 /* glui2.h in Headers */,
+				48E527F5142D803000775F4D /* g2AppKit.h in Headers */,
 				4872FEF5142D4B4100D74141 /* image_DXT.h in Headers */,
 				4872FEF7142D4B4100D74141 /* image_helper.h in Headers */,
 				4872FEF9142D4B4100D74141 /* SOIL.h in Headers */,
@@ -392,6 +399,7 @@
 				4872FEF6142D4B4100D74141 /* image_helper.c in Sources */,
 				4872FEF8142D4B4100D74141 /* SOIL.c in Sources */,
 				4872FEFA142D4B4100D74141 /* stb_image_aug.c in Sources */,
+				48E527FF142D8C4500775F4D /* g2AppKit.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +459,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = build;
@@ -472,6 +481,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYMROOT = build;

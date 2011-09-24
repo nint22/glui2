@@ -31,6 +31,13 @@ enum g2DialogType
     g2DialogType_Notification,
 };
 
+// Define the cross-platform responses
+enum g2DialogResult
+{
+    g2DialogResult_OK,
+    g2DialogResult_Cancel,
+};
+
 class g2Dialog
 {
 public:
@@ -41,17 +48,31 @@ public:
     // Destructor explicitly takes down any open modals
     ~g2Dialog();
     
-    // Is the user done with the dialog?
-    bool IsDone();
+    // Show the dialog
+    void Show();
     
-    // What did the user write? This buffer is to be read
-    // and never written to or released (this is done internally)
-    char* GetInput();
+    // The user's choice is given; if the result is a save
+    // or open event, and the given result reference pointer is not null
+    // then the given pointer is allocated a buffer of the user's content
+    // and must be deleted explicitly by the user
+    g2DialogResult GetInput(char** result = NULL);
     
 private:
     
-    // Nothing here...
+    // Dialog type
+    g2DialogType Type;
     
+    // User's choice
+    g2DialogResult Selection;
+    
+    // Maximum input/output/message length
+    static const int MaxBufferLength = 1024;
+    
+    // Mesage buffer
+    char MessageBuffer[MaxBufferLength];
+    
+    // Result (user input) buffer
+    char ResultBuffer[MaxBufferLength];
 };
 
 // End of inclusion guard
