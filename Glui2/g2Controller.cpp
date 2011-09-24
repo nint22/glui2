@@ -264,33 +264,47 @@ void g2Controller::DrawComponent(int DestX, int DestY, g2ThemeElement ElementTyp
     if(!IsVisible || Alpha <= 0.0f)
         return;
     
-    // Set the current color and alpha
-    glColor4f(R, G, B, Alpha);
-    
-    // Get the texture points
+    // Get the texture points and default component size
     float tx, ty, tw, th;
     int width, height;
     GLuint textID;
     bool IsFound = GetTheme()->GetComponent(ElementType, &tx, &ty, &tw, &th, &width, &height, &textID);
     g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", (int)ElementType);
     
+    // Draw
+    DrawComponent(DestX, DestY, width, height, tx, ty, tw, th, textID);
+}
+
+void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID)
+{
+    // Are we allowed to draw?
+    if(!IsVisible || Alpha <= 0.0f)
+        return;
+    
+    // If the texture ID is invalid then switch to theme texture ID
+    if(TextID < 0)
+        TextID = GetTheme()->GetTextureID();
+    
+    // Set the current color and alpha
+    glColor4f(R, G, B, Alpha);
+    
     // Bind texture
     glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, textID); 
+	glBindTexture(GL_TEXTURE_2D, TextID); 
     
     // Draw at this position
     glBegin(GL_QUADS);
-        glTexCoord2f(tx, ty);
+        glTexCoord2f(SrcX, SrcY);
         glVertex2f(DestX + 0, DestY + 0);
         
-        glTexCoord2f(tx, ty + th);
-        glVertex2f(DestX + 0, DestY + height);
+        glTexCoord2f(SrcX, SrcY + SrcH);
+        glVertex2f(DestX + 0, DestY + DestH);
         
-        glTexCoord2f(tx + tw, ty + th);
-        glVertex2f(DestX + width, DestY + height);
+        glTexCoord2f(SrcX + SrcW, SrcY + SrcH);
+        glVertex2f(DestX + DestW, DestY + DestH);
         
-        glTexCoord2f(tx + tw, ty);
-        glVertex2f(DestX + width, DestY + 0);
+        glTexCoord2f(SrcX + SrcW, SrcY);
+        glVertex2f(DestX + DestW, DestY + 0);
     glEnd();
     
     // Release texture

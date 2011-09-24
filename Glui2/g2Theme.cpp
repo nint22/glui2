@@ -77,13 +77,6 @@ void g2Theme::Load(const char* ThemeFile)
 
 bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
 {
-    // Is this index in the list of valid
-    if(Element < 0 || Element >= g2ThemeElement_Count)
-        return false;
-    
-    // Make sure all pointers are valid
-    g2Assert(tSrcX != NULL && tSrcY != NULL && tSrcWidth != NULL && tSrcHeight != NULL && width != NULL && height != NULL && textID, "Given texture coordinates, texture size, and/or texture IDs are null.");
-    
     // Does the component exist in the dictionary?
     if(Element < 0 || Element >= g2ThemeElement_Count)
         return false;
@@ -100,7 +93,7 @@ bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, f
 bool g2Theme::GetComponent(const char* ElementName, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
 {
     // Make sure all pointers are valid
-    g2Assert(tSrcX != NULL && tSrcY != NULL && tSrcWidth != NULL && tSrcHeight != NULL && width != NULL && height != NULL && textID, "Given texture coordinates, texture size, and/or texture IDs are null.");
+    g2Assert(ElementName != NULL, "Given g2Theme element name is NULL.");
     
     // Create the needed point buffer and size buffer key-names
     char* PointBuffer = NULL;
@@ -120,15 +113,22 @@ bool g2Theme::GetComponent(const char* ElementName, float* tSrcX, float* tSrcY, 
         return false;
     
     // Convert and post-back to normalized
-    *tSrcX = float(tX) / float(TextureWidth);
-    *tSrcY = float(tY) / float(TextureHeight);
-    *tSrcWidth = float(tWidth) / float(TextureWidth);
-    *tSrcHeight = float(tHeight) / float(TextureHeight);
+    if(tSrcX != NULL)
+        *tSrcX = float(tX) / float(TextureWidth);
+    if(tSrcY != NULL)
+        *tSrcY = float(tY) / float(TextureHeight);
+    if(tSrcWidth != NULL)
+        *tSrcWidth = float(tWidth) / float(TextureWidth);
+    if(tSrcHeight != NULL)
+        *tSrcHeight = float(tHeight) / float(TextureHeight);
     
     // Post back the size and texture ID
-    *width = tWidth;
-    *height = tHeight;
-    *textID = TextureID;
+    if(width != NULL)
+        *width = tWidth;
+    if(height != NULL)
+        *height = tHeight;
+    if(textID != NULL)
+        *textID = TextureID;
     
     // All done
     return true;
@@ -136,9 +136,6 @@ bool g2Theme::GetComponent(const char* ElementName, float* tSrcX, float* tSrcY, 
 
 bool g2Theme::GetComponentSize(g2ThemeElement Element, int* width, int* height)
 {
-    // Check buffers
-    g2Assert(width != NULL && height != NULL, "Given width and/or height buffers are NULL.");
-    
     // Is this index in the list of valid
     if(Element < 0 || Element >= g2ThemeElement_Count)
         return false;
@@ -150,9 +147,6 @@ bool g2Theme::GetComponentSize(g2ThemeElement Element, int* width, int* height)
 
 bool g2Theme::GetComponentSize(const char* ElementName, int* width, int* height)
 {
-    // Check buffers
-    g2Assert(width != NULL && height != NULL, "Given width and/or height buffers are NULL.");
-    
     // Create the needed point buffer and size buffer key-names
     char* SizeBuffer = NULL;
     
@@ -166,38 +160,55 @@ bool g2Theme::GetComponentSize(const char* ElementName, int* width, int* height)
         return false;
     
     // Save and post-back
-    *width = tWidth;
-    *height = tHeight;
+    if(width != NULL)
+        *width = tWidth;
+    if(height != NULL)
+        *height = tHeight;
     return true;
 }
 
 void g2Theme::GetCharacter(char character, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
 {
-    // Check buffers
-    g2Assert(tSrcX != NULL && tSrcY != NULL && tSrcWidth != NULL && tSrcHeight != NULL && width != NULL && height != NULL && textID != NULL, "Given width and/or height buffers are NULL.");
-    
     // Calculate the x and y positions
     // Low nibble is x-axis, high nibble is y axis
     // Note to self: would it be faster to do a bit-wise manipulation?
     // sourceX = (character & 0xf0) >> 4 to cast a byte's higher nibble to lower nibble
-    int w = *width = CharacterMapWidth / 16;
-    int h = *height = CharacterMapHeight / 16;
+    int w = CharacterMapWidth / 16;
+    int h = CharacterMapHeight / 16;
+    if(width != NULL)
+        *width = w;
+    if(height != NULL)
+        *height = h;
     
-    *tSrcX = float((character % 16) * w) / float(CharacterMapWidth);
-    *tSrcY = float((character / 16) * h) / float(CharacterMapHeight);
+    if(tSrcX != NULL)
+        *tSrcX = float((character % 16) * w) / float(CharacterMapWidth);
+    if(tSrcY != NULL)
+        *tSrcY = float((character / 16) * h) / float(CharacterMapHeight);
     
-    *tSrcWidth = float(w) / float(CharacterMapWidth);
-    *tSrcHeight = float(h) / float(CharacterMapHeight);
+    if(tSrcWidth != NULL)
+        *tSrcWidth = float(w) / float(CharacterMapWidth);
+    if(tSrcHeight != NULL)
+        *tSrcHeight = float(h) / float(CharacterMapHeight);
     
     // Set the texture to the character map
-    *textID = CharacterMapID;
+    if(textID != NULL)
+        *textID = CharacterMapID;
 }
 
 void g2Theme::GetCharacterSize(int* width, int* height)
 {
-    // Check buffers
-    g2Assert(width != NULL && height != NULL, "Given width and/or height buffers are NULL.");
-    
-    *width = CharacterMapWidth / 16;
-    *height = CharacterMapHeight / 16;
+    if(width != NULL)
+        *width = CharacterMapWidth / 16;
+    if(height != NULL)
+        *height = CharacterMapHeight / 16;
+}
+
+GLuint g2Theme::GetTextureID()
+{
+    return TextureID;
+}
+
+GLuint g2Theme::GetCharacterMapID()
+{
+    return CharacterMapID;
 }

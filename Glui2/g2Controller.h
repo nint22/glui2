@@ -117,6 +117,9 @@ protected:
     // Draws a given source location and size to the on-screen descrition coordinates
     void DrawComponent(int DestX, int DestY, g2ThemeElement ElementType);
     
+    // Draws a given rectangle and source textures; texture ID defaults to the theme texture
+    void DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID = -1);
+    
     // Draw a character
     void DrawCharacter(int DestX, int DestY, char Character);
     

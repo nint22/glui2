@@ -29,7 +29,11 @@ public:
     g2Slider(g2Controller* Parent, g2Theme* MainTheme);
     
     // Get access to the label that is centered on the button
-    const g2Label* GetLabel();
+    g2Label* GetLabel();
+    
+    // Set the current progress of this progress bar; accepts
+    // values from 0 to 1 (floats)
+    void SetProgress(float Progress);
     
 protected:
     
@@ -43,6 +47,9 @@ private:
     
     // Text label
     g2Label* Label;
+    
+    // Current progress
+    float Progress;
     
 };
 

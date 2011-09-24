@@ -171,23 +171,29 @@ public:
     // Access a given UI component's bitmap data based on an enumeration
     // which inturn looks it up in the "g2ThemeElement_Names" string-table
     // Returns true if found, else false
-    bool GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID);
+    bool GetComponent(g2ThemeElement Element, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
     // Access a given UI component's bitmap data based on the configuration name
     // Returns true if found, else false
-    bool GetComponent(const char* ElementName, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID);
+    bool GetComponent(const char* ElementName, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
     // Access a given UI component's bitwise width and height based on an enumeration
-    bool GetComponentSize(g2ThemeElement Element, int* width, int* height);
+    bool GetComponentSize(g2ThemeElement Element, int* width = NULL, int* height = NULL);
     
     // Access a given UI component's bitwise width and height based on a string
-    bool GetComponentSize(const char* ElementName, int* width, int* height);
+    bool GetComponentSize(const char* ElementName, int* width = NULL, int* height = NULL);
     
     // Get a bitmap's individual position
-    void GetCharacter(char character, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID);
+    void GetCharacter(char character, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
     // Get a character's size
-    void GetCharacterSize(int* width, int* height);
+    void GetCharacterSize(int* width = NULL, int* height = NULL);
+    
+    // Get the them texture ID
+    GLuint GetTextureID();
+    
+    // Get the caracther maps texture ID
+    GLuint GetCharacterMapID();
     
 private:
     

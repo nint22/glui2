@@ -19,6 +19,9 @@ g2ProgressBar::g2ProgressBar(g2Controller* Parent, g2Theme* MainTheme)
     Label->SetPos(5, 5);
     Label->SetColor(0, 0, 0);
     Label->SetText("Undefined...");
+    
+    // Default progress to none
+    Progress = 0.0f;
 }
 
 const g2Label* g2ProgressBar::GetLabel()
@@ -27,31 +30,41 @@ const g2Label* g2ProgressBar::GetLabel()
     return Label;
 }
 
+void g2ProgressBar::SetProgress(float Progress)
+{
+    // Save the progress
+    if(Progress < 0.0f)
+        Progress = 0.0f;
+    else if(Progress > 1.0f)
+        Progress = 1.0f;
+    this->Progress = Progress;
+}
+
 void g2ProgressBar::Render()
 {
-    // Draw something simple
+    // Get the controller location
     int pX, pY;
     GetPos(&pX, &pY);
     
-    // Draw based on the current state
+    // Draw the background
     if(GetDisabled())
-        DrawComponent(pX, pY, g2Theme_Button_Disabled);
-    else if(GetControllerState() == g2ControllerState_Pressed)
-        DrawComponent(pX, pY, g2Theme_Button_Pressed);
+        DrawComponent(pX, pY, g2Theme_ProgressBar_Disabled);
     else
-        DrawComponent(pX, pY, g2Theme_Button);
+        DrawComponent(pX, pY, g2Theme_ProgressBar);
+    
+    // Get the texture points for the progress bar
+    float tx, ty, tw, th;
+    int width, height;
+    GLuint textID;
+    bool IsFound = GetTheme()->GetComponent(g2Theme_ProgressBar_Fill, &tx, &ty, &tw, &th, &width, &height, &textID);
+    g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", g2Theme_ProgressBar_Fill);
+    
+    // Draw
+    DrawComponent(pX, pY, width * Progress, height, tx, ty, tw * Progress, th);
 }
 
 bool g2ProgressBar::InController(int x, int y)
 {
-    // Current GUI position and size
-    int pX, pY, width, height;
-    GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_Button, &width, &height);
-    
-    // Are we in it?
-    if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)
-        return true;
-    else
-        return false;
+    // User never interacts with a progress bar
+    return false;
 }
