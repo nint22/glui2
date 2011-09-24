@@ -78,14 +78,14 @@ void g2Theme::Load(const char* ThemeFile)
 bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
 {
     // Is this index in the list of valid
-    if((int)Element < 0 || (int)Element >= g2ThemeElement_Count)
+    if(Element < 0 || Element >= g2ThemeElement_Count)
         return false;
     
     // Make sure all pointers are valid
     g2Assert(tSrcX != NULL && tSrcY != NULL && tSrcWidth != NULL && tSrcHeight != NULL && width != NULL && height != NULL && textID, "Given texture coordinates, texture size, and/or texture IDs are null.");
     
     // Does the component exist in the dictionary?
-    if((int)Element < 0 || (int)Element >= g2ThemeElement_Count)
+    if(Element < 0 || Element >= g2ThemeElement_Count)
         return false;
     
     // Does the config file have theis content?
@@ -140,7 +140,7 @@ bool g2Theme::GetComponentSize(g2ThemeElement Element, int* width, int* height)
     g2Assert(width != NULL && height != NULL, "Given width and/or height buffers are NULL.");
     
     // Is this index in the list of valid
-    if((int)Element < 0 || (int)Element >= g2ThemeElement_Count)
+    if(Element < 0 || Element >= g2ThemeElement_Count)
         return false;
     
     // Does the config file have this content?

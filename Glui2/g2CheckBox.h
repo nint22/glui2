@@ -26,7 +26,7 @@ public:
     g2CheckBox(g2Controller* Parent, g2Theme* MainTheme);
     
     // Get access to the label
-    const g2Label* GetLabel();
+    g2Label* GetLabel();
     
 protected:
     

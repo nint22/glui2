@@ -21,7 +21,8 @@ g2TextBox::g2TextBox(g2Controller* Parent, g2Theme* MainTheme)
 
 void g2TextBox::SetText(const char* Text)
 {
-    
+    // Supress warning
+    Text = NULL;
 }
 
 void g2TextBox::Update(float dT)
@@ -75,7 +76,7 @@ void g2TextBox::KeyEvent(unsigned char key)
     else
     {
         // Accepts all characters (ignore if not enough memory)
-        int length = strlen(InputBuffer);
+        size_t length = strlen(InputBuffer);
         if(length + 1 >= MaxInputLength)
             return;
         

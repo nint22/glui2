@@ -44,7 +44,7 @@ g2Controller::~g2Controller()
         return;
     
     // Release self from parent
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -124,7 +124,7 @@ void g2Controller::SetPos(int x, int y)
     this->y = y;
     
     // Update all children by setting the offsets
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -156,7 +156,7 @@ g2Controller* g2Controller::GetController(int x, int y)
     // Check all children, do we interest?
     // We go through all of them as we don't want to change
     // the ordering which is important to rendering
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -182,6 +182,9 @@ g2Controller* g2Controller::GetController(int x, int y)
 void g2Controller::Update(float dT)
 {
     // Allow the user to overload as needed...
+    
+    // Supress warning
+    dT = dT;
 }
 
 void g2Controller::Render()
@@ -191,32 +194,52 @@ void g2Controller::Render()
 
 bool g2Controller::InController(int x, int y)
 {
+    // Supress warning
+    x = y;
+    
     // Allow the user to overload as needed...
     return false;
 }
 
 void g2Controller::WindowResizeEvent(int NewWidth, int NewHeight)
 {
+    // Supress warning
+    NewWidth = NewHeight;
+    
     // Allow the user to overload as needed...
 }
 
 void g2Controller::KeyEvent(unsigned char key)
 {
+    // Supress warning
+    key = key;
+    
     // Allow the user to overload as needed...
 }
 
 void g2Controller::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
 {
+    // Supress warning
+    button = g2MouseButton_Left;
+    state = g2MouseClick_Down;
+    x = y;
+    
     // Allow the user to overload as needed...
 }
 
 void g2Controller::MouseHover(int x, int y)
 {
+    // Supress warning
+    x = y;
+    
     // Allow the user to overload as needed...
 }
 
 void g2Controller::MouseDrag(int x, int y)
 {
+    // Supress warning
+    x = y;
+    
     // Allow the user to overload as needed...
 }
 
@@ -318,7 +341,7 @@ void g2Controller::__Update(float dT)
     Update(dT);
     
     // Update all children
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -339,7 +362,7 @@ void g2Controller::__Render()
     Render();
     
     // Update all children
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -360,7 +383,7 @@ void g2Controller::__WindowResizeEvent(int NewWidth, int NewHeight)
     WindowResizeEvent(NewWidth, NewHeight);
     
     // Update all children
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -381,7 +404,7 @@ void g2Controller::__KeyEvent(unsigned char key)
     KeyEvent(key);
     
     // Update all children
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -408,7 +431,7 @@ void g2Controller::__MouseHover(int x, int y)
         ControllerState = g2ControllerState_None;
     
     // Update all children
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -435,7 +458,7 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
         ControllerState = g2ControllerState_None;
     
     // Update all children
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child
@@ -456,7 +479,7 @@ void g2Controller::__MouseDrag(int x, int y)
     MouseDrag(x, y);
     
     // Update all children
-    int QueueSize = ChildObjects.size();
+    int QueueSize = (int)ChildObjects.size();
     for(int i = 0; i < QueueSize; i++)
     {
         // Get child

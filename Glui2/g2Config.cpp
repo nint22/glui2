@@ -226,9 +226,9 @@ bool g2Config::GetValue(const char* Group, const char* Key, char** OutValue)
     strcpy(LowerGroup, Group);
     strcpy(LowerKey, Key);
     
-    for(int i = 0; i < strlen(LowerGroup); i++)
+    for(size_t i = 0; i < strlen(LowerGroup); i++)
         LowerGroup[i] = tolower(LowerGroup[i]);
-    for(int i = 0; i < strlen(LowerKey); i++)
+    for(size_t i = 0; i < strlen(LowerKey); i++)
         LowerKey[i] = tolower(LowerKey[i]);
     
     // Search through the groups linked list
@@ -275,7 +275,7 @@ void g2Config::AddGroup(const char* Group)
     NewGroup->Next = NULL;
     
     // Lowercase the group name
-    for(int i = 0; i < strlen(NewGroup->GroupName); i++)
+    for(size_t i = 0; i < strlen(NewGroup->GroupName); i++)
         NewGroup->GroupName[i] = tolower(NewGroup->GroupName[i]);
     
     // Is the root empty?
@@ -317,9 +317,9 @@ void g2Config::AddKey(const char* Group, const char* Key, const char* Data)
     strcpy(LowerGroup, Group);
     strcpy(LowerKey, Key);
     
-    for(int i = 0; i < strlen(LowerGroup); i++)
+    for(size_t i = 0; i < strlen(LowerGroup); i++)
         LowerGroup[i] = tolower(LowerGroup[i]);
-    for(int i = 0; i < strlen(LowerKey); i++)
+    for(size_t i = 0; i < strlen(LowerKey); i++)
         LowerKey[i] = tolower(LowerKey[i]);
     
     // For each key group

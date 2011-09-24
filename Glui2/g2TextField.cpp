@@ -21,7 +21,8 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
 
 void g2TextField::SetText(const char* Text)
 {
-    
+    // Supress warning
+    Text = NULL;
 }
 
 void g2TextField::Update(float dT)
@@ -75,7 +76,7 @@ void g2TextField::KeyEvent(unsigned char key)
     else
     {
         // Accepts all characters (ignore if not enough memory)
-        int length = strlen(InputBuffer);
+        size_t length = strlen(InputBuffer);
         if(length + 1 >= MaxInputLength)
             return;
         

@@ -13,7 +13,7 @@ static Glui2* __G2_HANDLE__ = NULL;
 // Define the default theme file name
 static const char* __G2_DEFAULT_THEME__ = "g2Default.cfg";
 
-Glui2::Glui2(int ParentID, const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutReshapeFunc)(int width, int height), void (*GlutKeyboardFunc)(unsigned char key, int x, int y), void (*GlutSpecialFunc)(int key, int x, int y), void (*GlutMouseFunc)(int button, int state, int x, int y), void (*GlutHoverFunc)(int x, int y), void (*GlutDragFunc)(int x, int y))
+Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutReshapeFunc)(int width, int height), void (*GlutKeyboardFunc)(unsigned char key, int x, int y), void (*GlutSpecialFunc)(int key, int x, int y), void (*GlutMouseFunc)(int button, int state, int x, int y), void (*GlutHoverFunc)(int x, int y), void (*GlutDragFunc)(int x, int y))
 {
     // Save self reference
     g2Assert(__G2_HANDLE__ == NULL, "Unable to allocate more than one instance of Glui2");
@@ -26,6 +26,7 @@ Glui2::Glui2(int ParentID, const char* ThemeFile, void (*GlutIdleFunc)(void), vo
     this->GlutSpecialFunc = GlutSpecialFunc;
     this->GlutHoverFunc = GlutHoverFunc;
     this->GlutMouseFunc = GlutMouseFunc;
+    this->GlutDragFunc = GlutDragFunc;
     
     // Register all needed callbacks
     glutIdleFunc(__IdleFunc);
@@ -54,6 +55,7 @@ g2Button* Glui2::AddButton(int x, int y, const char* Label)
 {
     g2Button* NewButton = new g2Button(RootController, &MainTheme);
     NewButton->SetPos(x, y);
+    NewButton->GetLabel()->SetText(Label);
     
     return NewButton;
 }
@@ -71,6 +73,7 @@ g2CheckBox* Glui2::AddCheckBox(int x, int y, const char* Text)
 {
     g2CheckBox* NewCheckBox = new g2CheckBox(RootController, &MainTheme);
     NewCheckBox->SetPos(x, y);
+    NewCheckBox->GetLabel()->SetText(Text);
     return NewCheckBox;
 }
 

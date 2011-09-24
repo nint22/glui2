@@ -53,7 +53,7 @@ void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char
         // Present the message, break if user presses yes
         MessageBox(NULL, buffer, "GLUI2 - Assertion Error", MB_ICONERROR);
         
-        // Note to self: Any way we can print the stack for users?
+        // Note to self: Any way we can print the stack for Window users?
     
 	// Else, in a UNIX-like system... Write this via command line.
     #else
@@ -67,7 +67,7 @@ void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char
         
         // Get the current backtrace
         void* backtrace_data[32];
-        size_t backtrace_count;
+        int backtrace_count; // Interesting note: Why isn't this size_t? Breaks the UNIX code-style
         
         // Get and print
         backtrace_count = backtrace(backtrace_data, 32);

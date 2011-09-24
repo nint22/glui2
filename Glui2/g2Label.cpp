@@ -62,7 +62,7 @@ void g2Label::Render()
     int offset = 0;
     
     // For each character...
-    for(int i = 0; i < strlen(TextBuffer); i++)
+    for(size_t i = 0; i < strlen(TextBuffer); i++)
     {
         // Get char and character information
         char c = TextBuffer[i];

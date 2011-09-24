@@ -21,7 +21,7 @@ g2CheckBox::g2CheckBox(g2Controller* Parent, g2Theme* MainTheme)
     Label->SetText("Undefined...");
 }
 
-const g2Label* g2CheckBox::GetLabel()
+g2Label* g2CheckBox::GetLabel()
 {
     // Return the label we are working on
     return Label;

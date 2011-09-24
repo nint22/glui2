@@ -136,7 +136,7 @@ void g2Console::Render()
     int cY = WindowHeight / 2 - CharHeight * 3;
     
     // Render each character in our output buffer
-    int OutLength = ConsoleOut.size();
+    int OutLength = (int)ConsoleOut.size();
     for(int i = 0; i < OutLength; i++)
     {
         // Get the latest text
@@ -144,7 +144,7 @@ void g2Console::Render()
         ConsoleOut.pop();
         
         // Print to screen
-        for(int j = 0; j < strlen(Text); j++)
+        for(size_t j = 0; j < strlen(Text); j++)
         {
             DrawCharacter(cX, cY - (OutLength - i) * CharHeight, Text[j]);
             cX += CharWidth;
@@ -166,7 +166,7 @@ void g2Console::Render()
     sprintf(InputBuffer_Cursor, "%s%c", InputBuffer, CursorState ? '_' : ' ' );
     
     // Draw the input buffer
-    for(int i = 0; i < strlen(InputBuffer_Cursor); i++)
+    for(size_t i = 0; i < strlen(InputBuffer_Cursor); i++)
     {
         DrawCharacter(cX, cY, InputBuffer_Cursor[i]);
         cX += CharWidth;
@@ -175,6 +175,9 @@ void g2Console::Render()
 
 bool g2Console::InController(int x, int y)
 {
+    // Supress x warning
+    x = x;
+    
     // If in the top half..
     if(y < WindowHeight / 2)
         return true;
@@ -215,7 +218,7 @@ void g2Console::KeyEvent(unsigned char key)
     else
     {
         // Accepts all characters (ignore if not enough memory)
-        int length = strlen(InputBuffer);
+        size_t length = strlen(InputBuffer);
         if(length + 1 >= MaxInputLength)
             return;
         

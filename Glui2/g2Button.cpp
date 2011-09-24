@@ -21,7 +21,7 @@ g2Button::g2Button(g2Controller* Parent, g2Theme* MainTheme)
     Label->SetText("Undefined...");
 }
 
-const g2Label* g2Button::GetLabel()
+g2Label* g2Button::GetLabel()
 {
     // Return the label we are working on
     return Label;

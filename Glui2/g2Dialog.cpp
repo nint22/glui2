@@ -12,7 +12,9 @@
 
 g2Dialog::g2Dialog(g2DialogType Type, const char* Message)
 {
-    
+    // Supress warning
+    Type = g2DialogType_Notification;
+    g2Assert(Message != NULL, "Given message buffer was null.");
 }
 
 g2Dialog::~g2Dialog()
