@@ -18,17 +18,17 @@ g2DropDown::g2DropDown(g2Controller* Parent, g2Theme* MainTheme)
 
 void g2DropDown::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     
     // Draw based on the current state
     if(GetDisabled())
-        DrawComponent(pX, pY, g2Theme_Button_Disabled);
+        DrawComponent(pX, pY, g2Theme_DropDown_Disabled);
     else if(GetControllerState() == g2ControllerState_Pressed)
-        DrawComponent(pX, pY, g2Theme_Button_Pressed);
+        DrawComponent(pX, pY, g2Theme_DropDown_Pressed);
     else
-        DrawComponent(pX, pY, g2Theme_Button);
+        DrawComponent(pX, pY, g2Theme_DropDown);
 }
 
 bool g2DropDown::InController(int x, int y)
@@ -36,7 +36,7 @@ bool g2DropDown::InController(int x, int y)
     // Current GUI position and size
     int pX, pY, width, height;
     GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_Button, &width, &height);
+    GetTheme()->GetComponentSize(g2Theme_DropDown, &width, &height);
     
     // Are we in it?
     if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)

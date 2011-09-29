@@ -42,7 +42,7 @@ void g2Slider::SetProgress(float Progress)
 
 void g2Slider::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     

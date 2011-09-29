@@ -10,41 +10,40 @@
 
 #include "g2Spinner.h"
 
-g2Spinner::g2Spinner(g2Controller* Parent, g2Theme* MainTheme)
+g2Spinner::g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Type)
 : g2Controller(Parent, MainTheme)
 {
-    // Allocate text and set initial position
+    // Allocate textfield and set initial position
     // Note that we are registereting to this button, not the root-parent
-    Label = new g2Label(this, MainTheme);
-    Label->SetPos(5, 5);
-    Label->SetColor(0, 0, 0);
-    Label->SetText("Undefined...");
+    TextField = new g2TextField(this, MainTheme);
     
-    // Default progress is 0
-    Progress = 0.0f;
+    // Save given type
+    this->Type = Type;
+    
+    // Default the float and integer values to 0
+    FloatVal = 0.0f;
+    IntVal = 0;
 }
 
 void g2Spinner::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     
-    // Draw the slider bar
-    DrawComponent(pX, pY, g2Theme_Slider);
+    // Get the height for the slider button based on the current collision
+    int height;
+    bool IsFound = GetTheme()->GetComponentSize(g2Theme_Spinner, NULL, &height);
+    g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", g2Theme_Spinner);
     
-    // Get the width for the slider button
-    int width;
-    bool IsFound = GetTheme()->GetComponentSize(g2Theme_SliderButton, &width, NULL);
-    g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", g2Theme_SliderButton);
-    
-    // Draw the slider button
+    // Draw the spinner button
+    // Note that the 100+ pixel offset is for the text field
     if(GetDisabled())
-        DrawComponent(pX + float(width) * Progress, pY, g2Theme_SliderButton_Disabled);
+        DrawComponent(pX + 100, pY, g2Theme_Spinner_Disabled);
     else if(GetControllerState() == g2ControllerState_Pressed)
-        DrawComponent(pX + float(width) * Progress, pY, g2Theme_SliderButton_Pressed);
+        DrawComponent(pX + 100, pY, g2Theme_Spinner_Pressed);
     else
-        DrawComponent(pX + float(width) * Progress, pY, g2Theme_SliderButton);
+        DrawComponent(pX + 100, pY, g2Theme_Spinner);
 }
 
 bool g2Spinner::InController(int x, int y)
@@ -52,10 +51,7 @@ bool g2Spinner::InController(int x, int y)
     // Current GUI position and size
     int pX, pY, width, height;
     GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_SliderButton, &width, &height);
-    
-    // Correct for user sliding
-    pX = float(width) * Progress;
+    GetTheme()->GetComponentSize(g2Theme_Spinner, &width, &height);
     
     // Are we in it?
     if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)

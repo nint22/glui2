@@ -38,7 +38,7 @@ void g2TextField::Update(float dT)
 
 void g2TextField::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     

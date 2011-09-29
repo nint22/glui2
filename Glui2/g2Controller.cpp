@@ -275,6 +275,22 @@ void g2Controller::DrawComponent(int DestX, int DestY, g2ThemeElement ElementTyp
     DrawComponent(DestX, DestY, width, height, tx, ty, tw, th, textID);
 }
 
+void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType)
+{
+    // Are we allowed to draw?
+    if(!IsVisible || Alpha <= 0.0f)
+        return;
+    
+    // Get the texture points and default component size
+    float tx, ty, tw, th;
+    GLuint textID;
+    bool IsFound = GetTheme()->GetComponent(ElementType, &tx, &ty, &tw, &th, NULL, NULL, &textID);
+    g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", (int)ElementType);
+    
+    // Draw
+    DrawComponent(DestX, DestY, DestW, DestH, tx, ty, tw, th, textID);
+}
+
 void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID)
 {
     // Are we allowed to draw?

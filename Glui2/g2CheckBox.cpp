@@ -29,7 +29,7 @@ g2Label* g2CheckBox::GetLabel()
 
 void g2CheckBox::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     

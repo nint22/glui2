@@ -56,17 +56,7 @@
 #include "g2Panel.h"
 #include "g2Slider.h"
 #include "g2ProgressBar.h"
-    
-// Window configuration types
-// This is the "anchor" point, so if oriented
-// left, it will move aling with left window
-// movement, etc..
-typedef unsigned int g2Anchor;
-static const g2Anchor g2Anchor_None     = 0x0000;    // Same as a top-left anchor; i.e. never moves
-static const g2Anchor g2Anchor_Top      = 0x0001;    // Anchor is from top of screen
-static const g2Anchor g2Anchor_Left     = 0x0002;    // Anchor is on left-screen edge
-static const g2Anchor g2Anchor_Bottom   = 0x0004;    // Anchor is from bottom fo screen
-static const g2Anchor g2Anchor_Right    = 0x0008;    // Anchor is on the right-screen edge
+#include "g2Spinner.h"
 
 // GLUI2 main interfacing / factory class
 class Glui2
@@ -103,22 +93,13 @@ public:
     
     g2Dialog* AddDialog(g2DialogType Type, const char* Message);
     
-    g2Panel* AddPanel(int x, int y);
+    g2Panel* AddPanel(g2Anchor AnchorFlags);
     
     g2Slider* AddSlider(int x, int y);
     
     g2ProgressBar* AddProgressBar(int x, int y);
     
-    /*
-    g2RadioButton* AddRadioButton(int XOffset, int YOffset, const char* Label, g2Anchor anchor = g2Anchor_Top);
-    
-    g2Panel* AddPanel(int XOffset, int YOffset, const char* Label, g2Anchor anchor = g2Anchor_Top);
-    
-    g2UpArrow* UpArrow(int XOffset, int YOffset, g2Anchor anchor = g2Anchor_Top);
-    g2LeftArrow* LeftArrow(int XOffset, int YOffset, g2Anchor anchor = g2Anchor_Top);
-    g2DownArrow* DownArrow(int XOffset, int YOffset, g2Anchor anchor = g2Anchor_Top);
-    g2RightArrow* RightArrow(int XOffset, int YOffset, g2Anchor anchor = g2Anchor_Top);
-    */
+    g2Spinner* AddSpinner(int x, int y, g2SpinnerType Type);
     
     /*** Internal Rendering & Update ***/
     

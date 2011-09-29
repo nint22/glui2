@@ -53,7 +53,7 @@ int g2RadioGroup::GetSelectionIndex()
 
 void g2RadioGroup::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     

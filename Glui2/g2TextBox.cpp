@@ -38,7 +38,7 @@ void g2TextBox::Update(float dT)
 
 void g2TextBox::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     

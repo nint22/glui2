@@ -45,7 +45,7 @@ void g2Label::Render()
     if(TextBuffer == NULL)
         return;
     
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     

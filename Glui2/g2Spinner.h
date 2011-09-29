@@ -18,9 +18,14 @@
 #define __G2SPINNER_H__
 
 #include "g2Controller.h"
-#include "g2TextField.h.h"
+#include "g2TextField.h"
 
 // Define the two spinner types: int or float
+enum g2SpinnerType
+{
+    g2SpinnerType_Int,
+    g2SpinnerType_Float,
+};
 
 class g2Spinner : public g2Controller
 {
@@ -44,6 +49,10 @@ private:
     
     // The spinner type (usually int or float)
     g2SpinnerType Type;
+    
+    // Internal float or int values
+    float FloatVal;
+    int IntVal;
     
 };
 

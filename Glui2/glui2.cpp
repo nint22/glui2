@@ -119,10 +119,9 @@ g2Dialog* Glui2::AddDialog(g2DialogType Type, const char* Message)
     return NewDialog;
 }
 
-g2Panel* Glui2::AddPanel(int x, int y)
+g2Panel* Glui2::AddPanel(g2Anchor AnchorFlags)
 {
-    g2Panel* NewPanel = new g2Panel(RootController, &MainTheme);
-    NewPanel->SetPos(x, y);
+    g2Panel* NewPanel = new g2Panel(RootController, &MainTheme, AnchorFlags);
     return NewPanel;
 }
 
@@ -138,6 +137,13 @@ g2ProgressBar* Glui2::AddProgressBar(int x, int y)
     g2ProgressBar* NewProgress = new g2ProgressBar(RootController, &MainTheme);
     NewProgress->SetPos(x, y);
     return NewProgress;
+}
+
+g2Spinner* Glui2::AddSpinner(int x, int y, g2SpinnerType Type)
+{
+    g2Spinner* NewSpinner = new g2Spinner(RootController, &MainTheme, Type);
+    NewSpinner->SetPos(x, y);
+    return NewSpinner;
 }
 
 void Glui2::Render()

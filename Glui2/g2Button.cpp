@@ -29,7 +29,7 @@ g2Label* g2Button::GetLabel()
 
 void g2Button::Render()
 {
-    // Draw something simple
+    // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
     
