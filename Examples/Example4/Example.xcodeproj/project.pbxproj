@@ -1,0 +1,238 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4838848C143405CA009A5F90 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4838848B143405CA009A5F90 /* main.cpp */; };
+		4838848D143405DF009A5F90 /* default.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48388488143405CA009A5F90 /* default.png */; };
+		4838848E143405DF009A5F90 /* g2Default.cfg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48388489143405CA009A5F90 /* g2Default.cfg */; };
+		4838848F143405DF009A5F90 /* g2Default.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4838848A143405CA009A5F90 /* g2Default.png */; };
+		48388491143405E7009A5F90 /* Glui2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48388490143405E7009A5F90 /* Glui2.framework */; };
+		48388493143405EB009A5F90 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48388492143405EB009A5F90 /* OpenGL.framework */; };
+		48388495143405EE009A5F90 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48388494143405EE009A5F90 /* GLUT.framework */; };
+		48388509143581D5009A5F90 /* g2Bubble.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48388507143581D5009A5F90 /* g2Bubble.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4838847014340594009A5F90 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				4838848D143405DF009A5F90 /* default.png in CopyFiles */,
+				4838848E143405DF009A5F90 /* g2Default.cfg in CopyFiles */,
+				4838848F143405DF009A5F90 /* g2Default.png in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4838847214340594009A5F90 /* Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Example; sourceTree = BUILT_PRODUCTS_DIR; };
+		48388488143405CA009A5F90 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
+		48388489143405CA009A5F90 /* g2Default.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = g2Default.cfg; sourceTree = "<group>"; };
+		4838848A143405CA009A5F90 /* g2Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = g2Default.png; sourceTree = "<group>"; };
+		4838848B143405CA009A5F90 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		48388490143405E7009A5F90 /* Glui2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Glui2.framework; path = Library/Frameworks/Glui2.framework; sourceTree = SDKROOT; };
+		48388492143405EB009A5F90 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		48388494143405EE009A5F90 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		48388507143581D5009A5F90 /* g2Bubble.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = g2Bubble.cpp; sourceTree = "<group>"; };
+		48388508143581D5009A5F90 /* g2Bubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2Bubble.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4838846F14340594009A5F90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48388495143405EE009A5F90 /* GLUT.framework in Frameworks */,
+				48388493143405EB009A5F90 /* OpenGL.framework in Frameworks */,
+				48388491143405E7009A5F90 /* Glui2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4838846714340594009A5F90 = {
+			isa = PBXGroup;
+			children = (
+				48388486143405B5009A5F90 /* Source */,
+				48388487143405BB009A5F90 /* Frameworks */,
+				4838847314340594009A5F90 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4838847314340594009A5F90 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4838847214340594009A5F90 /* Example */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		48388486143405B5009A5F90 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				48388488143405CA009A5F90 /* default.png */,
+				48388489143405CA009A5F90 /* g2Default.cfg */,
+				4838848A143405CA009A5F90 /* g2Default.png */,
+				4838848B143405CA009A5F90 /* main.cpp */,
+				48388507143581D5009A5F90 /* g2Bubble.cpp */,
+				48388508143581D5009A5F90 /* g2Bubble.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		48388487143405BB009A5F90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				48388494143405EE009A5F90 /* GLUT.framework */,
+				48388492143405EB009A5F90 /* OpenGL.framework */,
+				48388490143405E7009A5F90 /* Glui2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4838847114340594009A5F90 /* Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4838847B14340594009A5F90 /* Build configuration list for PBXNativeTarget "Example" */;
+			buildPhases = (
+				4838846E14340594009A5F90 /* Sources */,
+				4838846F14340594009A5F90 /* Frameworks */,
+				4838847014340594009A5F90 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Example;
+			productName = Example;
+			productReference = 4838847214340594009A5F90 /* Example */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4838846914340594009A5F90 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Core S2 Software Solutions";
+			};
+			buildConfigurationList = 4838846C14340594009A5F90 /* Build configuration list for PBXProject "Example" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4838846714340594009A5F90;
+			productRefGroup = 4838847314340594009A5F90 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4838847114340594009A5F90 /* Example */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4838846E14340594009A5F90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4838848C143405CA009A5F90 /* main.cpp in Sources */,
+				48388509143581D5009A5F90 /* g2Bubble.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4838847914340594009A5F90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4838847A14340594009A5F90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4838847C14340594009A5F90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4838847D14340594009A5F90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4838846C14340594009A5F90 /* Build configuration list for PBXProject "Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4838847914340594009A5F90 /* Debug */,
+				4838847A14340594009A5F90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4838847B14340594009A5F90 /* Build configuration list for PBXNativeTarget "Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4838847C14340594009A5F90 /* Debug */,
+				4838847D14340594009A5F90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4838846914340594009A5F90 /* Project object */;
+}
