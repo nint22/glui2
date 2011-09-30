@@ -28,6 +28,16 @@ public:
     // Get access to the label
     g2Label* GetLabel();
     
+    // Return the check state
+    bool IsChecked();
+    
+    // Set the check state
+    void SetChecked(bool Check);
+    
+    // Set a callback function for a full clickthrough event
+    // Note that if there is no argument passed, the callback is set back to none
+    void SetCallback(__g2CallBack(PressedCallback) = 0);
+    
 protected:
     
     // Render
@@ -40,6 +50,12 @@ private:
     
     // Text label
     g2Label* Label;
+    
+    // Current check status
+    bool Checked;
+    
+    // The pixel offset from the label icon itself
+    static const int TextOffset = 18;
     
 };
 

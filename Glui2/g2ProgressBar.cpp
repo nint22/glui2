@@ -18,7 +18,7 @@ g2ProgressBar::g2ProgressBar(g2Controller* Parent, g2Theme* MainTheme)
     Label = new g2Label(this, MainTheme);
     Label->SetPos(5, 5);
     Label->SetColor(0, 0, 0);
-    Label->SetText("Undefined...");
+    Label->SetText("Undefined g2ProgressBar");
     
     // Default progress to none
     Progress = 0.0f;

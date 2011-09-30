@@ -50,7 +50,7 @@ bool __g2ShowSaveDialog(const char* Message, char* OutBuffer, int OutLength)
     
     // Open panel to open file
     NSSavePanel* spanel = [NSSavePanel savePanel];
-    [spanel setTitle:[NSString stringWithCString:OutBuffer encoding:NSASCIIStringEncoding]];
+    [spanel setTitle:[NSString stringWithCString:Message encoding:NSASCIIStringEncoding]];
     NSInteger returnCode = [spanel runModal];
     
     if(returnCode == NSOKButton)
@@ -77,7 +77,7 @@ bool __g2ShowOpenDialog(const char* Message, char* OutBuffer, int OutLength)
     
     // Open panel to open file
     NSOpenPanel* opanel = [NSOpenPanel openPanel];
-    [opanel setTitle:[NSString stringWithCString:OutBuffer encoding:NSASCIIStringEncoding]];
+    [opanel setTitle:[NSString stringWithCString:Message encoding:NSASCIIStringEncoding]];
     [opanel setAllowsMultipleSelection:NO];
     NSInteger returnCode = [opanel runModalForDirectory:nil file:nil types:nil];
     

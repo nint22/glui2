@@ -88,7 +88,7 @@ enum g2ThemeElement
     g2Theme_CheckBox_Pressed,
     g2Theme_CheckBox_Pressed_Disabled,
     
-    // Text field (same as text box)
+    // Text field
     g2Theme_TextField,
     g2Theme_TextField_Disabled,
     

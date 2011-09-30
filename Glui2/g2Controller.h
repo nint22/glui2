@@ -26,42 +26,43 @@
 // Enumerate all button states
 enum g2ControllerState
 {
-    g2ControllerState_None = 0,
-    g2ControllerState_Hover,
-    g2ControllerState_Pressed,
+    g2ControllerState_None = 0, // No state
+    g2ControllerState_Hover,    // User has the cursor hovering over object
+    g2ControllerState_Pressed,  // User has the controller actively pressed on
+    g2ControllerState_Clicked,  // User has had a full click through (pressed and released in the same area)
 };
 
 class g2Controller
 {
 public:
     
-	// Initialize self and self-register to parent; note that
+    // Initialize self and self-register to parent; note that
     // this constructor is private because new controllers should
     // be created using the glui2 main class's factory methods
-	g2Controller(g2Controller* Parent, g2Theme* MainTheme);
-	
-	// Default destructor
-	~g2Controller();
-	
-	/*** Render Options ***/
-	
-	// Set visibility
-	void SetVisibility(bool Visible);
-	
-	// Get visability
-	bool GetVisibility();
-	
-	// Set color
-	void SetColor(float r, float g, float b);
-	
-    // Get color
-    void GetColor(float* r, float*g, float* b);
+    g2Controller(g2Controller* Parent, g2Theme* MainTheme);
     
-	// Set alpha value
-	void SetAlpha(float NewAlpha);
-	
-	// Get alpha value
-	float GetAlpha();
+    // Default destructor
+    ~g2Controller();
+    
+    /*** Render Options ***/
+    
+    // Set visibility
+    void SetVisibility(bool Visible);
+    
+    // Get visability
+    bool GetVisibility();
+    
+    // Set color
+    void SetColor(float r, float g, float b);
+    
+    // Get color (Each individual color is optional)
+    void GetColor(float* r = NULL, float* g = NULL, float* b = NULL);
+    
+    // Set alpha value
+    void SetAlpha(float NewAlpha);
+    
+    // Get alpha value
+    float GetAlpha();
     
     // Set enabled / disabled modes
     void SetDisabled(bool Disabled);
@@ -83,113 +84,129 @@ public:
     // as determined using "InController(...)" and the the lowesr-rendering
     // order which means the visibility top-most layer
     g2Controller* GetController(int x, int y);
-	
+    
+    // Set a callback function for a full clickthrough event
+    // Note that if there is no argument passed, the callback is set back to none
+    void SetCallback(__g2CallBack(PressedCallback) = 0);
+    
 protected:
-	
-	/*** Update, Render, and Input Handlers ***/
-	
-	// Update object
-	virtual void Update(float dT);
-	
-	// Render object (Required to overload)
-	virtual void Render();
-	
+    
+    /*** Update, Render, and Input Handlers ***/
+    
+    // Update object
+    virtual void Update(float dT);
+    
+    // Render object (Required to overload)
+    virtual void Render();
+    
     // Returns true if the mouse is in the controller's geometry (Required to overload)
     virtual bool InController(int x, int y);
     
-	// Window resize event
-	virtual void WindowResizeEvent(int NewWidth, int NewHeight);
-	
-	// Glut keyboard event callback (When a full press cycle happens)
-	virtual void KeyEvent(unsigned char key);
-	
-	// Glut mouse event callback for a full click
-	virtual void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
-	
+    // Window resize event
+    virtual void WindowResizeEvent(int NewWidth, int NewHeight);
+    
+    // Glut keyboard event callback (When a full press cycle happens)
+    virtual void KeyEvent(unsigned char key);
+    
+    // Glut mouse event callback for a full click
+    virtual void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    
     // Glut mouse event callback for a hover
     virtual void MouseHover(int x, int y);
-	
+    
     // Glut mouse event callback for a drag
     virtual void MouseDrag(int x, int y);
     
     /*** Internal Rendering Components & Helpers ***/
-	
+    
     // Draws a given source location to the on-screen descrition coordinates
     void DrawComponent(int DestX, int DestY, g2ThemeElement ElementType);
     
     // Draws a given source location and size to the on-screen descrition coordinates
     void DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType);
     
+    // Draws a given source location to the on-screen descrition coordinates
+    void DrawComponent(int DestX, int DestY, const char* ElementName);
+    
+    // Draws a given source location and size to the on-screen descrition coordinates
+    void DrawComponent(int DestX, int DestY, int DestW, int DestH, const char* ElementName);
+    
     // Draws a given rectangle and source textures; texture ID defaults to the theme texture
     void DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID = -1);
     
-    // Draw a character
+    // Draw a character with 1-1 scale
     void DrawCharacter(int DestX, int DestY, char Character);
+    
+    // Draw a character with given scales
+    void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, char Character);
     
     // Accessor to the global theme
     g2Theme* GetTheme();
     
-	// Accessor to parent pointer
-	g2Controller* GetParent();
+    // Accessor to parent pointer
+    g2Controller* GetParent();
     
     // Get the controller state
     g2ControllerState GetControllerState();
     
 private:
-	
+    
     /*** Rendering Properties ***/
     
     // Position
     int x, y;
     
-	// Object color, from 0.0f to 1.0f per chanel
-	float R, G, B;
-	
-	// Alpha value, from 0.0f to 1.0f
-	float Alpha;
-	
-	// Visable/Renderable, propagates down to children objects
-	bool IsVisible;
+    // Object color, from 0.0f to 1.0f per chanel
+    float R, G, B;
+    
+    // Alpha value, from 0.0f to 1.0f
+    float Alpha;
+    
+    // Visable/Renderable, propagates down to children objects
+    bool IsVisible;
     
     // Disabled/enabled
     bool IsDisabled;
-	
-	/*** Managed Object Events ***/
-	
-	// Internal update function
-	void __Update(float dT);
-	
-	// Internal render function
-	void __Render();
-	
-	// Window resize event
-	void __WindowResizeEvent(int NewWidth, int NewHeight);
-	
-	// Glut keyboard event callback (When a full press cycle happens)
-	void __KeyEvent(unsigned char key);
-	
-	// Glut mouse event callback for a full click
-	void __MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
-	
-	// Glut mouse event callback for a hover
-	void __MouseHover(int x, int y);
-	
-	// Glut mouse event callback for a drag
-	void __MouseDrag(int x, int y);
     
-	/*** Managed Child Objects ***/
-	
+    // Callback function; called when a full clickthrough event was detected
+    __g2CallBack(PressedCallback);
+    
+    /*** Managed Object Events ***/
+    
+    // Internal update function
+    void __Update(float dT);
+    
+    // Internal render function
+    void __Render();
+    
+    // Window resize event
+    void __WindowResizeEvent(int NewWidth, int NewHeight);
+    
+    // Glut keyboard event callback (When a full press cycle happens)
+    void __KeyEvent(unsigned char key);
+    
+    // Glut mouse event callback for a full click
+    void __MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    
+    // Glut mouse event callback for a hover
+    void __MouseHover(int x, int y);
+    
+    // Glut mouse event callback for a drag
+    void __MouseDrag(int x, int y);
+    
+    /*** Managed Child Objects ***/
+    
     // Current window sizes
     int WindowWidth, WindowHeight;
     
     // Controller state
     g2ControllerState ControllerState;
     
-	// Child objects list
+    // Child objects list
     std::queue< g2Controller* > ChildObjects;
-	
-	// Parent object pointer
-	g2Controller* ParentObject;
+    
+    // Parent object pointer
+    g2Controller* ParentObject;
     
     // Parent theme is from the root controller; otherwise null
     g2Theme* ParentTheme;

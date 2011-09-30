@@ -9,13 +9,13 @@
 
 void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char* FailText, ...)
 {
-	// Validate assertion
-	if(Assertion)
-		return;
-	
-	// Validate the given error string
-	if(FailText == NULL)
-		FailText = "Undefined Error Text.";
+    // Validate assertion
+    if(Assertion)
+        return;
+    
+    // Validate the given error string
+    if(FailText == NULL)
+        FailText = "Undefined Error Text.";
         
     // Find the clean file name
     const char* CleanFileName = NULL;
@@ -31,23 +31,23 @@ void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char
             CleanFileName = strrchr(FileName, '/') + 1;
         #endif
     }
-	
-	// Grab the variable argument list (See the "..." in the arg. list)
-	va_list args;
-	va_start(args, FailText);
-	
-	// Generate the failure string
-	char FailString[256];
-	vsprintf(FailString, FailText, args);
-	
-	// Release args list
-	va_end(args);
-	
-	// Copy the given string
-	char buffer[256];
-	sprintf(buffer, "> Assertion in file %s:%d\n> Assertion message: \"%s\"\n", CleanFileName, LineNumber, FailString);
-	
-	// If windows... Write this out in a message box...
+    
+    // Grab the variable argument list (See the "..." in the arg. list)
+    va_list args;
+    va_start(args, FailText);
+    
+    // Generate the failure string
+    char FailString[256];
+    vsprintf(FailString, FailText, args);
+    
+    // Release args list
+    va_end(args);
+    
+    // Copy the given string
+    char buffer[256];
+    sprintf(buffer, "> Assertion in file %s:%d\n> Assertion message: \"%s\"\n", CleanFileName, LineNumber, FailString);
+    
+    // If windows... Write this out in a message box...
     #ifdef _WIN32
     
         // Present the message, break if user presses yes
@@ -55,7 +55,7 @@ void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char
         
         // Note to self: Any way we can print the stack for Window users?
     
-	// Else, in a UNIX-like system... Write this via command line.
+    // Else, in a UNIX-like system... Write this via command line.
     #else
     
         // Write out to command line
@@ -74,7 +74,7 @@ void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char
         backtrace_symbols_fd(backtrace_data, backtrace_count, STDOUT_FILENO);
     
     #endif
-	
-	// Exit the application
-	exit(0);
+    
+    // Exit the application
+    exit(0);
 }

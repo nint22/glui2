@@ -50,7 +50,6 @@
 #include "g2Console.h"
 #include "g2TextField.h"
 #include "g2RadioGroup.h"
-#include "g2TextBox.h"
 #include "g2DropDown.h"
 #include "g2Dialog.h"
 #include "g2Panel.h"
@@ -75,7 +74,7 @@ public:
     
     /*** Factory Methods ***/
     
-    g2Button* AddButton(int x, int y, const char* Label = NULL);
+    g2Button* AddButton(int x, int y, const char* Label = NULL, __g2CallBack(callback) = 0);
     
     g2Label* AddLabel(int x, int y, const char* Text);
     
@@ -83,11 +82,9 @@ public:
     
     g2Console* AddConsole();
     
-    g2TextField* AddTextField(int x, int y);
+    g2TextField* AddTextField(int x, int y, const char* Text = NULL);
     
     g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount);
-    
-    g2TextBox* AddTextBox(int x, int y);
     
     g2DropDown* AddDropDown(int x, int y);
     
@@ -100,6 +97,14 @@ public:
     g2ProgressBar* AddProgressBar(int x, int y);
     
     g2Spinner* AddSpinner(int x, int y, g2SpinnerType Type);
+    
+    /*** Accessors to Parent and Theme ***/
+    
+    // Get the root parent controller
+    g2Controller* GetRootController();
+    
+    // Get active theme
+    g2Theme* GetMainTheme();
     
     /*** Internal Rendering & Update ***/
     

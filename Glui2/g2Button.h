@@ -28,6 +28,12 @@ public:
     // Get access to the label
     g2Label* GetLabel();
     
+    // Set the button's text; note that the button will grow if needed
+    void SetText(const char* Text);
+    
+    // Set the width of the button in pixels
+    void SetWidth(int Width);
+    
 protected:
     
     // Render
@@ -40,6 +46,9 @@ private:
     
     // Text label
     g2Label* Label;
+    
+    // Target width of this instance
+    int Width;
     
 };
 

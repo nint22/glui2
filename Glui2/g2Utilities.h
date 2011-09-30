@@ -46,6 +46,9 @@
 #include <math.h>
 #include <ctype.h>
 
+// Define the generic call back function type
+#define __g2CallBack(function_name) void (*function_name)(g2Controller* Sender)
+
 // Assertion macro to help debug with critical-failure assertions
 #define g2Assert(...) __g2Assert(__FILE__, __LINE__, __VA_ARGS__)
 void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char* FailText, ...);

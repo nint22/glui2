@@ -14,6 +14,7 @@ g2Label::g2Label(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
     TextBuffer = NULL;
+    Scale = 1.0f;
 }
 
 g2Label::~g2Label()
@@ -37,6 +38,23 @@ void g2Label::SetText(const char* Text)
         TextBuffer = new char[strlen(Text) + 1];
         strcpy(TextBuffer, Text);
     }
+}
+
+void g2Label::SetSize(float Scale)
+{
+    this->Scale = Scale;
+}
+
+int g2Label::GetWidth()
+{
+    // Error check
+    if(TextBuffer == NULL)
+        return 0;
+    
+    // Else, just the number of chars x pixel width
+    int CharWidth = 0;
+    GetTheme()->GetCharacterSize(&CharWidth);
+    return CharWidth * (int)strlen(TextBuffer);
 }
 
 void g2Label::Render()
@@ -75,7 +93,7 @@ void g2Label::Render()
         else
         {
             // Render text normally
-            DrawCharacter(pX + offset++ * width, pY + level * height, c);
+            DrawCharacter(pX + offset++ * width, pY + level * height, Scale, Scale, c);
         }
     }
 }

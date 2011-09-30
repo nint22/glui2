@@ -57,9 +57,9 @@ protected:
     // Render
     void Render();
     
-	// Window resize event
-	void WindowResizeEvent(int NewWidth, int NewHeight);
-	
+    // Window resize event
+    void WindowResizeEvent(int NewWidth, int NewHeight);
+    
     // Define controller geometry
     bool InController(int x, int y);
     

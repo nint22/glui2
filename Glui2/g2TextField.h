@@ -28,6 +28,15 @@ public:
     // Set the text
     void SetText(const char* Text);
     
+    // Set the width of the button in pixels
+    void SetWidth(int Width);
+    
+    // Set text color
+    void SetTextColor(float r, float g, float b);
+    
+    // Get text color
+    void GetTextColor(float* r = NULL, float* g = NULL, float* b = NULL);
+    
 protected:
     
     // Update
@@ -50,11 +59,17 @@ private:
     // Current input buffer (on-screen)
     char InputBuffer[MaxInputLength];
     
+    // Current width of the text field
+    int Width;
+    
     // The total time the cursor has been in the current cursor style
     float CursorTime;
     
     // The current cursor state (on is '_', off is ' ')
     bool CursorState;
+    
+    // Text colors (defaults to black)
+    float tR, tG, tB;
 };
 
 // End of inclusion guard

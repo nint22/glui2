@@ -39,8 +39,6 @@
 		4872FEBC142D406300D74141 /* g2Slider.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE8A142D406200D74141 /* g2Slider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEBD142D406300D74141 /* g2Spinner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE8B142D406200D74141 /* g2Spinner.cpp */; };
 		4872FEBE142D406300D74141 /* g2Spinner.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE8C142D406200D74141 /* g2Spinner.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4872FEBF142D406300D74141 /* g2TextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE8D142D406200D74141 /* g2TextBox.cpp */; };
-		4872FEC0142D406300D74141 /* g2TextBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE8E142D406200D74141 /* g2TextBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEC1142D406300D74141 /* g2TextField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE8F142D406200D74141 /* g2TextField.cpp */; };
 		4872FEC2142D406300D74141 /* g2TextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE90142D406200D74141 /* g2TextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEC3142D406300D74141 /* g2Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE91142D406200D74141 /* g2Theme.cpp */; };
@@ -59,7 +57,7 @@
 		4872FEF6142D4B4100D74141 /* image_helper.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEEC142D4B4100D74141 /* image_helper.c */; };
 		4872FEF7142D4B4100D74141 /* image_helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEED142D4B4100D74141 /* image_helper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4872FEF8142D4B4100D74141 /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEEE142D4B4100D74141 /* SOIL.c */; };
-		4872FEF9142D4B4100D74141 /* SOIL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEEF142D4B4100D74141 /* SOIL.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4872FEF9142D4B4100D74141 /* SOIL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEEF142D4B4100D74141 /* SOIL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEFA142D4B4100D74141 /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEF0142D4B4100D74141 /* stb_image_aug.c */; };
 		4872FEFB142D4B4100D74141 /* stb_image_aug.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF1142D4B4100D74141 /* stb_image_aug.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4872FEFC142D4B4100D74141 /* stbi_DDS_aug_c.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF2142D4B4100D74141 /* stbi_DDS_aug_c.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -105,8 +103,6 @@
 		4872FE8A142D406200D74141 /* g2Slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2Slider.h; sourceTree = "<group>"; };
 		4872FE8B142D406200D74141 /* g2Spinner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = g2Spinner.cpp; sourceTree = "<group>"; };
 		4872FE8C142D406200D74141 /* g2Spinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2Spinner.h; sourceTree = "<group>"; };
-		4872FE8D142D406200D74141 /* g2TextBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = g2TextBox.cpp; sourceTree = "<group>"; };
-		4872FE8E142D406200D74141 /* g2TextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2TextBox.h; sourceTree = "<group>"; };
 		4872FE8F142D406200D74141 /* g2TextField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = g2TextField.cpp; sourceTree = "<group>"; };
 		4872FE90142D406200D74141 /* g2TextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2TextField.h; sourceTree = "<group>"; };
 		4872FE91142D406200D74141 /* g2Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = g2Theme.cpp; sourceTree = "<group>"; };
@@ -249,8 +245,6 @@
 				4872FE8A142D406200D74141 /* g2Slider.h */,
 				4872FE8B142D406200D74141 /* g2Spinner.cpp */,
 				4872FE8C142D406200D74141 /* g2Spinner.h */,
-				4872FE8D142D406200D74141 /* g2TextBox.cpp */,
-				4872FE8E142D406200D74141 /* g2TextBox.h */,
 				4872FE8F142D406200D74141 /* g2TextField.cpp */,
 				4872FE90142D406200D74141 /* g2TextField.h */,
 				48E527FE142D8C4500775F4D /* g2AppKit.mm */,
@@ -293,15 +287,14 @@
 				4872FEBA142D406300D74141 /* g2RadioGroup.h in Headers */,
 				4872FEBC142D406300D74141 /* g2Slider.h in Headers */,
 				4872FEBE142D406300D74141 /* g2Spinner.h in Headers */,
-				4872FEC0142D406300D74141 /* g2TextBox.h in Headers */,
 				4872FEC2142D406300D74141 /* g2TextField.h in Headers */,
 				4872FEC4142D406300D74141 /* g2Theme.h in Headers */,
 				4872FEC6142D406300D74141 /* g2Utilities.h in Headers */,
 				4872FEC8142D406300D74141 /* glui2.h in Headers */,
+				4872FEF9142D4B4100D74141 /* SOIL.h in Headers */,
 				48E527F5142D803000775F4D /* g2AppKit.h in Headers */,
 				4872FEF5142D4B4100D74141 /* image_DXT.h in Headers */,
 				4872FEF7142D4B4100D74141 /* image_helper.h in Headers */,
-				4872FEF9142D4B4100D74141 /* SOIL.h in Headers */,
 				4872FEFB142D4B4100D74141 /* stb_image_aug.h in Headers */,
 				4872FEFC142D4B4100D74141 /* stbi_DDS_aug_c.h in Headers */,
 				4872FEFD142D4B4100D74141 /* stbi_DDS_aug.h in Headers */,
@@ -390,7 +383,6 @@
 				4872FEB9142D406300D74141 /* g2RadioGroup.cpp in Sources */,
 				4872FEBB142D406300D74141 /* g2Slider.cpp in Sources */,
 				4872FEBD142D406300D74141 /* g2Spinner.cpp in Sources */,
-				4872FEBF142D406300D74141 /* g2TextBox.cpp in Sources */,
 				4872FEC1142D406300D74141 /* g2TextField.cpp in Sources */,
 				4872FEC3142D406300D74141 /* g2Theme.cpp in Sources */,
 				4872FEC5142D406300D74141 /* g2Utilities.cpp in Sources */,

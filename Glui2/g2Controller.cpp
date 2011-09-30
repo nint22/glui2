@@ -24,6 +24,9 @@ g2Controller::g2Controller(g2Controller* Parent, g2Theme* MainTheme)
     ParentObject = Parent;
     ParentTheme = MainTheme;
     
+    // Default to no callback
+    PressedCallback = 0;
+    
     // Add self to parent
     if(Parent != NULL)
         Parent->ChildObjects.push(this);
@@ -80,16 +83,14 @@ void g2Controller::SetColor(float r, float g, float b)
     B = fmax(fmin(b, 1.0f), 0.0f);
 }
 
-void g2Controller::GetColor(float* r, float*g, float* b)
+void g2Controller::GetColor(float* r, float* g, float* b)
 {
-    g2Assert(r != NULL, "Given red channel buffer is null");
-    *r = R;
-    
-    g2Assert(g != NULL, "Given green channel buffer is null");
-    *g = G;
-    
-    g2Assert(b != NULL, "Given blue channel buffer is null");
-    *b = B;
+    if(r != NULL)
+        *r = R;
+    if(g != NULL)
+        *g = G;
+    if(b != NULL)
+        *b = B;
 }
 
 void g2Controller::SetAlpha(float NewAlpha)
@@ -179,6 +180,11 @@ g2Controller* g2Controller::GetController(int x, int y)
     return ActiveController;
 }
 
+void g2Controller::SetCallback(__g2CallBack(PressedCallback))
+{
+    this->PressedCallback = PressedCallback;
+}
+
 void g2Controller::Update(float dT)
 {
     // Allow the user to overload as needed...
@@ -261,7 +267,7 @@ g2ControllerState g2Controller::GetControllerState()
 void g2Controller::DrawComponent(int DestX, int DestY, g2ThemeElement ElementType)
 {
     // Are we allowed to draw?
-    if(!IsVisible || Alpha <= 0.0f)
+    if(!IsVisible)
         return;
     
     // Get the texture points and default component size
@@ -278,7 +284,7 @@ void g2Controller::DrawComponent(int DestX, int DestY, g2ThemeElement ElementTyp
 void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType)
 {
     // Are we allowed to draw?
-    if(!IsVisible || Alpha <= 0.0f)
+    if(!IsVisible)
         return;
     
     // Get the texture points and default component size
@@ -291,10 +297,41 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, g2T
     DrawComponent(DestX, DestY, DestW, DestH, tx, ty, tw, th, textID);
 }
 
+void g2Controller::DrawComponent(int DestX, int DestY, const char* ElementName)
+{
+    // Are we allowed to draw?
+    if(!IsVisible)
+        return;
+    
+    // Get the texture points and default component size
+    float tx, ty, tw, th;
+    int width, height;
+    bool IsFound = GetTheme()->GetComponent(ElementName, &tx, &ty, &tw, &th, &width, &height);
+    g2Assert(IsFound, "Unable to retrieve a component's (ID: %s) texture information", ElementName);
+    
+    // Draw
+    DrawComponent(DestX, DestY, width, height, tx, ty, tw, th);
+}
+
+void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, const char* ElementName)
+{
+    // Are we allowed to draw?
+    if(!IsVisible)
+        return;
+    
+    // Get the texture points and default component size
+    float tx, ty, tw, th;
+    bool IsFound = GetTheme()->GetComponent(ElementName, &tx, &ty, &tw, &th, NULL, NULL);
+    g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", ElementName);
+    
+    // Draw
+    DrawComponent(DestX, DestY, DestW, DestH, tx, ty, tw, th);
+}
+
 void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID)
 {
     // Are we allowed to draw?
-    if(!IsVisible || Alpha <= 0.0f)
+    if(!IsVisible)
         return;
     
     // If the texture ID is invalid then switch to theme texture ID
@@ -306,7 +343,7 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, flo
     
     // Bind texture
     glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, TextID); 
+    glBindTexture(GL_TEXTURE_2D, TextID); 
     
     // Draw at this position
     glBegin(GL_QUADS);
@@ -329,8 +366,14 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, flo
 
 void g2Controller::DrawCharacter(int DestX, int DestY, char Character)
 {
+    // Pass to higher-level function with 1-1 scale
+    DrawCharacter(DestX, DestY, 1.0f, 1.0f, Character);
+}
+
+void g2Controller::DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, char Character)
+{
     // Are we allowed to draw?
-    if(!IsVisible || Alpha <= 0.0f)
+    if(!IsVisible)
         return;
     
     // Set the current color and alpha
@@ -342,9 +385,13 @@ void g2Controller::DrawCharacter(int DestX, int DestY, char Character)
     GLuint textID;
     GetTheme()->GetCharacter(Character, &tx, &ty, &tw, &th, &width, &height, &textID);
     
+    // Scale
+    width = int(float(width) * ScaleW);
+    height = int(float(height) * ScaleH);
+    
     // Bind texture
     glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, textID); 
+    glBindTexture(GL_TEXTURE_2D, textID); 
     
     // Draw at this position
     glBegin(GL_QUADS);
@@ -367,6 +414,10 @@ void g2Controller::DrawCharacter(int DestX, int DestY, char Character)
 
 void g2Controller::__Update(float dT)
 {
+    // Ignore if not visible
+    if(!GetVisibility())
+        return;
+    
     // Update self
     Update(dT);
     
@@ -388,6 +439,10 @@ void g2Controller::__Update(float dT)
 
 void g2Controller::__Render()
 {
+    // Ignore if not visible
+    if(!GetVisibility())
+        return;
+    
     // Render self
     Render();
     
@@ -405,6 +460,11 @@ void g2Controller::__Render()
         // Put back
         ChildObjects.push(Child);
     }
+    
+    // After a full render cycle, reset the mouse state so we
+    // don't keep full-clicking
+    if(ControllerState == g2ControllerState_Clicked)
+        ControllerState = g2ControllerState_None;
 }
 
 void g2Controller::__WindowResizeEvent(int NewWidth, int NewHeight)
@@ -430,6 +490,10 @@ void g2Controller::__WindowResizeEvent(int NewWidth, int NewHeight)
 
 void g2Controller::__KeyEvent(unsigned char key)
 {
+    // Ignore if not visible
+    if(!GetVisibility())
+        return;
+    
     // Update key event
     KeyEvent(key);
     
@@ -451,6 +515,10 @@ void g2Controller::__KeyEvent(unsigned char key)
 
 void g2Controller::__MouseHover(int x, int y)
 {
+    // Ignore if not visible
+    if(!GetVisibility())
+        return;
+    
     // Update mouse click
     MouseHover(x, y);
     
@@ -478,13 +546,23 @@ void g2Controller::__MouseHover(int x, int y)
 
 void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
 {
+    // Ignore if not visible
+    if(!GetVisibility())
+        return;
+    
     // Update mouse click
     MouseClick(button, state, x, y);
     
     // Are we in this object's volume and do we have a full left-click?
     if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Down)
         ControllerState = g2ControllerState_Pressed;
-    else if(button == g2MouseButton_Left && state == g2MouseClick_Up)
+    // Else, if there is a mouse release AND we are coming from a pressed state....
+    else if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Up && ControllerState == g2ControllerState_Pressed)
+        ControllerState = g2ControllerState_Clicked;
+    // Else, reset to either hover or none...
+    else if(InController(x, y))
+        ControllerState = g2ControllerState_Hover;
+    else
         ControllerState = g2ControllerState_None;
     
     // Update all children
@@ -501,10 +579,18 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
         // Put back
         ChildObjects.push(Child);
     }
+    
+    // Execute callback
+    if(!GetDisabled() && GetControllerState() == g2ControllerState_Clicked && PressedCallback != 0)
+        PressedCallback(this);
 }
 
 void g2Controller::__MouseDrag(int x, int y)
 {
+    // Ignore if not visible
+    if(!GetVisibility())
+        return;
+    
     // Update mouse drag
     MouseDrag(x, y);
     

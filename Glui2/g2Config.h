@@ -57,11 +57,11 @@
 // Contains the key (lower-case) and data string (allocated in heap)
 struct KeyPair
 {
-	// Key
-	char KeyName[__G2CONFIG_KEYSIZE__];
-	
-	// Data
-	char* DataString;
+    // Key
+    char KeyName[__G2CONFIG_KEYSIZE__];
+    
+    // Data
+    char* DataString;
     
     // Next key, or null of last key
     KeyPair* Next;
@@ -70,11 +70,11 @@ struct KeyPair
 // Group node structure
 struct KeyGroup
 {
-	// Group name
-	char GroupName[__G2CONFIG_KEYSIZE__];
-	
-	// Key-data linked-list
-	KeyPair* Keys;
+    // Group name
+    char GroupName[__G2CONFIG_KEYSIZE__];
+    
+    // Key-data linked-list
+    KeyPair* Keys;
     
     // Next key group
     KeyGroup* Next;
@@ -83,32 +83,32 @@ struct KeyGroup
 class g2Config
 {
 public:
-	
-	// Default constructor; does nothing
-	g2Config();
-	
-	// Release internal handles
-	~g2Config();
-	
-	// Attempts to load an ini-config file to parse
-	void LoadFile(const char* FileName);
-	
-	// Read key-value pairs and places into given buffer; read-only buffers
-	// Returns true on valid read, false on failure
-	bool GetValue(const char* Group, const char* Key, int* OutValue);
-	bool GetValue(const char* Group, const char* Key, float* OutValue);
-	bool GetValue(const char* Group, const char* Key, char** OutValue);
-	
+    
+    // Default constructor; does nothing
+    g2Config();
+    
+    // Release internal handles
+    ~g2Config();
+    
+    // Attempts to load an ini-config file to parse
+    void LoadFile(const char* FileName);
+    
+    // Read key-value pairs and places into given buffer; read-only buffers
+    // Returns true on valid read, false on failure
+    bool GetValue(const char* Group, const char* Key, int* OutValue);
+    bool GetValue(const char* Group, const char* Key, float* OutValue);
+    bool GetValue(const char* Group, const char* Key, char** OutValue);
+    
 private:
-	
+    
     // Insert a new group (does collision detection, fails if it already exists)
     void AddGroup(const char* Group);
     
     // Add a new key (does collision detection, fails if it already exists)
     void AddKey(const char* Group, const char* Key, const char* Data);
     
-	// Key group linked-list
-	KeyGroup* KeyGroups;
+    // Key group linked-list
+    KeyGroup* KeyGroups;
 };
 
 // End of inclusion guard

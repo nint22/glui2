@@ -35,6 +35,12 @@ public:
     // Set the text string; new lines WILL be printed on following lines
     void SetText(const char* Text);
     
+    // Set the size of the output (as a ratio)
+    void SetSize(float Scale);
+    
+    // Get the width of the text label in pixels
+    int GetWidth();
+    
 protected:
     
     // Render
@@ -44,6 +50,9 @@ private:
     
     // The internal text buffer
     char* TextBuffer;
+    
+    // Internal size scale
+    float Scale;
     
 };
 

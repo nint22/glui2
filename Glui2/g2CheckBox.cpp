@@ -6,7 +6,7 @@
  This source file is developed and maintained by:
  + Jeremy Bridon jbridon@cores2.com
  
- ***************************************************************/
+***************************************************************/
 
 #include "g2CheckBox.h"
 
@@ -16,15 +16,28 @@ g2CheckBox::g2CheckBox(g2Controller* Parent, g2Theme* MainTheme)
     // Allocate text and set initial position
     // Note that we are registereting to this button, not the root-parent
     Label = new g2Label(this, MainTheme);
-    Label->SetPos(15, 2);
+    Label->SetPos(TextOffset, 2);
     Label->SetColor(0, 0, 0);
-    Label->SetText("Undefined...");
+    Label->SetText("Undefined g2CheckBox");
+    
+    // Default check to none
+    Checked = false;
 }
 
 g2Label* g2CheckBox::GetLabel()
 {
     // Return the label we are working on
     return Label;
+}
+
+bool g2CheckBox::IsChecked()
+{
+    return Checked;
+}
+
+void g2CheckBox::SetChecked(bool Check)
+{
+    Checked = Check;
 }
 
 void g2CheckBox::Render()
@@ -34,12 +47,16 @@ void g2CheckBox::Render()
     GetPos(&pX, &pY);
     
     // Draw based on the current state
+    if(GetControllerState() == g2ControllerState_Clicked)
+        Checked = !Checked;
+    
+    // Draw based on the current check state
     if(GetDisabled())
-        DrawComponent(pX, pY, g2Theme_CheckBox_Disabled);
-    else if(GetControllerState() == g2ControllerState_Pressed)
-        DrawComponent(pX, pY, g2Theme_CheckBox_Pressed);
+        DrawComponent(pX, pY, Checked ? g2Theme_CheckBox_Pressed_Disabled : g2Theme_CheckBox_Disabled);
+    
+    // Normal selection
     else
-        DrawComponent(pX, pY, g2Theme_CheckBox);
+        DrawComponent(pX, pY, Checked ? g2Theme_CheckBox_Pressed : g2Theme_CheckBox);
 }
 
 bool g2CheckBox::InController(int x, int y)
@@ -48,6 +65,9 @@ bool g2CheckBox::InController(int x, int y)
     int pX, pY, width, height;
     GetPos(&pX, &pY);
     GetTheme()->GetComponentSize(g2Theme_CheckBox, &width, &height);
+    
+    // Add the text length and offset
+    width += Label->GetWidth();
     
     // Are we in it?
     if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)

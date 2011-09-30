@@ -19,7 +19,7 @@
 #define __G2DROPDOWN_H__
 
 #include "g2Controller.h"
-#include "g2Label.h"
+#include "g2TextField.h"
 
 class g2DropDown : public g2Controller
 {
@@ -27,6 +27,9 @@ public:
     
     // Drop down
     g2DropDown(g2Controller* Parent, g2Theme* MainTheme);
+    
+    // Explicitly set the width of the drop down
+    void SetWidth(int Width);
     
 protected:
     
@@ -38,6 +41,11 @@ protected:
     
 private:
     
+    // Text field to the left of the button
+    g2TextField* TextField;
+    
+    // The target width of the current drop down
+    int Width;
 };
 
 // End of inclusion guard
