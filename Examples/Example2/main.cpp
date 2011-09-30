@@ -123,7 +123,7 @@ void InitGlui2()
     
     // Place a single button in the middle (Small offset to center)
     g2Button* MyButton = GluiHandle->AddButton(WindowWidth / 2 - 50, WindowHeight / 2);
-    MyButton->GetLabel()->SetText("Hello, World!");
+    MyButton->SetText("Hello, World!");
 }
 
 /*** Main Application Entry Point ***/
