@@ -191,7 +191,7 @@ void g2Console::WindowResizeEvent(int NewWidth, int NewHeight)
     WindowHeight = NewHeight;
 }
 
-void g2Console::KeyEvent(unsigned char key)
+void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
 {
     // Are we executing our command?
     if(key == '\r')

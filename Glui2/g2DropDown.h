@@ -31,6 +31,9 @@ public:
     // Explicitly set the width of the drop down
     void SetWidth(int Width);
     
+    // Add a live variable; pass NULL (or leave blank) to disconect
+    void SetLiveVariable(int* LiveIndex = NULL);
+    
 protected:
     
     // Render
@@ -46,6 +49,10 @@ private:
     
     // The target width of the current drop down
     int Width;
+    
+    // Live value
+    int* LiveIndex;
+    
 };
 
 // End of inclusion guard

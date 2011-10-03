@@ -53,7 +53,7 @@ protected:
     void WindowResizeEvent(int NewWidth, int NewHeight);
     
     // Handle user inputs
-    void KeyEvent(unsigned char key);
+    void KeyEvent(unsigned char key, bool IsSpecial);
     
 private:
     

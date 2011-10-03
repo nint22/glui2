@@ -71,12 +71,13 @@ g2Label* Glui2::AddLabel(int x, int y, const char* Text)
     return NewLabel;
 }
 
-g2CheckBox* Glui2::AddCheckBox(int x, int y, const char* Text)
+g2CheckBox* Glui2::AddCheckBox(int x, int y, const char* Text, __g2CallBack(callback), bool* LiveCheckState)
 {
     g2CheckBox* NewCheckBox = new g2CheckBox(RootController, &MainTheme);
     NewCheckBox->SetPos(x, y);
     NewCheckBox->GetLabel()->SetText(Text);
     NewCheckBox->__WindowResizeEvent(WindowWidth, WindowHeight);
+    NewCheckBox->SetCallback(callback);
     return NewCheckBox;
 }
 
@@ -96,20 +97,22 @@ g2TextField* Glui2::AddTextField(int x, int y, const char* Text)
     return NewTextField;
 }
 
-g2RadioGroup* Glui2::AddRadioGroup(int x, int y, const char** Options, int OptionCount)
+g2RadioGroup* Glui2::AddRadioGroup(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback), int* LiveIndex)
 {
     g2RadioGroup* NewRadioGroup = new g2RadioGroup(RootController, &MainTheme);
     NewRadioGroup->SetOptions(Options, OptionCount);
     NewRadioGroup->SetPos(x, y);
     NewRadioGroup->__WindowResizeEvent(WindowWidth, WindowHeight);
+    NewRadioGroup->SetCallback(callback);
     return NewRadioGroup;
 }
 
-g2DropDown* Glui2::AddDropDown(int x, int y)
+g2DropDown* Glui2::AddDropDown(int x, int y, __g2CallBack(callback), int* LiveIndex)
 {
     g2DropDown* NewDropDown = new g2DropDown(RootController, &MainTheme);
     NewDropDown->SetPos(x, y);
     NewDropDown->__WindowResizeEvent(WindowWidth, WindowHeight);
+    NewDropDown->SetCallback(callback);
     return NewDropDown;
 }
 
@@ -126,11 +129,12 @@ g2Panel* Glui2::AddPanel(g2Anchor AnchorFlags)
     return NewPanel;
 }
 
-g2Slider* Glui2::AddSlider(int x, int y)
+g2Slider* Glui2::AddSlider(int x, int y, __g2CallBack(callback), float* LiveValue)
 {
     g2Slider* NewSlider = new g2Slider(RootController, &MainTheme);
     NewSlider->SetPos(x, y);
     NewSlider->__WindowResizeEvent(WindowWidth, WindowHeight);
+    NewSlider->SetCallback(callback);
     return NewSlider;
 }
 
@@ -142,11 +146,12 @@ g2ProgressBar* Glui2::AddProgressBar(int x, int y)
     return NewProgress;
 }
 
-g2Spinner* Glui2::AddSpinner(int x, int y, g2SpinnerType Type)
+g2Spinner* Glui2::AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(callback), float* LiveValue)
 {
     g2Spinner* NewSpinner = new g2Spinner(RootController, &MainTheme, Type);
     NewSpinner->SetPos(x, y);
     NewSpinner->__WindowResizeEvent(WindowWidth, WindowHeight);
+    NewSpinner->SetCallback(callback);
     return NewSpinner;
 }
 
@@ -237,7 +242,7 @@ void Glui2::__SpecialFunc(int key, int x, int y)
 {
     // Special Keyboard if it has focus
     if(__G2_HANDLE__->ActiveController != NULL)
-        __G2_HANDLE__->ActiveController->KeyEvent(key);
+        __G2_HANDLE__->ActiveController->KeyEvent(key, true);
     
     // Special Keyboard host (if the GUI is not focused)
     else if(__G2_HANDLE__->GlutSpecialFunc != NULL)
@@ -248,7 +253,15 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
 {
     // Mouse self
     __G2_HANDLE__->RootController->__MouseClick(g2MouseButton(button), g2MouseClick(state), x, y);
+    
+    // Release previous active controller's state
+    if(__G2_HANDLE__->ActiveController != NULL)
+        __G2_HANDLE__->ActiveController->IsActive = false;
+    
+    // Get new active controller
     __G2_HANDLE__->ActiveController = __G2_HANDLE__->RootController->GetController(x, y);
+    if(__G2_HANDLE__->ActiveController != NULL)
+        __G2_HANDLE__->ActiveController->IsActive = true;
     
     // Mouse host
     if(__G2_HANDLE__->GlutMouseFunc != NULL)

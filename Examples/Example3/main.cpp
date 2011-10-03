@@ -194,9 +194,11 @@ void InitGlui2()
     TempLabel = GluiHandle->AddLabel(410, 10, "g2TextField");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
-    GluiHandle->AddTextField(415, 30);
-    GluiHandle->AddTextField(415, 55, "User Name")->SetWidth(80);
-    GluiHandle->AddTextField(415, 80, "Password...")->SetWidth(80);
+    GluiHandle->AddTextField(415, 30, "User Name")->SetWidth(150);
+    GluiHandle->AddTextField(415, 55, "Password...")->SetWidth(150);
+    g2TextField* SampleTextField = GluiHandle->AddTextField(415, 80, "Disabled Field");
+    SampleTextField->SetWidth(150);
+    SampleTextField->SetDisabled(true);
     
     /*** g2Console ***/
     TempLabel = GluiHandle->AddLabel(20, 210, "g2Console");
@@ -210,8 +212,8 @@ void InitGlui2()
     TempLabel = GluiHandle->AddLabel(150, 210, "g2Spinner");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
-    GluiHandle->AddSpinner(150, 230, g2SpinnerType_Int);
-    GluiHandle->AddSpinner(150, 245, g2SpinnerType_Float);
+    GluiHandle->AddSpinner(150, 230, g2SpinnerType_Int)->SetWidth(100);
+    GluiHandle->AddSpinner(150, 255, g2SpinnerType_Float)->SetWidth(100);
     
     /*** g2DropDown ***/
     TempLabel = GluiHandle->AddLabel(280, 210, "g2DropDown");

@@ -35,6 +35,9 @@ public:
     // values from 0 to 1 (floats)
     void SetProgress(float Progress);
     
+    // Add a live variable; pass NULL (or leave blank) to disconect
+    void SetLiveVariable(float* LiveValue = NULL);
+    
 protected:
     
     // Render
@@ -50,6 +53,9 @@ private:
     
     // Current progress
     float Progress;
+    
+    // Live value
+    float* LiveValue;
     
 };
 

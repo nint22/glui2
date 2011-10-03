@@ -19,6 +19,9 @@ g2DropDown::g2DropDown(g2Controller* Parent, g2Theme* MainTheme)
     
     // Set the initial width to a default width value
     GetTheme()->GetComponentSize(g2Theme_TextField, &Width);
+    
+    // Default to no live value
+    LiveIndex = NULL;
 }
 
 void g2DropDown::SetWidth(int Width)
@@ -33,11 +36,18 @@ void g2DropDown::SetWidth(int Width)
         this->Width = MinWidth;
 }
 
+void g2DropDown::SetLiveVariable(int* LiveIndex)
+{
+    this->LiveIndex = LiveIndex;
+}
+
 void g2DropDown::Render()
 {
     // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
+    
+    // NEED TO IMPLEMENT WITH LiveIndex !!!!
     
     // Draw based on the current state
     if(GetDisabled())

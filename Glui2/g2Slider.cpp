@@ -22,6 +22,9 @@ g2Slider::g2Slider(g2Controller* Parent, g2Theme* MainTheme)
     
     // Default progress is 0
     Progress = 0.0f;
+    
+    // Default to no live value
+    LiveValue = NULL;
 }
 
 g2Label* g2Slider::GetLabel()
@@ -40,6 +43,11 @@ void g2Slider::SetProgress(float Progress)
     this->Progress = Progress;
 }
 
+void g2Slider::SetLiveVariable(float* LiveValue)
+{
+    this->LiveValue = LiveValue;
+}
+
 void g2Slider::Render()
 {
     // Get origin
@@ -53,6 +61,8 @@ void g2Slider::Render()
     int width;
     bool IsFound = GetTheme()->GetComponentSize(g2Theme_SliderButton, &width, NULL);
     g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", g2Theme_SliderButton);
+    
+    // NEED TO IMPLEMENT WITH LIVE VALUE
     
     // Draw the slider button
     if(GetDisabled())

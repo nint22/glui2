@@ -76,27 +76,27 @@ public:
     
     g2Button* AddButton(int x, int y, const char* Label = NULL, __g2CallBack(callback) = 0);
     
-    g2Label* AddLabel(int x, int y, const char* Text);
+    g2Label* AddLabel(int x, int y, const char* Text = NULL);
     
-    g2CheckBox* AddCheckBox(int x, int y, const char* Text);
+    g2CheckBox* AddCheckBox(int x, int y, const char* Text, __g2CallBack(callback) = 0, bool* LiveCheckState = NULL);
     
     g2Console* AddConsole();
     
     g2TextField* AddTextField(int x, int y, const char* Text = NULL);
     
-    g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount);
+    g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
     
-    g2DropDown* AddDropDown(int x, int y);
+    g2DropDown* AddDropDown(int x, int y, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
     
-    g2Dialog* AddDialog(g2DialogType Type, const char* Message);
+    g2Dialog* AddDialog(g2DialogType Type, const char* Message = NULL);
     
     g2Panel* AddPanel(g2Anchor AnchorFlags);
     
-    g2Slider* AddSlider(int x, int y);
+    g2Slider* AddSlider(int x, int y, __g2CallBack(callback) = 0, float* LiveValue = NULL);
     
     g2ProgressBar* AddProgressBar(int x, int y);
     
-    g2Spinner* AddSpinner(int x, int y, g2SpinnerType Type);
+    g2Spinner* AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(callback) = 0, float* LiveValue = NULL);
     
     /*** Accessors to Parent and Theme ***/
     

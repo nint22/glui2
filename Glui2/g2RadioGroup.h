@@ -34,6 +34,9 @@ public:
     // Get the current selection; defaults to 0
     int GetSelectionIndex();
     
+    // Add a live variable; pass NULL (or leave blank) to disconect
+    void SetLiveVariable(int* LiveIndex = NULL);
+    
 protected:
     
     // Render
@@ -52,6 +55,9 @@ private:
     
     // Active index we have selected
     int ActiveIndex;
+    
+    // Live value
+    int* LiveIndex;
 };
 
 // End of inclusion guard

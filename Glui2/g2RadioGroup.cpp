@@ -15,6 +15,9 @@ g2RadioGroup::g2RadioGroup(g2Controller* Parent, g2Theme* MainTheme)
 {
     // Set the labels to null
     ActiveIndex = 0;
+    
+    // Default to no live value
+    LiveIndex = NULL;
 }
 
 g2RadioGroup::~g2RadioGroup()
@@ -51,11 +54,18 @@ int g2RadioGroup::GetSelectionIndex()
     return ActiveIndex;
 }
 
+void g2RadioGroup::SetLiveVariable(int* LiveIndex)
+{
+    this->LiveIndex = LiveIndex;
+}
+
 void g2RadioGroup::Render()
 {
     // Get origin
     int pX, pY;
     GetPos(&pX, &pY);
+    
+    // NEED TO IMPLEMENT WITH LIVE INDEX! LiveIndex
     
     // For each for
     for(int i = 0; i < OptionCount; i++)

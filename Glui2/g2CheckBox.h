@@ -34,9 +34,8 @@ public:
     // Set the check state
     void SetChecked(bool Check);
     
-    // Set a callback function for a full clickthrough event
-    // Note that if there is no argument passed, the callback is set back to none
-    void SetCallback(__g2CallBack(PressedCallback) = 0);
+    // Add a live variable; pass NULL (or leave blank) to disconect
+    void SetLiveVariable(bool* LiveCheckState = NULL);
     
 protected:
     
@@ -56,6 +55,9 @@ private:
     
     // The pixel offset from the label icon itself
     static const int TextOffset = 18;
+    
+    // Live value
+    bool* LiveCheckState;
     
 };
 

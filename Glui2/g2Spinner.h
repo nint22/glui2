@@ -34,6 +34,35 @@ public:
     // Progress bar constructor
     g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Type);
     
+    // Set this controller's target width
+    void SetWidth(int Width);
+    
+    // Get the width of this controller
+    int GetWidth();
+    
+    // Set the value (as integer)
+    void SetInt(int Value);
+    
+    // Get the int value
+    int GetInt();
+    
+    // Set the value (as float)
+    void SetFloat(float Value);
+    
+    // Get the float value
+    float GetFloat();
+    
+    // Set the limits
+    void SetLimit(float min, float max);
+    void SetLimit(int min, int max);
+    
+    // Set the incrementation
+    void SetIncrement(float inc);
+    void SetIncrement(int inc);
+    
+    // Add a live variable; pass NULL (or leave blank) to disconect
+    void SetLiveVariable(float* LiveValue = NULL);
+    
 protected:
     
     // Render
@@ -54,6 +83,12 @@ private:
     float FloatVal;
     int IntVal;
     
+    // Internal min / max of each type
+    float FloatMin, FloatMax, FloatInc;
+    int IntMin, IntMax, IntInc;
+    
+    // Live value
+    float* LiveValue;
 };
 
 // End of inclusion guard

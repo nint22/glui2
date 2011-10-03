@@ -20,6 +20,9 @@ g2CheckBox::g2CheckBox(g2Controller* Parent, g2Theme* MainTheme)
     Label->SetColor(0, 0, 0);
     Label->SetText("Undefined g2CheckBox");
     
+    // Default to no live value
+    LiveCheckState = NULL;
+    
     // Default check to none
     Checked = false;
 }
@@ -40,6 +43,11 @@ void g2CheckBox::SetChecked(bool Check)
     Checked = Check;
 }
 
+void g2CheckBox::SetLiveVariable(bool* LiveCheckState)
+{
+    this->LiveCheckState = LiveCheckState;
+}
+
 void g2CheckBox::Render()
 {
     // Get origin
@@ -48,7 +56,14 @@ void g2CheckBox::Render()
     
     // Draw based on the current state
     if(GetControllerState() == g2ControllerState_Clicked)
+    {
+        // Flip state
         Checked = !Checked;
+        
+        // Post if possible
+        if(LiveCheckState != NULL)
+            *LiveCheckState = Checked;
+    }
     
     // Draw based on the current check state
     if(GetDisabled())

@@ -14,27 +14,46 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
     // Initialize nothing in the input buffer
-    strcpy(InputBuffer, "Default g2TextField");
+    strcpy(TextBuffer, "");
     CursorTime = 0.0f;
     CursorState = true;
-    
-    // Set text color to black
-    tR = tG = tB = 0.0f;
+    CursorOffset = 0.0f;
+    CursorIndex = 0;
     
     // Default the width to the minimum width of the source image
     GetTheme()->GetComponentSize(g2Theme_TextField, &Width);
+    
+    // Compute the offsets so the text is correctly cenetered
+    int CharHeight;
+    GetTheme()->GetCharacterSize(&CharWidth, &CharHeight);
+    CharWidth--; // g2Label actually makes chars 1 pixel less for more "dense" look
+    
+    GetTheme()->GetComponentSize(g2Theme_TextField, &OffsetWidth, &OffsetHeight);
+    OffsetWidth *= 0.2f;
+    OffsetHeight = OffsetHeight / 2 - CharHeight / 2 + 1;
+    
+    // Allocate the text label
+    Label = new g2Label(this, MainTheme);
+    Label->SetPos(OffsetWidth, OffsetHeight);
+    Label->SetColor(0.0f, 0.0f, 0.0f);
 }
 
 void g2TextField::SetText(const char* Text)
 {
-    // Copy an empty string if the text is null
+    // Default to empty buffer
     if(Text == NULL)
-        strcpy(InputBuffer, "");
-    
-    // Make sure the text isn't too long
-    // +1 is for the terminator
-    else if(strlen(Text) + 1 < MaxInputLength)
-        strcpy(InputBuffer, Text);
+    {
+        strcpy(TextBuffer, "");
+        Label->SetText(TextBuffer);
+        CursorIndex = 0;
+    }
+    // Only set if we can keep it in our internal buffer
+    else if(strlen(Text) < TextBufferLength - 1)
+    {
+        strcpy(TextBuffer, Text);
+        Label->SetText(TextBuffer);
+        CursorIndex = (int)strlen(TextBuffer);
+    }
 }
 
 void g2TextField::SetWidth(int Width)
@@ -49,22 +68,14 @@ void g2TextField::SetWidth(int Width)
         this->Width = MinWidth;
 }
 
-void g2TextField::SetTextColor(float r, float g, float b)
+int g2TextField::GetWidth()
 {
-    // Min/max bounds to [0.0, 1.0]
-    tR = fmax(fmin(r, 1.0f), 0.0f);
-    tG = fmax(fmin(g, 1.0f), 0.0f);
-    tB = fmax(fmin(b, 1.0f), 0.0f);
+    return Width;
 }
 
-void g2TextField::GetTextColor(float* r, float* g, float* b)
+g2Label* g2TextField::GetLabel()
 {
-    if(r != NULL)
-        *r = tR;
-    if(g != NULL)
-        *g = tG;
-    if(b != NULL)
-        *b = tB;
+    return Label;
 }
 
 void g2TextField::Update(float dT)
@@ -119,64 +130,123 @@ void g2TextField::Render()
         DrawComponent(pX + OutWidth / 3.0f, pY, Width - (2.0f * OutWidth) / 3.0f + 1, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, SourceWidth - (2.0f * SourceWidth) / 3.0f, SourceHeight);
     }
     
-    /*** Draw Foreground (Text itself) ***/
+    /*** Draw Cursor (Only if active) ***/
     
-    // How large is this text in pixels?
-    int CharWidth = 0;
-    GetTheme()->GetCharacterSize(&CharWidth);
-    int StringWidth = CharWidth * (int)strlen(InputBuffer);
-    
-    // Swap colors from the component's color to the text color
-    float tempR, tempG, tempB;
-    GetColor(&tempR, &tempG, &tempB);
-    SetColor(tR, tG, tB);
-    
-    // If the string width is shorter than the current width, render normally
-    if(StringWidth < Width)
+    // Is this controller active? (i.e. selected?) and not disabled?
+    if(GetActive() && !GetDisabled())
     {
-        for(int i = 0; i < (int)strlen(InputBuffer); i++)
-            DrawCharacter(pX + CharWidth * i, pY, InputBuffer[i]);
+        // What is the pixel offset?
+        int CursorPos = CharWidth * CursorIndex;
+        float tR, tG, tB, tA;
+        Label->GetColor(&tR, &tG, &tB, &tA);
+        DrawCharacter(pX + OffsetWidth + CursorPos, pY + OffsetHeight, 1.0f, 1.0f, tR, tG, tB, tA, CursorState ? '|' : ' ');
     }
-    
-    // Set the color back
-    SetColor(tempR, tempG, tempB);
 }
 
 bool g2TextField::InController(int x, int y)
 {
     // Current GUI position and size
-    int pX, pY, width, height;
+    int pX, pY, height;
     GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_TextField, &width, &height);
+    GetTheme()->GetComponentSize(g2Theme_TextField, NULL, &height);
     
     // Are we in it?
-    if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)
+    if(x >= pX && x <= pX + Width && y >= pY && y <= pY + height)
         return true;
     else
         return false;
 }
 
-void g2TextField::KeyEvent(unsigned char key)
+void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)
 {
-    printf("input: '%c'\n", key);
+    // Ignore all inputs if disabled
+    if(GetDisabled())
+        return;
     
-    // Backspace (8 on windows, 127 on OSX)
-    if(key == 8 || key == 127)
+    // If system key (i.e. left/right)
+    if(IsSpecial)
     {
-        // Move back the buffer if there is space
-        if(strlen(InputBuffer) > 0)
-            InputBuffer[strlen(InputBuffer) - 1] = '\0';
+        // If left/right, move the cursor
+        if(key == GLUT_KEY_LEFT && CursorIndex > 0)
+            CursorIndex--;
+        else if(key == GLUT_KEY_RIGHT && CursorIndex < strlen(TextBuffer))
+            CursorIndex++;
     }
-    // Standard keyboard input
+    // Else, normal character
     else
     {
-        // Accepts all characters (ignore if not enough memory)
-        size_t length = strlen(InputBuffer);
-        if(length + 1 >= MaxInputLength)
-            return;
+        // In OSX the backspace maps to DEL while DEL maps to backspace, need to swap
+        #if __APPLE__
+            if(key == 127)
+                key = 8;
+            else if(key == 8)
+                key = 127;
+        #endif
         
-        // Write to the old string-end and move the terminator a little further
-        InputBuffer[length + 0] = key;
-        InputBuffer[length + 1] = '\0';
+        // Backspace
+        if(key == 8)
+        {
+            // Is there anything to delete?
+            if(strlen(TextBuffer) <= 0)
+                return;
+            // Ignore if we are at the 0 position
+            else if(CursorIndex <= 0)
+                return;
+            else
+            {
+                // Delete this character by shifting everything from right to left by 1
+                // Note that this copies the null terminator
+                for(int i = CursorIndex; i <= strlen(TextBuffer); i++)
+                    TextBuffer[i - 1] = TextBuffer[i];
+                
+                // Decrease the cursor position
+                CursorIndex--;
+            }
+        }
+        // Delete
+        else if(key == 127)
+        {
+            // Is there anything to delete?
+            if(CursorIndex >= strlen(TextBuffer))
+                return;
+            else
+            {
+                // Delete this character by shifting everything from right to left by 1
+                // Note that this copies the null terminator
+                for(int i = CursorIndex; i < strlen(TextBuffer); i++)
+                    TextBuffer[i] = TextBuffer[i + 1];
+                
+                // Cursor does not move
+            }
+        }
+        // Todo... delete key, not backspace
+        // ...
+        // Standard keyboard input; add character
+        else if(strlen(TextBuffer) < TextBufferLength - 1)
+        {
+            // If we are writing to the end, make sure to string-cap
+            if(CursorIndex == (int)strlen(TextBuffer))
+            {
+                // Write to the old string-end and move the terminator a little further
+                TextBuffer[CursorIndex + 0] = key;
+                TextBuffer[CursorIndex + 1] = '\0';
+            }
+            // Offset one char to the right, then set
+            else
+            {
+                // Null-terminate the end of the string
+                TextBuffer[strlen(TextBuffer) + 1] = '\0';
+                int Length = (int)strlen(TextBuffer);
+                for(int i = CursorIndex + 1; i <= Length; i++)
+                    TextBuffer[i] = TextBuffer[i - 1];
+                TextBuffer[CursorIndex] = key;
+            }
+            
+            // Grow cursor position to be after the current char
+            CursorIndex++;
+        }
+        
+        // Update the text buffer
+        Label->SetText(TextBuffer);
     }
 }

@@ -27,6 +27,9 @@ g2Controller::g2Controller(g2Controller* Parent, g2Theme* MainTheme)
     // Default to no callback
     PressedCallback = 0;
     
+    // Nothing is active by default
+    IsActive = false;
+    
     // Add self to parent
     if(Parent != NULL)
         Parent->ChildObjects.push(this);
@@ -75,15 +78,16 @@ bool g2Controller::GetVisibility()
     return IsVisible;
 }
 
-void g2Controller::SetColor(float r, float g, float b)
+void g2Controller::SetColor(float r, float g, float b, float a)
 {
     // Min/max bounds to [0.0, 1.0]
     R = fmax(fmin(r, 1.0f), 0.0f);
     G = fmax(fmin(g, 1.0f), 0.0f);
     B = fmax(fmin(b, 1.0f), 0.0f);
+    Alpha = fmax(fmin(a, 1.0f), 0.0f);
 }
 
-void g2Controller::GetColor(float* r, float* g, float* b)
+void g2Controller::GetColor(float* r, float* g, float* b, float* a)
 {
     if(r != NULL)
         *r = R;
@@ -91,17 +95,8 @@ void g2Controller::GetColor(float* r, float* g, float* b)
         *g = G;
     if(b != NULL)
         *b = B;
-}
-
-void g2Controller::SetAlpha(float NewAlpha)
-{
-    // Min/max bounds to [0.0, 1.0]
-    Alpha = fmax(fmin(NewAlpha, 1.0f), 0.0f);
-}
-
-float g2Controller::GetAlpha()
-{
-    return Alpha;
+    if(a != NULL)
+        *a = Alpha;
 }
 
 void g2Controller::SetDisabled(bool Disabled)
@@ -147,6 +142,11 @@ void g2Controller::GetPos(int* x, int* y)
     g2Assert(x != NULL && y != NULL, "Cannot set x and/or y because one or both of them are NULL.");
     *x = this->x;
     *y = this->y;
+}
+
+bool g2Controller::GetActive()
+{
+    return IsActive;
 }
 
 g2Controller* g2Controller::GetController(int x, int y)
@@ -215,10 +215,11 @@ void g2Controller::WindowResizeEvent(int NewWidth, int NewHeight)
     // Allow the user to overload as needed...
 }
 
-void g2Controller::KeyEvent(unsigned char key)
+void g2Controller::KeyEvent(unsigned char key, bool IsSpecial)
 {
     // Supress warning
     key = key;
+    IsSpecial = IsSpecial;
     
     // Allow the user to overload as needed...
 }
@@ -366,18 +367,23 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, flo
 
 void g2Controller::DrawCharacter(int DestX, int DestY, char Character)
 {
-    // Pass to higher-level function with 1-1 scale
     DrawCharacter(DestX, DestY, 1.0f, 1.0f, Character);
 }
 
 void g2Controller::DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, char Character)
+{
+    DrawCharacter(DestX, DestY, ScaleW, ScaleH, R, G, B, Alpha, Character);
+}
+
+void g2Controller::DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, float R, float G, float B, float A, char Character)
 {
     // Are we allowed to draw?
     if(!IsVisible)
         return;
     
     // Set the current color and alpha
-    glColor4f(R, G, B, Alpha);
+    // (Note we are using the args, not the class members, as values)
+    glColor4f(R, G, B, A);
     
     // Get the texture points
     float tx, ty, tw, th;
@@ -488,14 +494,14 @@ void g2Controller::__WindowResizeEvent(int NewWidth, int NewHeight)
     }
 }
 
-void g2Controller::__KeyEvent(unsigned char key)
+void g2Controller::__KeyEvent(unsigned char key, bool IsSpecial)
 {
     // Ignore if not visible
     if(!GetVisibility())
         return;
     
     // Update key event
-    KeyEvent(key);
+    KeyEvent(key, IsSpecial);
     
     // Update all children
     int QueueSize = (int)ChildObjects.size();
@@ -506,7 +512,7 @@ void g2Controller::__KeyEvent(unsigned char key)
         ChildObjects.pop();
         
         // Update child key event
-        Child->__KeyEvent(key);
+        Child->__KeyEvent(key, IsSpecial);
         
         // Put back
         ChildObjects.push(Child);

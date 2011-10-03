@@ -8,7 +8,10 @@
  
  File: g2TextField.cpp/h
  Desc: An interactive text field that may be type-restricted;
- single row of text only.
+ single row of text only. End-developers should always use
+ the "SetText" method of this class to set the text for the
+ field; using the "SetText" from GetLabel() will cause
+ editing inconsistences.
  
 ***************************************************************/
 
@@ -17,6 +20,7 @@
 #define __G2TEXTFIELD_H__
 
 #include "g2Controller.h"
+#include "g2Label.h"
 
 class g2TextField : public g2Controller
 {
@@ -31,11 +35,11 @@ public:
     // Set the width of the button in pixels
     void SetWidth(int Width);
     
-    // Set text color
-    void SetTextColor(float r, float g, float b);
+    // Get the width of the text field
+    int GetWidth();
     
-    // Get text color
-    void GetTextColor(float* r = NULL, float* g = NULL, float* b = NULL);
+    // Get the text object
+    g2Label* GetLabel();
     
 protected:
     
@@ -49,18 +53,16 @@ protected:
     bool InController(int x, int y);
     
     // Handle user inputs
-    void KeyEvent(unsigned char key);
+    void KeyEvent(unsigned char key, bool IsSpecial);
     
 private:
     
-    // Maximum input length
-    static const int MaxInputLength = 1024;
+    // The actively rendered label
+    g2Label* Label;
     
-    // Current input buffer (on-screen)
-    char InputBuffer[MaxInputLength];
-    
-    // Current width of the text field
-    int Width;
+    // Text buffer and max size
+    static const int TextBufferLength = 1024;
+    char TextBuffer[TextBufferLength];
     
     // The total time the cursor has been in the current cursor style
     float CursorTime;
@@ -68,8 +70,20 @@ private:
     // The current cursor state (on is '_', off is ' ')
     bool CursorState;
     
-    // Text colors (defaults to black)
-    float tR, tG, tB;
+    // Location of the cursor
+    float CursorOffset;
+    
+    // Index position of the cursor
+    int CursorIndex;
+    
+    // Text location offsets
+    int OffsetWidth, OffsetHeight;
+    
+    // Width of an individual character
+    int CharWidth;
+    
+    // Width of the text field
+    int Width;
 };
 
 // End of inclusion guard

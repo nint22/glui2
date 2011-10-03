@@ -46,23 +46,17 @@ public:
     
     /*** Render Options ***/
     
-    // Set visibility
+    // Set visibility (if invisible, it is both deactivated AND invisible)
     void SetVisibility(bool Visible);
     
     // Get visability
     bool GetVisibility();
     
-    // Set color
-    void SetColor(float r, float g, float b);
+    // Set color (defaults to white)
+    void SetColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
     
     // Get color (Each individual color is optional)
-    void GetColor(float* r = NULL, float* g = NULL, float* b = NULL);
-    
-    // Set alpha value
-    void SetAlpha(float NewAlpha);
-    
-    // Get alpha value
-    float GetAlpha();
+    void GetColor(float* r = NULL, float* g = NULL, float* b = NULL, float* a = NULL);
     
     // Set enabled / disabled modes
     void SetDisabled(bool Disabled);
@@ -75,6 +69,9 @@ public:
     
     // Get x and y position
     void GetPos(int* x, int* y);
+    
+    // Returns true if we are the active controller
+    bool GetActive();
     
     /*** Active State Management ***/
     
@@ -106,7 +103,9 @@ protected:
     virtual void WindowResizeEvent(int NewWidth, int NewHeight);
     
     // Glut keyboard event callback (When a full press cycle happens)
-    virtual void KeyEvent(unsigned char key);
+    // If the "IsSpecial" flag is true, it means it is a system key (such as up/down/F1/Print) and not
+    // an actual keyboard character
+    virtual void KeyEvent(unsigned char key, bool IsSpecial = false);
     
     // Glut mouse event callback for a full click
     virtual void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
@@ -140,6 +139,9 @@ protected:
     // Draw a character with given scales
     void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, char Character);
     
+    // Draw a character with given scales and a 4-channel color (RGBA)
+    void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, float R, float G, float B, float A, char Character);
+    
     // Accessor to the global theme
     g2Theme* GetTheme();
     
@@ -168,6 +170,9 @@ private:
     // Disabled/enabled
     bool IsDisabled;
     
+    // Active state
+    bool IsActive;
+    
     // Callback function; called when a full clickthrough event was detected
     __g2CallBack(PressedCallback);
     
@@ -183,7 +188,9 @@ private:
     void __WindowResizeEvent(int NewWidth, int NewHeight);
     
     // Glut keyboard event callback (When a full press cycle happens)
-    void __KeyEvent(unsigned char key);
+    // If the "IsSpecial" flag is true, it means it is a system key (such as up/down/F1/Print) and not
+    // an actual keyboard character
+    void __KeyEvent(unsigned char key, bool IsSpecial = false);
     
     // Glut mouse event callback for a full click
     void __MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
