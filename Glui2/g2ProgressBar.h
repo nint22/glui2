@@ -41,13 +41,13 @@ public:
     // Set the width of the button in pixels
     void SetWidth(int Width);
     
+    // Define controller geometry
+    bool InController(int x, int y);
+    
 protected:
     
     // Render
     void Render();
-    
-    // Define controller geometry
-    bool InController(int x, int y);
     
 private:
     

@@ -139,9 +139,10 @@ void g2Controller::SetPos(int x, int y)
 
 void g2Controller::GetPos(int* x, int* y)
 {
-    g2Assert(x != NULL && y != NULL, "Cannot set x and/or y because one or both of them are NULL.");
-    *x = this->x;
-    *y = this->y;
+    if(x != NULL)
+        *x = this->x;
+    if(y != NULL)
+        *y = this->y;
 }
 
 bool g2Controller::GetActive()

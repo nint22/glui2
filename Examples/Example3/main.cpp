@@ -230,9 +230,14 @@ void InitGlui2()
     TempLabel = GluiHandle->AddLabel(280, 210, "g2DropDown");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
+    const char* Options[3];
+    Options[0] = "1. Banana";
+    Options[1] = "2. Apple";
+    Options[2] = "3. Orange";
+    
     g2DropDown* DropDown = GluiHandle->AddDropDown(280, 230);
-    DropDown->SetWidth(80);
-    //DropDown->AddOptions(Options);
+    DropDown->SetWidth(100);
+    DropDown->SetOptions(Options, 3);
     
     /*** g2ProgressBar ***/
     TempLabel = GluiHandle->AddLabel(410, 210, "g2ProgressBar");
@@ -247,7 +252,6 @@ void InitGlui2()
     TempLabel = GluiHandle->AddLabel(20, 410, "g2RadioGroup");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
-    const char* Options[3];
     Options[0] = "1. Hello";
     Options[1] = "2. Red";
     Options[2] = "3. Phone";

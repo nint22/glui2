@@ -50,6 +50,9 @@ public:
     // characters. Pass null to remove the filter
     void SetFilter(const char* Filter);
     
+    // Define controller geometry
+    bool InController(int x, int y);
+    
 protected:
     
     // Update
@@ -57,9 +60,6 @@ protected:
     
     // Render
     void Render();
-    
-    // Define controller geometry
-    bool InController(int x, int y);
     
     // Handle user inputs
     void KeyEvent(unsigned char key, bool IsSpecial);

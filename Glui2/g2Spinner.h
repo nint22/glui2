@@ -67,6 +67,9 @@ public:
     // Add a live variable; pass NULL (or leave blank) to disconect
     void SetLiveVariable(float* LiveValue = NULL);
     
+    // Define controller geometry
+    bool InController(int x, int y);
+    
 protected:
     
     // Render
@@ -77,9 +80,6 @@ protected:
     
     // Get the mouse position; used to go either up or down on spinner
     void MouseHover(int x, int y);
-    
-    // Define controller geometry
-    bool InController(int x, int y);
     
 private:
     

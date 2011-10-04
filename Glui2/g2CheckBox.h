@@ -37,13 +37,13 @@ public:
     // Add a live variable; pass NULL (or leave blank) to disconect
     void SetLiveVariable(bool* LiveCheckState = NULL);
     
+    // Define controller geometry
+    bool InController(int x, int y);
+    
 protected:
     
     // Render
     void Render();
-    
-    // Define controller geometry
-    bool InController(int x, int y);
     
 private:
     

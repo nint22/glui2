@@ -35,6 +35,11 @@ public:
     // Set the text string; new lines WILL be printed on following lines
     void SetText(const char* Text);
     
+    // Return a constant buffer to the given string; should never be modified
+    // The returned buffer may or may not exist soon after the direct call; you should
+    // copy the buffer as soon as possible if it is to not be immediately used
+    const char* GetText();
+    
     // Set the size of the output (as a ratio)
     void SetSize(float Scale);
     

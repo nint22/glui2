@@ -68,7 +68,7 @@ public:
     void SetPos(int x, int y);
     
     // Get x and y position
-    void GetPos(int* x, int* y);
+    void GetPos(int* x = NULL, int* y = NULL);
     
     // Returns true if we are the active controller
     bool GetActive();
@@ -86,6 +86,9 @@ public:
     // Note that if there is no argument passed, the callback is set back to none
     void SetCallback(__g2CallBack(PressedCallback) = 0);
     
+    // Returns true if the mouse is in the controller's geometry (Required to overload)
+    virtual bool InController(int x, int y);
+    
 protected:
     
     /*** Update, Render, and Input Handlers ***/
@@ -95,9 +98,6 @@ protected:
     
     // Render object (Required to overload)
     virtual void Render();
-    
-    // Returns true if the mouse is in the controller's geometry (Required to overload)
-    virtual bool InController(int x, int y);
     
     // Window resize event
     virtual void WindowResizeEvent(int NewWidth, int NewHeight);

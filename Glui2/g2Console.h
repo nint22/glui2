@@ -38,6 +38,9 @@ public:
     // Note that the returned buffer MUST be released when you are done with it
     char* gets();
     
+    // Define controller geometry
+    bool InController(int x, int y);
+    
 protected:
     
     // Update
@@ -45,9 +48,6 @@ protected:
     
     // Render
     void Render();
-    
-    // Define controller geometry
-    bool InController(int x, int y);
     
     // Gets the screen width and heigh
     void WindowResizeEvent(int NewWidth, int NewHeight);

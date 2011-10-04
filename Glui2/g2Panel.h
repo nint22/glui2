@@ -52,6 +52,9 @@ public:
     // Set the overlap ratio
     void SetSize(float Ratio);
     
+    // Define controller geometry
+    bool InController(int x, int y);
+    
 protected:
     
     // Render
@@ -59,9 +62,6 @@ protected:
     
     // Window resize event
     void WindowResizeEvent(int NewWidth, int NewHeight);
-    
-    // Define controller geometry
-    bool InController(int x, int y);
     
     // Anchor flags
     g2Anchor Anchors;

@@ -40,6 +40,11 @@ void g2Label::SetText(const char* Text)
     }
 }
 
+const char* g2Label::GetText()
+{
+    return TextBuffer;
+}
+
 void g2Label::SetSize(float Scale)
 {
     this->Scale = Scale;

@@ -44,6 +44,9 @@ public:
     // Set the width of the button in pixels
     void SetWidth(int Width);
     
+    // Define controller geometry
+    bool InController(int x, int y);
+    
 protected:
     
     // Render
@@ -55,11 +58,8 @@ protected:
     // Used when releasing a drag
     void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
     
-    // Get the mouse position; used for drag icon placement
+    // Get the mouse position; used for dragging outside of the controller
     void MouseHover(int x, int y);
-    
-    // Define controller geometry
-    bool InController(int x, int y);
     
 private:
     

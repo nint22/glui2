@@ -20,6 +20,9 @@ g2Button::g2Button(g2Controller* Parent, g2Theme* MainTheme)
     Label->SetColor(0, 0, 0);
     Label->SetText("Undefined g2Button");
     
+    // Default width
+    GetTheme()->GetComponentSize(g2Theme_Button, &Width);
+    
     // Set the initial width to a default width value
     GetTheme()->GetComponentSize(g2Theme_Button, &Width);
 }
@@ -52,6 +55,11 @@ void g2Button::SetWidth(int Width)
         this->Width = Width;
     else
         this->Width = MinWidth;
+}
+
+int g2Button::GetWidth()
+{
+    return Width;
 }
 
 void g2Button::Render()
