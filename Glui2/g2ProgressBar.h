@@ -29,9 +29,17 @@ public:
     // Get access to the label that is centered on the button
     const g2Label* GetLabel();
     
-    // Set the current progress of this progress bar; accepts
-    // values from 0 to 1 (floats)
+    // Set the min / max bounds of the progress bar; defaults to [0.0, 1.0]
+    void SetBounds(float Lower, float Upper);
+    
+    // Set the current progress of this progress bar; default bounds are [0.0, 1.0]
     void SetProgress(float Progress);
+    
+    // Set the button's text; note that the button will grow if needed
+    void SetText(const char* Text);
+    
+    // Set the width of the button in pixels
+    void SetWidth(int Width);
     
 protected:
     
@@ -46,9 +54,14 @@ private:
     // Text label
     g2Label* Label;
     
+    // Min / max bounds
+    float MinBound, MaxBound;
+    
     // The current progress factor
     float Progress;
     
+    // Target width of the progress bar
+    int Width;
 };
 
 // End of inclusion guard

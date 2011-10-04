@@ -52,9 +52,9 @@ public:
     // Get the float value
     float GetFloat();
     
-    // Set the limits
-    void SetLimit(float min, float max);
-    void SetLimit(int min, int max);
+    // Set the lower and upper mounds
+    void SetBounds(float min, float max);
+    void SetBounds(int min, int max);
     
     // Set the incrementation
     void SetIncrement(float inc);
@@ -71,6 +71,9 @@ protected:
     
     // Render
     void Render();
+    
+    // Update (grabs the time)
+    void Update(float dT);
     
     // Get the mouse position; used to go either up or down on spinner
     void MouseHover(int x, int y);
@@ -96,6 +99,17 @@ private:
     
     // Internal mouse position; needed for constant increase / decrease
     int MouseX, MouseY;
+    
+    // How much time it takes before we update the
+    // spinner based on the user holding down
+    static const float UpdateRate = 0.05f;
+    
+    // Number of seconds user needs to wait before
+    // auto-update occures 
+    static const float UpdateMin = 0.4f;
+    
+    // Time user has spent pressing the button
+    float PressedTime;
     
     // Live value
     float* LiveValue;

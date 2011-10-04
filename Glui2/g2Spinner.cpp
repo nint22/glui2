@@ -28,6 +28,9 @@ g2Spinner::g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Typ
     IntMax = INT_MAX;
     IntInc = 1;
     
+    // Time controller is being pressed
+    PressedTime = 0.0f;
+    
     // Initialize the mouse position off-screen
     MouseX = INT_MIN;
     MouseY = INT_MIN;
@@ -73,6 +76,11 @@ void g2Spinner::SetInt(int Value)
 
 int g2Spinner::GetInt()
 {
+    // Parse current text as an integer
+    // If it fails, return the original value
+    int Temp = IntVal;
+    if(sscanf(TextField->GetText(), "%d", &Temp) == 1)
+        IntVal = Temp;
     return IntVal;
 }
 
@@ -86,16 +94,21 @@ void g2Spinner::SetFloat(float Value)
 
 float g2Spinner::GetFloat()
 {
+    // Parse current text as a float
+    // If it fails, return the original value
+    float Temp = FloatVal;
+    if(sscanf(TextField->GetText(), "%f", &Temp) == 1)
+        FloatVal = Temp;
     return FloatVal;
 }
 
-void g2Spinner::SetLimit(float min, float max)
+void g2Spinner::SetBounds(float min, float max)
 {
     FloatMin = min;
     FloatMax = max;
 }
 
-void g2Spinner::SetLimit(int min, int max)
+void g2Spinner::SetBounds(int min, int max)
 {
     IntMin = min;
     IntMax = max;
@@ -113,20 +126,21 @@ void g2Spinner::SetIncrement(int inc)
 
 void g2Spinner::IncrementUp()
 {
+    
     // Increase and bounds check float & int respectively
     if(Type == g2SpinnerType_Float)
-        SetFloat(fmax(fmin(FloatVal + FloatInc, FloatMax), FloatMin));
+        SetFloat(fmax(fmin(GetFloat() + FloatInc, FloatMax), FloatMin));
     else if(Type == g2SpinnerType_Int)
-        SetInt((int)fmax(fmin(IntVal + IntInc, IntMax), IntMin));
+        SetInt((int)fmax(fmin(GetInt() + IntInc, IntMax), IntMin));
 }
 
 void g2Spinner::IncrementDown()
 {
     // Decrease and bounds check float & int respectively
     if(Type == g2SpinnerType_Float)
-        SetFloat(fmax(fmin(FloatVal - FloatInc, FloatMax), FloatMin));
+        SetFloat(fmax(fmin(GetFloat() - FloatInc, FloatMax), FloatMin));
     else if(Type == g2SpinnerType_Int)
-        SetInt((int)fmax(fmin(IntVal - IntInc, IntMax), IntMin));
+        SetInt((int)fmax(fmin(GetInt() - IntInc, IntMax), IntMin));
 }
 
 void g2Spinner::SetLiveVariable(float* LiveValue)
@@ -151,42 +165,48 @@ void g2Spinner::Render()
     GetTheme()->GetComponentSize(g2Theme_TextField, NULL, &OffsetY);
     OffsetY = OffsetY / 2 - OutHeight / 2; // Centered vertically
     
+    // Is the user's mouse on the top or bottom of the button?
+    // Note the trinay comparison operator to do the half-height offset
+    bool IsAbove = MouseY <= (pY + OffsetY + (OutHeight / 2));
+    
     // Disabled
     if(GetDisabled())
         DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_Spinner_Disabled);
     // Actively pressed, need to draw only the pressed button
     else if(GetControllerState() == g2ControllerState_Pressed)
     {
-        // Draw background normally
+        // Draw background normally, then draw the pressed button
         DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_Spinner);
-        
-        // Is the user's mouse on the top or bottom of the button?
-        // Note the trinay comparison operator to do the half-height offset
-        bool IsAbove = MouseY <= (pY + OffsetY + (OutHeight / 2));
         DrawComponent(pX + OffsetX, pY + OffsetY + (IsAbove ? 0 : (OutHeight / 2)), OutWidth, OutHeight / 2, SourceX, SourceY + (SourceHeight / 2.0f) * (IsAbove ? 0.0f : 1.0f), SourceWidth, SourceHeight / 2.0f);
-        
-        // Increase or decrease the value
-        if(IsAbove)
-            IncrementUp();
-        else
-            IncrementDown();
     }
     // Normal
     else
         DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_Spinner);
     
+    // Increase or decrease the value based on timing
+    if((PressedTime > (UpdateRate + UpdateMin)) || GetControllerState() == g2ControllerState_Clicked)
+    {
+        if(IsAbove)
+            IncrementUp();
+        else
+            IncrementDown();
+        
+        PressedTime -= UpdateRate;
+    }
+    
     // Set the live value based on what the field currently has
     if(LiveValue != NULL)
-    {
-        // Parse as a float
-        float Temp = 0.0f;
-        if(sscanf(TextField->GetText(), "%f", &Temp) == 1)
-            *LiveValue = Temp;
-        
-        // Else, it failed and we place a nan
-        else
-            *LiveValue = NAN;
-    }
+        *LiveValue = (Type == g2SpinnerType_Float) ? GetFloat() : (float)GetInt();
+}
+
+void g2Spinner::Update(float dT)
+{
+    // If we are being pressed, update the timer
+    if(GetControllerState() == g2ControllerState_Pressed)
+        PressedTime += dT;
+    // Else, we aren't pressing, so ignore
+    else
+        PressedTime = 0.0f;
 }
 
 void g2Spinner::MouseHover(int x, int y)

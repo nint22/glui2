@@ -42,6 +42,9 @@ protected:
     // Render
     void Render();
     
+    // Get the mouse position; used to go either up or down on spinner
+    void MouseHover(int x, int y);
+    
     // Define controller geometry
     bool InController(int x, int y);
     
@@ -55,6 +58,9 @@ private:
     
     // Active index we have selected
     int ActiveIndex;
+    
+    // Internal mouse position; needed for constant increase / decrease
+    int MouseX, MouseY;
     
     // Live value
     int* LiveIndex;

@@ -170,7 +170,6 @@ void InitGlui2()
     
     g2Label* SampleLabel = GluiHandle->AddLabel(20, 32, "This is\na sample\nlabel \x01");
     SampleLabel->SetColor(0.9f, 0.0f, 0.0f);
-    SampleLabel->SetSize(1.25f);
     
     /** g2Button ***/
     TempLabel = GluiHandle->AddLabel(150, 10, "g2Button");
@@ -204,9 +203,8 @@ void InitGlui2()
     TempLabel = GluiHandle->AddLabel(20, 210, "g2Console");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
-    // TODO... need to install callback
-    g2Button* ConsoleButton = GluiHandle->AddButton(20, 230, "Toggle console");
-    ConsoleButton->SetCallback(ToggleConsole);
+    // Note that we register the callback to toggle the console
+    GluiHandle->AddButton(20, 230, "Toggle console", ToggleConsole);
     
     /*** g2Spinner ***/
     TempLabel = GluiHandle->AddLabel(150, 210, "g2Spinner");
@@ -215,7 +213,7 @@ void InitGlui2()
     GluiHandle->AddSpinner(150, 230, g2SpinnerType_Int)->SetWidth(100);
     
     g2Spinner* ExampleSpinner = GluiHandle->AddSpinner(150, 255, g2SpinnerType_Float);
-    ExampleSpinner->SetLimit(-1.0f, 1.0f);
+    ExampleSpinner->SetBounds(-1.0f, 1.0f);
     ExampleSpinner->SetIncrement(0.01f);
     ExampleSpinner->SetWidth(100);
     
@@ -231,7 +229,10 @@ void InitGlui2()
     TempLabel = GluiHandle->AddLabel(410, 210, "g2ProgressBar");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
-    GluiHandle->AddProgressBar(410, 240);
+    g2ProgressBar* ExampleProgress = GluiHandle->AddProgressBar(410, 240);
+    ExampleProgress->SetWidth(150);
+    ExampleProgress->SetProgress(0.25f);
+    ExampleProgress->SetText("Progress bar...");
     
     /*** g2RadioGroup ***/
     TempLabel = GluiHandle->AddLabel(20, 410, "g2RadioGroup");
@@ -248,8 +249,10 @@ void InitGlui2()
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
     GluiHandle->AddCheckBox(150, 430, "1. Goobye");
-    GluiHandle->AddCheckBox(150, 450, "2. Green");
-    GluiHandle->AddCheckBox(150, 470, "3. Drone");
+    GluiHandle->AddCheckBox(150, 445, "2. Green");
+    GluiHandle->AddCheckBox(150, 460, "3. Drone");
+    GluiHandle->AddCheckBox(150, 475, "4. Alpha");
+    GluiHandle->AddCheckBox(150, 490, "5. Example");
     
     /*** g2Slider ***/
     TempLabel = GluiHandle->AddLabel(280, 410, "g2Slider");

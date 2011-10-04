@@ -31,11 +31,8 @@ g2Label* g2Button::GetLabel()
 
 void g2Button::SetText(const char* Text)
 {
-    // Make sure we aren't recieving a null pointer
-    g2Assert(Text != NULL, "Given text buffer is NULL.");
-    
-    // Change the label itself
-    Label->SetText(Text);
+    // Change the label itself (empty text if null)
+    Label->SetText(Text == NULL ? "" : Text);
     
     // What is the new length of this text?
     int NewLength = Label->GetWidth();
