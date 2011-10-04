@@ -213,7 +213,11 @@ void InitGlui2()
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
     GluiHandle->AddSpinner(150, 230, g2SpinnerType_Int)->SetWidth(100);
-    GluiHandle->AddSpinner(150, 255, g2SpinnerType_Float)->SetWidth(100);
+    
+    g2Spinner* ExampleSpinner = GluiHandle->AddSpinner(150, 255, g2SpinnerType_Float);
+    ExampleSpinner->SetLimit(-1.0f, 1.0f);
+    ExampleSpinner->SetIncrement(0.01f);
+    ExampleSpinner->SetWidth(100);
     
     /*** g2DropDown ***/
     TempLabel = GluiHandle->AddLabel(280, 210, "g2DropDown");

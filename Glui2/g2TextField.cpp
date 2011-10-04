@@ -36,6 +36,9 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
     Label = new g2Label(this, MainTheme);
     Label->SetPos(OffsetWidth, OffsetHeight);
     Label->SetColor(0.0f, 0.0f, 0.0f);
+    
+    // Default to no fillter mechanism
+    FilterBuffer = NULL;
 }
 
 void g2TextField::SetText(const char* Text)
@@ -54,6 +57,11 @@ void g2TextField::SetText(const char* Text)
         Label->SetText(TextBuffer);
         CursorIndex = (int)strlen(TextBuffer);
     }
+}
+
+const char* g2TextField::GetText()
+{
+    return TextBuffer;
 }
 
 void g2TextField::SetWidth(int Width)
@@ -76,6 +84,24 @@ int g2TextField::GetWidth()
 g2Label* g2TextField::GetLabel()
 {
     return Label;
+}
+
+void g2TextField::SetFilter(const char* Filter)
+{
+    // Release the previous filter (if it exists)
+    if(FilterBuffer != NULL)
+        delete[] FilterBuffer;
+    
+    // Are we no longer having a filter?
+    if(Filter == NULL)
+        FilterBuffer = NULL;
+    
+    // Allocate and copy
+    else
+    {
+        FilterBuffer = new char[strlen(Filter) + 1];
+        strcpy(FilterBuffer, Filter);
+    }
 }
 
 void g2TextField::Update(float dT)
@@ -219,11 +245,13 @@ void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)
                 // Cursor does not move
             }
         }
-        // Todo... delete key, not backspace
-        // ...
         // Standard keyboard input; add character
-        else if(strlen(TextBuffer) < TextBufferLength - 1)
+        else if(strlen(TextBuffer) < TextBufferLength - 1 && !IsSpecial)
         {
+            // Ignore if it isn't a valid character
+            if(!InFilter(key))
+                return;
+            
             // If we are writing to the end, make sure to string-cap
             if(CursorIndex == (int)strlen(TextBuffer))
             {
@@ -249,4 +277,19 @@ void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)
         // Update the text buffer
         Label->SetText(TextBuffer);
     }
+}
+
+bool g2TextField::InFilter(char c)
+{
+    // No filter active, accept all characters
+    if(FilterBuffer == NULL)
+        return true;
+    
+    // Linear search, just keep comparing
+    for(size_t i = 0; i < strlen(FilterBuffer); i++)
+        if(FilterBuffer[i] == c)
+            return true;
+    
+    // Never found
+    return false;
 }

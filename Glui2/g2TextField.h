@@ -32,6 +32,11 @@ public:
     // Set the text
     void SetText(const char* Text);
     
+    // Return a constant buffer to the given string; should never be modified
+    // The returned buffer may or may not exist soon after the direct call; you should
+    // copy the buffer as soon as possible if it is to not be immediately used
+    const char* GetText();
+    
     // Set the width of the button in pixels
     void SetWidth(int Width);
     
@@ -40,6 +45,10 @@ public:
     
     // Get the text object
     g2Label* GetLabel();
+    
+    // Set a filter; an array of characters that are the only allowed input
+    // characters. Pass null to remove the filter
+    void SetFilter(const char* Filter);
     
 protected:
     
@@ -57,12 +66,19 @@ protected:
     
 private:
     
+    // Returns true if the given character is in the filter
+    // Returns false if the given character is NOT in the filter
+    bool InFilter(char c);
+    
     // The actively rendered label
     g2Label* Label;
     
     // Text buffer and max size
     static const int TextBufferLength = 1024;
     char TextBuffer[TextBufferLength];
+    
+    // Filter buffer
+    char* FilterBuffer;
     
     // The total time the cursor has been in the current cursor style
     float CursorTime;

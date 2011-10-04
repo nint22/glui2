@@ -60,6 +60,10 @@ public:
     void SetIncrement(float inc);
     void SetIncrement(int inc);
     
+    // Increment up or down
+    void IncrementUp();
+    void IncrementDown();
+    
     // Add a live variable; pass NULL (or leave blank) to disconect
     void SetLiveVariable(float* LiveValue = NULL);
     
@@ -67,6 +71,9 @@ protected:
     
     // Render
     void Render();
+    
+    // Get the mouse position; used to go either up or down on spinner
+    void MouseHover(int x, int y);
     
     // Define controller geometry
     bool InController(int x, int y);
@@ -86,6 +93,9 @@ private:
     // Internal min / max of each type
     float FloatMin, FloatMax, FloatInc;
     int IntMin, IntMax, IntInc;
+    
+    // Internal mouse position; needed for constant increase / decrease
+    int MouseX, MouseY;
     
     // Live value
     float* LiveValue;
