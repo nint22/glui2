@@ -67,7 +67,7 @@ public:
     // Width and height are how big the UI window is; based on the anchor, either the width or hieght will be ignored (i.e. left / right anchor ignores height)
     // windowPlacement is a bitwise structure that can be combined (i.e. using "|" ) to define window anchor
     // ThemFile is the location of the theme file to load
-    Glui2(const char* ThemeFile = NULL, void (*GlutIdleFunc)(void) = NULL, void (*GlutReshapeFunc)(int width, int height) = NULL, void (*GlutKeyboardFunc)(unsigned char key, int x, int y) = NULL, void (*GlutSpecialFunc)(int key, int x, int y) = NULL, void (*GlutMouseFunc)(int button, int state, int x, int y) = NULL, void (*GlutHoverFunc)(int x, int y) = NULL, void (*GlutDragFunc)(int x, int y) = NULL);
+    Glui2(const char* ThemeFile = NULL, void (*GlutIdleFunc)(void) = NULL, void (*GlutReshapeFunc)(int width, int height) = NULL, void (*GlutKeyboardFunc)(unsigned char key, int x, int y) = NULL, void (*GlutSpecialFunc)(int key, int x, int y) = NULL, void (*GlutMouseFunc)(int button, int state, int x, int y) = NULL, void (*GlutHoverFunc)(int x, int y) = NULL);
     
     // Destructor removes all GUI elements
     ~Glui2();
@@ -134,7 +134,6 @@ private:
     void (*GlutSpecialFunc)(int key, int x, int y);
     void (*GlutMouseFunc)(int button, int state, int x, int y);
     void (*GlutHoverFunc)(int x, int y);
-    void (*GlutDragFunc)(int x, int y);
     
     /*** Internal Callback Functions ***/
     
@@ -145,7 +144,6 @@ private:
     static void __SpecialFunc(int key, int x, int y);
     static void __MouseFunc(int button, int state, int x, int y);
     static void __HoverFunc(int x, int y);
-    static void __DragFunc(int x, int y);
     
     /*** Root GUI Tree Node & Active Node ***/
     

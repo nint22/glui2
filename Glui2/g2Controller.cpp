@@ -525,13 +525,13 @@ void g2Controller::__MouseHover(int x, int y)
     if(!GetVisibility())
         return;
     
-    // Update mouse click
+    // Update mouse hovering
     MouseHover(x, y);
     
-    // Are we in this object's volume?
-    if(InController(x, y))
-        ControllerState = g2ControllerState_Hover;
-    else
+    // Maintain the pressed state
+    if(InController(x, y) && ControllerState == g2ControllerState_Pressed)
+        __MouseDrag(x, y);
+    if(!InController(x, y))
         ControllerState = g2ControllerState_None;
     
     // Update all children

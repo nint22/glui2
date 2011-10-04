@@ -28,31 +28,52 @@ public:
     // Progress bar constructor
     g2Slider(g2Controller* Parent, g2Theme* MainTheme);
     
-    // Get access to the label that is centered on the button
-    g2Label* GetLabel();
+    // Add a live variable; pass NULL (or leave blank) to disconect
+    void SetLiveVariable(float* LiveValue = NULL);
+    
+    // Set the min / max bounds of the progress bar; defaults to [0.0, 1.0]
+    void SetBounds(float Lower, float Upper);
     
     // Set the current progress of this progress bar; accepts
     // values from 0 to 1 (floats)
     void SetProgress(float Progress);
     
-    // Add a live variable; pass NULL (or leave blank) to disconect
-    void SetLiveVariable(float* LiveValue = NULL);
+    // Return the current progress
+    float GetProgress();
+    
+    // Set the width of the button in pixels
+    void SetWidth(int Width);
     
 protected:
     
     // Render
     void Render();
     
+    // Keep moving the controller based on the user's dragging
+    void MouseDrag(int x, int y);
+    
+    // Used when releasing a drag
+    void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    
+    // Get the mouse position; used for drag icon placement
+    void MouseHover(int x, int y);
+    
     // Define controller geometry
     bool InController(int x, int y);
     
 private:
     
-    // Text label
-    g2Label* Label;
+    // Min / max bounds
+    float MinBound, MaxBound;
     
     // Current progress
     float Progress;
+    
+    // Actively dragging
+    bool IsDragging;
+    
+    // Width of the controller
+    int Width;
     
     // Live value
     float* LiveValue;

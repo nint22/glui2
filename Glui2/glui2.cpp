@@ -13,7 +13,7 @@ static Glui2* __G2_HANDLE__ = NULL;
 // Define the default theme file name
 static const char* __G2_DEFAULT_THEME__ = "g2Default.cfg";
 
-Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutReshapeFunc)(int width, int height), void (*GlutKeyboardFunc)(unsigned char key, int x, int y), void (*GlutSpecialFunc)(int key, int x, int y), void (*GlutMouseFunc)(int button, int state, int x, int y), void (*GlutHoverFunc)(int x, int y), void (*GlutDragFunc)(int x, int y))
+Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutReshapeFunc)(int width, int height), void (*GlutKeyboardFunc)(unsigned char key, int x, int y), void (*GlutSpecialFunc)(int key, int x, int y), void (*GlutMouseFunc)(int button, int state, int x, int y), void (*GlutHoverFunc)(int x, int y))
 {
     // Save self reference
     g2Assert(__G2_HANDLE__ == NULL, "Unable to allocate more than one instance of Glui2");
@@ -26,7 +26,6 @@ Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutResha
     this->GlutSpecialFunc = GlutSpecialFunc;
     this->GlutHoverFunc = GlutHoverFunc;
     this->GlutMouseFunc = GlutMouseFunc;
-    this->GlutDragFunc = GlutDragFunc;
     
     // Register all needed callbacks
     glutIdleFunc(__IdleFunc);
@@ -34,6 +33,7 @@ Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutResha
     glutKeyboardFunc(__KeyboardFunc);
     glutSpecialFunc(__SpecialFunc);
     glutPassiveMotionFunc(__HoverFunc);
+    glutMotionFunc(__HoverFunc); // Paired with above
     glutMouseFunc(__MouseFunc);
     
     // Attempt to load given theme file if not null
@@ -78,6 +78,7 @@ g2CheckBox* Glui2::AddCheckBox(int x, int y, const char* Text, __g2CallBack(call
     NewCheckBox->GetLabel()->SetText(Text);
     NewCheckBox->__WindowResizeEvent(WindowWidth, WindowHeight);
     NewCheckBox->SetCallback(callback);
+    NewCheckBox->SetLiveVariable(LiveCheckState);
     return NewCheckBox;
 }
 
@@ -104,6 +105,7 @@ g2RadioGroup* Glui2::AddRadioGroup(int x, int y, const char** Options, int Optio
     NewRadioGroup->SetPos(x, y);
     NewRadioGroup->__WindowResizeEvent(WindowWidth, WindowHeight);
     NewRadioGroup->SetCallback(callback);
+    NewRadioGroup->SetLiveVariable(LiveIndex);
     return NewRadioGroup;
 }
 
@@ -113,6 +115,7 @@ g2DropDown* Glui2::AddDropDown(int x, int y, __g2CallBack(callback), int* LiveIn
     NewDropDown->SetPos(x, y);
     NewDropDown->__WindowResizeEvent(WindowWidth, WindowHeight);
     NewDropDown->SetCallback(callback);
+    NewDropDown->SetLiveVariable(LiveIndex);
     return NewDropDown;
 }
 
@@ -135,6 +138,7 @@ g2Slider* Glui2::AddSlider(int x, int y, __g2CallBack(callback), float* LiveValu
     NewSlider->SetPos(x, y);
     NewSlider->__WindowResizeEvent(WindowWidth, WindowHeight);
     NewSlider->SetCallback(callback);
+    NewSlider->SetLiveVariable(LiveValue);
     return NewSlider;
 }
 
@@ -152,6 +156,7 @@ g2Spinner* Glui2::AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(call
     NewSpinner->SetPos(x, y);
     NewSpinner->__WindowResizeEvent(WindowWidth, WindowHeight);
     NewSpinner->SetCallback(callback);
+    NewSpinner->SetLiveVariable(LiveValue);
     return NewSpinner;
 }
 
@@ -276,14 +281,4 @@ void Glui2::__HoverFunc(int x, int y)
     // Mouse host
     if(__G2_HANDLE__->GlutHoverFunc != NULL)
         __G2_HANDLE__->GlutHoverFunc(x, y);
-}
-
-void Glui2::__DragFunc(int x, int y)
-{
-    // Drag self
-    __G2_HANDLE__->RootController->__MouseDrag(x, y);
-    
-    // Mouse host
-    if(__G2_HANDLE__->GlutDragFunc != NULL)
-        __G2_HANDLE__->GlutDragFunc(x, y);
 }

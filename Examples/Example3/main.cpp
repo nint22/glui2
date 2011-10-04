@@ -37,6 +37,10 @@ const int WindowHeight = 600;
 // Global Glui2 Handle
 Glui2* GluiHandle = NULL;
 
+// Global label and value to print the result from the g2Slider
+g2Label* SliderValue = NULL;
+float GlobalFloat = 0.5f;
+
 /*** Global Functions ***/
 
 // Main render function
@@ -50,6 +54,11 @@ void Render()
     // ...
     // Left empty on purpose
     // ...
+    
+    // Update g2Slider-demo label with new value
+    char Buffer[256];
+    sprintf(Buffer, "(%.2f)", GlobalFloat);
+    SliderValue->SetText(Buffer);
     
     // Explicitly call the Glui2 render last
     GluiHandle->Render();
@@ -255,10 +264,14 @@ void InitGlui2()
     GluiHandle->AddCheckBox(150, 490, "5. Example");
     
     /*** g2Slider ***/
-    TempLabel = GluiHandle->AddLabel(280, 410, "g2Slider");
+    TempLabel = GluiHandle->AddLabel(280, 410, "g2Slider:");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
     
-    GluiHandle->AddSlider(280, 430);
+    g2Slider* SampleSlider = GluiHandle->AddSlider(280, 430, NULL, &GlobalFloat);
+    SampleSlider->SetWidth(100);
+    
+    SliderValue = GluiHandle->AddLabel(345, 410, "(0.5)");
+    SliderValue->SetColor(0, 0, 0);
     
     /*** g2Panel ***/
     TempLabel = GluiHandle->AddLabel(410, 410, "g2Panel");
