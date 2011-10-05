@@ -23,6 +23,9 @@ g2DropDown::g2DropDown(g2Controller* Parent, g2Theme* MainTheme)
     ActiveIndex = 0;
     ActiveSelection = -1;
     
+    // Default width
+    SetWidth(0);
+    
     // default to not rolled out
     IsDragging = false;
     
@@ -93,6 +96,9 @@ void g2DropDown::SetOptions(const char** OptionLabels, int OptionCount)
     
     // Default the index to 0
     SetSelectionIndex(0);
+    
+    // Reset width
+    SetWidth(GetWidth());
 }
 
 void g2DropDown::SetSelectionIndex(int Index)

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		481C54A9143BDB8B00F3734F /* g2Blue.cfg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 481C54A6143BDAF200F3734F /* g2Blue.cfg */; };
+		481C54AA143BDB8B00F3734F /* g2Blue.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 481C54A7143BDAF200F3734F /* g2Blue.png */; };
 		4838848C143405CA009A5F90 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4838848B143405CA009A5F90 /* main.cpp */; };
 		4838848D143405DF009A5F90 /* default.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48388488143405CA009A5F90 /* default.png */; };
 		4838848E143405DF009A5F90 /* g2Default.cfg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48388489143405CA009A5F90 /* g2Default.cfg */; };
@@ -23,6 +25,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				481C54A9143BDB8B00F3734F /* g2Blue.cfg in CopyFiles */,
+				481C54AA143BDB8B00F3734F /* g2Blue.png in CopyFiles */,
 				4838848D143405DF009A5F90 /* default.png in CopyFiles */,
 				4838848E143405DF009A5F90 /* g2Default.cfg in CopyFiles */,
 				4838848F143405DF009A5F90 /* g2Default.png in CopyFiles */,
@@ -32,6 +36,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		481C54A6143BDAF200F3734F /* g2Blue.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = g2Blue.cfg; sourceTree = "<group>"; };
+		481C54A7143BDAF200F3734F /* g2Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = g2Blue.png; sourceTree = "<group>"; };
 		4838847214340594009A5F90 /* Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Example; sourceTree = BUILT_PRODUCTS_DIR; };
 		48388488143405CA009A5F90 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 		48388489143405CA009A5F90 /* g2Default.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = g2Default.cfg; sourceTree = "<group>"; };
@@ -76,6 +82,8 @@
 		48388486143405B5009A5F90 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				481C54A6143BDAF200F3734F /* g2Blue.cfg */,
+				481C54A7143BDAF200F3734F /* g2Blue.png */,
 				48388488143405CA009A5F90 /* default.png */,
 				48388489143405CA009A5F90 /* g2Default.cfg */,
 				4838848A143405CA009A5F90 /* g2Default.png */,
@@ -224,6 +232,7 @@
 				4838847D14340594009A5F90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

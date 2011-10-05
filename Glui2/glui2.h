@@ -86,7 +86,7 @@ public:
     
     g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
     
-    g2DropDown* AddDropDown(int x, int y, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
+    g2DropDown* AddDropDown(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
     
     g2Dialog* AddDialog(g2DialogType Type, const char* Message = NULL);
     

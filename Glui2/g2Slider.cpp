@@ -22,7 +22,7 @@ g2Slider::g2Slider(g2Controller* Parent, g2Theme* MainTheme)
     IsDragging = false;
     
     // Set the width to default value
-    GetTheme()->GetComponentSize(g2Theme_Slider, NULL, &Width);
+    SetWidth(0);
     
     // Default to no live value
     LiveValue = NULL;

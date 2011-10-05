@@ -30,11 +30,26 @@
 /*** Global Variables ***/
 
 // Window size
-const int WindowWidth = 600;
+const int WindowWidth = 800;
 const int WindowHeight = 600;
 
 // Global Glui2 Handle
 Glui2* GluiHandle = NULL;
+
+// Rendering state
+// 0 - Points, 1 - Lines, 2 - Flat surface
+g2DropDown* StyleController = NULL;
+
+// Distance (0) and pitch, yaw (1, 2)
+g2Spinner* PositionSliders[3];
+g2Label* PositionLabels[3];
+
+// Distance, pitch, yaw
+float Distance = 0, Pitch = 0, Yaw = 0;
+
+// Sliders and labels for colors (R, G, B)
+g2Slider* ColorSliders[3];
+g2Label* ColorLabels[3];
 
 /*** Global Functions ***/
 
@@ -45,10 +60,54 @@ void Render()
     glClearColor(0.92f, 0.94f, 0.97f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
-    // Custom rendering code here...
-    // ...
-    // Left empty on purpose
-    // ...
+    // Prepare for 3D rendering
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0f, float(WindowWidth) / float(WindowHeight), 1.0f, 1000.0f);		
+    glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_DEPTH);
+    
+    // Set line and point size
+    glPointSize(3.0f);
+    
+    // Update the distance / pitch / yaw
+    Distance = PositionSliders[0]->GetFloat();
+    Pitch = PositionSliders[1]->GetFloat();
+    Yaw = PositionSliders[2]->GetFloat();
+    
+    // Push for local transformations
+    glPushMatrix();
+        
+        // Change position as needed
+        gluLookAt(-10.0f * Distance, 4.0f * Distance, -5.0f * Distance, 0, 0, 0, 0, 1, 0);
+        glRotatef(Pitch, 1, 0, 0);
+        glRotatef(Yaw, 0, 1, 0);
+        
+        // Set color and draw
+        glColor3f(ColorSliders[0]->GetProgress(), ColorSliders[1]->GetProgress(), ColorSliders[2]->GetProgress());
+        
+        // Change rendering styles as needed...
+        if(StyleController->GetSelectionIndex() == 0)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+        else if(StyleController->GetSelectionIndex() == 1)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        else
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        
+        // Render torus
+        glutSolidTorus(0.2, 1.0, 6, 12);
+        
+    glPopMatrix();
+    
+    // Update the color labels
+    for(int i = 0; i < 3; i++)
+    {
+        // Create a text buffer to place the fraction in it
+        // Note the embeded trinary-comparison order, pretty awesome
+        char Buffer[256];
+        sprintf(Buffer, "Color %c: %.2f%%", (i == 0 ? 'R' : (i == 1 ? 'G' : 'B')), ColorSliders[i]->GetProgress() * 100.0f);
+        ColorLabels[i]->SetText(Buffer);
+    }
     
     // Explicitly call the Glui2 render last
     GluiHandle->Render();
@@ -141,7 +200,7 @@ void InitGLUT(int argc, char** argv)
 	glutInitWindowSize(WindowWidth, WindowHeight);
     
     // Create the window
-    glutCreateWindow("Glui2 Example 3");
+    glutCreateWindow("Glui2 Example 5");
     
     // Turn on alpha blending for textures
 	glEnable(GL_ALPHA_TEST);
@@ -158,108 +217,54 @@ void InitGlui2()
     GluiHandle = new Glui2("g2Default.cfg", NULL, Reshape);
     glutDisplayFunc(Render);
     
-    // Generate all the example GUI elements
-    // Note that some of these need supporting buttons
-    // to enable / test each individual feature
-    g2Label* TempLabel = NULL;
+    /*** Color Sliders & Labels ***/
+    for(int i = 0; i < 3; i++)
+    {
+        // Allocate, set position, and width
+        ColorSliders[i] = GluiHandle->AddSlider(20, 520 + i * 25);
+        ColorSliders[i]->SetWidth(170);
+        
+        ColorLabels[i] = GluiHandle->AddLabel(200, 518 + i * 25, "Color R/G/B");
+        ColorLabels[i]->SetColor(0, 0, 0);
+    }
     
-    /*** g2Label ***/
-    TempLabel = GluiHandle->AddLabel(20, 10, "g2Label");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
+    /*** Rendering Style ***/
+    const char* RenderingOptions[3];
+    RenderingOptions[0] = "1. Point-rendering";
+    RenderingOptions[1] = "2. Line-rendering";
+    RenderingOptions[2] = "3. Surface-rendering";
     
-    g2Label* SampleLabel = GluiHandle->AddLabel(20, 32, "This is\na sample\nlabel \x01");
-    SampleLabel->SetColor(0.9f, 0.0f, 0.0f);
-    SampleLabel->SetSize(1.25f);
+    StyleController = GluiHandle->AddDropDown(WindowWidth / 2 - 75, WindowHeight - 80, RenderingOptions, 3);
+    StyleController->SetWidth(175);
     
-    /** g2Button ***/
-    TempLabel = GluiHandle->AddLabel(150, 10, "g2Button");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    GluiHandle->AddButton(150, 32, "  Button! ");
-    g2Button* SampleButton = GluiHandle->AddButton(150, 52, "Colorized!");
-    SampleButton->SetColor(1.0f, 0.6f, 0.2f);
-    SampleButton = GluiHandle->AddButton(150, 72, "Disabled!!");
-    SampleButton->SetDisabled(true);
-    
-    /*** g2TextBox ***/
-    TempLabel = GluiHandle->AddLabel(280, 10, "g2Dialog");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    GluiHandle->AddButton(280, 30, "Test Dialog", DialogShow);
-    GluiHandle->AddButton(280, 60, "1. Open File... ", DialogOpen);
-    GluiHandle->AddButton(280, 80, "2. Save File... ", DialogSave);
-    
-    /*** g2TextField ***/
-    TempLabel = GluiHandle->AddLabel(410, 10, "g2TextField");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    GluiHandle->AddTextField(415, 30);
-    GluiHandle->AddTextField(415, 55, "User Name")->SetWidth(80);
-    GluiHandle->AddTextField(415, 80, "Password...")->SetWidth(80);
-    
-    /*** g2Console ***/
-    TempLabel = GluiHandle->AddLabel(20, 210, "g2Console");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    // TODO... need to install callback
-    g2Button* ConsoleButton = GluiHandle->AddButton(20, 230, "Toggle console");
-    ConsoleButton->SetCallback(ToggleConsole);
-    
-    /*** g2Spinner ***/
-    TempLabel = GluiHandle->AddLabel(150, 210, "g2Spinner");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    GluiHandle->AddSpinner(150, 230, g2SpinnerType_Int);
-    GluiHandle->AddSpinner(150, 245, g2SpinnerType_Float);
-    
-    /*** g2DropDown ***/
-    TempLabel = GluiHandle->AddLabel(280, 210, "g2DropDown");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    g2DropDown* DropDown = GluiHandle->AddDropDown(280, 230);
-    DropDown->SetWidth(80);
-    //DropDown->AddOptions(Options);
-    
-    /*** g2ProgressBar ***/
-    TempLabel = GluiHandle->AddLabel(410, 210, "g2ProgressBar");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    GluiHandle->AddProgressBar(410, 240);
-    
-    /*** g2RadioGroup ***/
-    TempLabel = GluiHandle->AddLabel(20, 410, "g2RadioGroup");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    const char* Options[3];
-    Options[0] = "1. Hello";
-    Options[1] = "2. Red";
-    Options[2] = "3. Phone";
-    GluiHandle->AddRadioGroup(20, 430, Options, 3);
-    
-    /*** g2CheckBox ***/
-    TempLabel = GluiHandle->AddLabel(150, 410, "g2CheckBox");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    GluiHandle->AddCheckBox(150, 430, "1. Goobye");
-    GluiHandle->AddCheckBox(150, 450, "2. Green");
-    GluiHandle->AddCheckBox(150, 470, "3. Drone");
-    
-    /*** g2Slider ***/
-    TempLabel = GluiHandle->AddLabel(280, 410, "g2Slider");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    GluiHandle->AddSlider(280, 430);
-    
-    /*** g2Panel ***/
-    TempLabel = GluiHandle->AddLabel(410, 410, "g2Panel");
-    TempLabel->SetColor(0.0f, 0.0f, 0.0f);
-    
-    g2Panel* Panel = GluiHandle->AddPanel(g2Anchor_None);
-    Panel->SetPos(410, 430);
-    Panel->SetSize(64, 64);
+    /*** Color Sliders & Labels ***/
+    for(int i = 0; i < 3; i++)
+    {
+        // Allocate, set position, and width
+        PositionSliders[i] = GluiHandle->AddSpinner(530, 510 + i * 25, g2SpinnerType_Float);
+        PositionSliders[i]->SetWidth(80);
+        
+        // Set the resolution of the movement rotations
+        if(i == 0)
+        {
+            PositionSliders[i]->SetFloat(1.0f);
+            PositionSliders[i]->SetIncrement(0.05f);
+        }
+        else
+            PositionSliders[i]->SetIncrement(5.0f);
+        
+        // Set position / rotation
+        if(i == 0)
+            PositionLabels[i] = GluiHandle->AddLabel(622, 515 + i * 25, "Distance");
+        else if(i ==1)
+            PositionLabels[i] = GluiHandle->AddLabel(622, 515 + i * 25, "Pitch");
+        else
+            PositionLabels[i] = GluiHandle->AddLabel(622, 515 + i * 25, "Yaw");
+        PositionLabels[i]->SetColor(0, 0, 0);
+    }
     
     /*** Quit Button ***/
-    GluiHandle->AddButton(WindowWidth / 2 - 50, WindowHeight - 40, "   Quit Demo   ", Quit);
+    GluiHandle->AddButton(WindowWidth / 2 - 50, WindowHeight - 100, "   Quit Demo   ", Quit);
 }
 
 /*** Main Application Entry Point ***/

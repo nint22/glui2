@@ -109,11 +109,12 @@ g2RadioGroup* Glui2::AddRadioGroup(int x, int y, const char** Options, int Optio
     return NewRadioGroup;
 }
 
-g2DropDown* Glui2::AddDropDown(int x, int y, __g2CallBack(callback), int* LiveIndex)
+g2DropDown* Glui2::AddDropDown(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback), int* LiveIndex)
 {
     g2DropDown* NewDropDown = new g2DropDown(RootController, &MainTheme);
     NewDropDown->SetPos(x, y);
     NewDropDown->__WindowResizeEvent(WindowWidth, WindowHeight);
+    NewDropDown->SetOptions(Options, OptionCount);
     NewDropDown->SetCallback(callback);
     NewDropDown->SetLiveVariable(LiveIndex);
     return NewDropDown;
