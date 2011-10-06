@@ -195,7 +195,7 @@ void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)
         // If left/right, move the cursor
         if(key == GLUT_KEY_LEFT && CursorIndex > 0)
             CursorIndex--;
-        else if(key == GLUT_KEY_RIGHT && CursorIndex < strlen(TextBuffer))
+        else if(key == GLUT_KEY_RIGHT && CursorIndex < (int)strlen(TextBuffer))
             CursorIndex++;
     }
     // Else, normal character
@@ -222,7 +222,7 @@ void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)
             {
                 // Delete this character by shifting everything from right to left by 1
                 // Note that this copies the null terminator
-                for(int i = CursorIndex; i <= strlen(TextBuffer); i++)
+                for(size_t i = CursorIndex; i <= strlen(TextBuffer); i++)
                     TextBuffer[i - 1] = TextBuffer[i];
                 
                 // Decrease the cursor position
@@ -233,13 +233,13 @@ void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)
         else if(key == 127)
         {
             // Is there anything to delete?
-            if(CursorIndex >= strlen(TextBuffer))
+            if(CursorIndex >= (int)strlen(TextBuffer))
                 return;
             else
             {
                 // Delete this character by shifting everything from right to left by 1
                 // Note that this copies the null terminator
-                for(int i = CursorIndex; i < strlen(TextBuffer); i++)
+                for(size_t i = CursorIndex; i < strlen(TextBuffer); i++)
                     TextBuffer[i] = TextBuffer[i + 1];
                 
                 // Cursor does not move

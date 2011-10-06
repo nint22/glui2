@@ -51,7 +51,7 @@ void g2Dialog::Show()
             OPENFILENAME ofn;
             ZeroMemory(&ofn, sizeof(ofn));
             ofn.lStructSize = sizeof(ofn);
-            ofn.hwndOwner = hwnd;
+            ofn.hwndOwner = NULL;
             ofn.lpstrFilter = "All Files (*.*)\0*.*\0";
             ofn.lpstrFile = szFileName;
             ofn.nMaxFile = MAX_PATH;
@@ -66,7 +66,7 @@ void g2Dialog::Show()
             }
             else
             {
-                strcpy(strcpy, "");
+                strcpy(ResultBuffer, "");
                 Selection = g2DialogResult_Cancel;
             }
         }
@@ -75,18 +75,19 @@ void g2Dialog::Show()
             // Based on:
             // http://msdn.microsoft.com/en-us/library/windows/desktop/dd183519(v=VS.85).aspx
             
-            szFile[0] = '\0'; 
+            char szFileName[MAX_PATH] = "";
             
+			OPENFILENAME Ofn;
             Ofn.lStructSize = sizeof(OPENFILENAME); 
-            Ofn.hwndOwner = hWnd; 
-            Ofn.lpstrFilter = szFilter; 
-            Ofn.lpstrFile= szFile; 
-            Ofn.nMaxFile = sizeof(szFile)/ sizeof(*szFile); 
-            Ofn.lpstrFileTitle = szFileTitle; 
-            Ofn.nMaxFileTitle = sizeof(szFileTitle); 
+            Ofn.hwndOwner = NULL; 
+            Ofn.lpstrFilter = "*.*"; 
+            Ofn.lpstrFile= szFileName; 
+            Ofn.nMaxFile = sizeof(szFileName)/ sizeof(*szFileName); 
+            Ofn.lpstrFileTitle = "FileTitle";
+            Ofn.nMaxFileTitle = sizeof("FileTitle"); 
             Ofn.lpstrInitialDir = (LPSTR)NULL; 
             Ofn.Flags = OFN_SHOWHELP | OFN_OVERWRITEPROMPT; 
-            Ofn.lpstrTitle = szTitle; 
+            Ofn.lpstrTitle = "Title!"; 
             
             // Display the Filename common dialog box. The  
             // filename specified by the user is passed  
@@ -101,7 +102,7 @@ void g2Dialog::Show()
             }
             else
             {
-                strcpy(strcpy, "");
+                strcpy(ResultBuffer, "");
                 Selection = g2DialogResult_Cancel;
             }
         }

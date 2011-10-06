@@ -23,30 +23,30 @@ class g2RadioGroup : public g2Controller
 public:
     
     // Radio group constructor
-    g2RadioGroup(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2RadioGroup(g2Controller* Parent, g2Theme* MainTheme);
     
     // Release internals
-    ~g2RadioGroup();
+    __g2EXPORT ~g2RadioGroup();
     
     // Set the options via an array of strings
-    void SetOptions(const char** OptionLabels, int OptionCount);
+    __g2EXPORT void SetOptions(const char** OptionLabels, int OptionCount);
     
     // Get the current selection; defaults to 0
-    int GetSelectionIndex();
+    __g2EXPORT int GetSelectionIndex();
     
     // Add a live variable; pass NULL (or leave blank) to disconect
-    void SetLiveVariable(int* LiveIndex = NULL);
+    __g2EXPORT void SetLiveVariable(int* LiveIndex = NULL);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
     // Get the mouse position; used to go either up or down on spinner
-    void MouseHover(int x, int y);
+    __g2EXPORT void MouseHover(int x, int y);
     
 private:
     

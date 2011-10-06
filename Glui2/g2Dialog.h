@@ -43,19 +43,19 @@ class g2Dialog
 public:
     
     // Dialog constructor creates either an open or a save dialog
-    g2Dialog(g2DialogType Type, const char* Message);
+    __g2EXPORT g2Dialog(g2DialogType Type, const char* Message);
     
     // Destructor explicitly takes down any open modals
-    ~g2Dialog();
+    __g2EXPORT ~g2Dialog();
     
     // Show the dialog
-    void Show();
+    __g2EXPORT void Show();
     
     // The user's choice is given; if the result is a save
     // or open event, and the given result reference pointer is not null
     // then the given pointer is allocated a buffer of the user's content
     // and must be deleted explicitly by the user
-    g2DialogResult GetInput(char** result = NULL);
+    __g2EXPORT g2DialogResult GetInput(char** result = NULL);
     
 private:
     

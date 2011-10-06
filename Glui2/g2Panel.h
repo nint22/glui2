@@ -37,32 +37,34 @@ class g2Panel : public g2Controller
 public:
     
     // Panel constructor
-    g2Panel(g2Controller* Parent, g2Theme* MainTheme, g2Anchor Anchors);
+    __g2EXPORT g2Panel(g2Controller* Parent, g2Theme* MainTheme, g2Anchor Anchors);
     
     // Add a controller (will remove controller from the current parent and
     // re-assign the parent to this panel)
-    void AddController(g2Controller* Child);
+    __g2EXPORT void AddController(g2Controller* Child);
     
     // Set the anchor style
-    void SetAnchors(g2Anchor Anchors);
+    __g2EXPORT void SetAnchors(g2Anchor Anchors);
     
     // Explicitly set the size of this panel, thus turning it into a window-based shap
-    void SetSize(int NewWidth, int NewHeight);
+    __g2EXPORT void SetSize(int NewWidth, int NewHeight);
 
     // Set the overlap ratio
-    void SetSize(float Ratio);
+    __g2EXPORT void SetSize(float Ratio);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
     // Window resize event
-    void WindowResizeEvent(int NewWidth, int NewHeight);
+    __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);
     
+private:
+
     // Anchor flags
     g2Anchor Anchors;
     

@@ -27,41 +27,41 @@ class g2DropDown : public g2Controller
 public:
     
     // Drop down
-    g2DropDown(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2DropDown(g2Controller* Parent, g2Theme* MainTheme);
     
     // Explicitly set the width of controller
-    void SetWidth(int Width);
+    __g2EXPORT void SetWidth(int Width);
     
     // Return the width of the controller
-    int GetWidth();
+    __g2EXPORT int GetWidth();
     
     // Set the options via an array of strings
-    void SetOptions(const char** OptionLabels, int OptionCount);
+    __g2EXPORT void SetOptions(const char** OptionLabels, int OptionCount);
     
     // Set the current selection
-    void SetSelectionIndex(int Index);
+    __g2EXPORT void SetSelectionIndex(int Index);
     
     // Get the current selection; defaults to 0
-    int GetSelectionIndex();
+    __g2EXPORT int GetSelectionIndex();
     
     // Add a live variable; pass NULL (or leave blank) to disconect
-    void SetLiveVariable(int* LiveIndex = NULL);
+    __g2EXPORT void SetLiveVariable(int* LiveIndex = NULL);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
 public:
     
     // Used when releasing a drag
-    void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    __g2EXPORT void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
     
     // Keep the mouse known so we update the indexing
-    void MouseHover(int x, int y);
+    __g2EXPORT void MouseHover(int x, int y);
     
 private:
     
@@ -82,9 +82,6 @@ private:
     
     // Actively dragging
     bool IsDragging;
-    
-    // Alpha value when a button isn't selected
-    static const float DeselectedAlpha = 0.5f;
     
     // Live value
     int* LiveIndex;

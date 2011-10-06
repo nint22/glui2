@@ -25,35 +25,35 @@ class g2Console : public g2Controller
 public:
     
     // Console constructor
-    g2Console(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2Console(g2Controller* Parent, g2Theme* MainTheme);
     
     // Release the i/o buffers
-    ~g2Console();
+    __g2EXPORT ~g2Console();
     
     // Print to the buffer
-    void printf(const char* format, ...);
+    __g2EXPORT void printf(const char* format, ...);
     
     // Read off the latest string command the user as typed in; based on FIFO order
     // May return null if there is nothing in the buffer
     // Note that the returned buffer MUST be released when you are done with it
-    char* gets();
+    __g2EXPORT char* gets();
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Update
-    void Update(float dT);
+    __g2EXPORT void Update(float dT);
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
     // Gets the screen width and heigh
-    void WindowResizeEvent(int NewWidth, int NewHeight);
+    __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);
     
     // Handle user inputs
-    void KeyEvent(unsigned char key, bool IsSpecial);
+    __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);
     
 private:
     

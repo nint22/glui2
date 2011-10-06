@@ -15,6 +15,7 @@ g2RadioGroup::g2RadioGroup(g2Controller* Parent, g2Theme* MainTheme)
 {
     // Set the labels to null
     ActiveIndex = 0;
+	Labels = NULL;
     
     // Default to no live value
     LiveIndex = NULL;

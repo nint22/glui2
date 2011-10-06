@@ -67,50 +67,50 @@ public:
     // Width and height are how big the UI window is; based on the anchor, either the width or hieght will be ignored (i.e. left / right anchor ignores height)
     // windowPlacement is a bitwise structure that can be combined (i.e. using "|" ) to define window anchor
     // ThemFile is the location of the theme file to load
-    Glui2(const char* ThemeFile = NULL, void (*GlutIdleFunc)(void) = NULL, void (*GlutReshapeFunc)(int width, int height) = NULL, void (*GlutKeyboardFunc)(unsigned char key, int x, int y) = NULL, void (*GlutSpecialFunc)(int key, int x, int y) = NULL, void (*GlutMouseFunc)(int button, int state, int x, int y) = NULL, void (*GlutHoverFunc)(int x, int y) = NULL);
+    __g2EXPORT Glui2(const char* ThemeFile = NULL, void (*GlutIdleFunc)(void) = NULL, void (*GlutReshapeFunc)(int width, int height) = NULL, void (*GlutKeyboardFunc)(unsigned char key, int x, int y) = NULL, void (*GlutSpecialFunc)(int key, int x, int y) = NULL, void (*GlutMouseFunc)(int button, int state, int x, int y) = NULL, void (*GlutHoverFunc)(int x, int y) = NULL);
     
     // Destructor removes all GUI elements
-    ~Glui2();
+    __g2EXPORT ~Glui2();
     
     /*** Factory Methods ***/
     
-    g2Button* AddButton(int x, int y, const char* Label = NULL, __g2CallBack(callback) = 0);
+    __g2EXPORT g2Button* AddButton(int x, int y, const char* Label = NULL, __g2CallBack(callback) = 0);
     
-    g2Label* AddLabel(int x, int y, const char* Text = NULL);
+    __g2EXPORT g2Label* AddLabel(int x, int y, const char* Text = NULL);
     
-    g2CheckBox* AddCheckBox(int x, int y, const char* Text, __g2CallBack(callback) = 0, bool* LiveCheckState = NULL);
+    __g2EXPORT g2CheckBox* AddCheckBox(int x, int y, const char* Text, __g2CallBack(callback) = 0, bool* LiveCheckState = NULL);
     
-    g2Console* AddConsole();
+    __g2EXPORT g2Console* AddConsole();
     
-    g2TextField* AddTextField(int x, int y, const char* Text = NULL);
+    __g2EXPORT g2TextField* AddTextField(int x, int y, const char* Text = NULL);
     
-    g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
+    __g2EXPORT g2RadioGroup* AddRadioGroup(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
     
-    g2DropDown* AddDropDown(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
+    __g2EXPORT g2DropDown* AddDropDown(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback) = 0, int* LiveIndex = NULL);
     
-    g2Dialog* AddDialog(g2DialogType Type, const char* Message = NULL);
+    __g2EXPORT g2Dialog* AddDialog(g2DialogType Type, const char* Message = NULL);
     
-    g2Panel* AddPanel(g2Anchor AnchorFlags);
+    __g2EXPORT g2Panel* AddPanel(g2Anchor AnchorFlags);
     
-    g2Slider* AddSlider(int x, int y, __g2CallBack(callback) = 0, float* LiveValue = NULL);
+    __g2EXPORT g2Slider* AddSlider(int x, int y, __g2CallBack(callback) = 0, float* LiveValue = NULL);
     
-    g2ProgressBar* AddProgressBar(int x, int y);
+    __g2EXPORT g2ProgressBar* AddProgressBar(int x, int y);
     
-    g2Spinner* AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(callback) = 0, float* LiveValue = NULL);
+    __g2EXPORT g2Spinner* AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(callback) = 0, float* LiveValue = NULL);
     
     /*** Accessors to Parent and Theme ***/
     
     // Get the root parent controller
-    g2Controller* GetRootController();
+    __g2EXPORT g2Controller* GetRootController();
     
     // Get active theme
-    g2Theme* GetMainTheme();
+    __g2EXPORT g2Theme* GetMainTheme();
     
     /*** Internal Rendering & Update ***/
     
     // Render glui2 event
     // Draw all glui2 elements on-screen
-    void Render();
+    __g2EXPORT void Render();
     
 private:
     

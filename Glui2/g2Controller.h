@@ -39,39 +39,39 @@ public:
     // Initialize self and self-register to parent; note that
     // this constructor is private because new controllers should
     // be created using the glui2 main class's factory methods
-    g2Controller(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2Controller(g2Controller* Parent, g2Theme* MainTheme);
     
     // Default destructor
-    ~g2Controller();
+    __g2EXPORT ~g2Controller();
     
     /*** Render Options ***/
     
     // Set visibility (if invisible, it is both deactivated AND invisible)
-    void SetVisibility(bool Visible);
+    __g2EXPORT void SetVisibility(bool Visible);
     
     // Get visability
-    bool GetVisibility();
+    __g2EXPORT bool GetVisibility();
     
     // Set color (defaults to white)
-    void SetColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
+    __g2EXPORT void SetColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
     
     // Get color (Each individual color is optional)
-    void GetColor(float* r = NULL, float* g = NULL, float* b = NULL, float* a = NULL);
+    __g2EXPORT void GetColor(float* r = NULL, float* g = NULL, float* b = NULL, float* a = NULL);
     
     // Set enabled / disabled modes
-    void SetDisabled(bool Disabled);
+    __g2EXPORT void SetDisabled(bool Disabled);
     
     // Get enabled / disabled modes
-    bool GetDisabled();
+    __g2EXPORT bool GetDisabled();
     
     // Set position
-    void SetPos(int x, int y);
+    __g2EXPORT void SetPos(int x, int y);
     
     // Get x and y position
-    void GetPos(int* x = NULL, int* y = NULL);
+    __g2EXPORT void GetPos(int* x = NULL, int* y = NULL);
     
     // Returns true if we are the active controller
-    bool GetActive();
+    __g2EXPORT bool GetActive();
     
     /*** Active State Management ***/
     
@@ -80,76 +80,76 @@ public:
     // controller is the controller that can be directly clicked on
     // as determined using "InController(...)" and the the lowesr-rendering
     // order which means the visibility top-most layer
-    g2Controller* GetController(int x, int y);
+    __g2EXPORT g2Controller* GetController(int x, int y);
     
     // Set a callback function for a full clickthrough event
     // Note that if there is no argument passed, the callback is set back to none
-    void SetCallback(__g2CallBack(PressedCallback) = 0);
+    __g2EXPORT void SetCallback(__g2CallBack(PressedCallback) = 0);
     
     // Returns true if the mouse is in the controller's geometry (Required to overload)
-    virtual bool InController(int x, int y);
+    __g2EXPORT virtual bool InController(int x, int y);
     
 protected:
     
     /*** Update, Render, and Input Handlers ***/
     
     // Update object
-    virtual void Update(float dT);
+    __g2EXPORT virtual void Update(float dT);
     
     // Render object (Required to overload)
-    virtual void Render();
+    __g2EXPORT virtual void Render();
     
     // Window resize event
-    virtual void WindowResizeEvent(int NewWidth, int NewHeight);
+    __g2EXPORT virtual void WindowResizeEvent(int NewWidth, int NewHeight);
     
     // Glut keyboard event callback (When a full press cycle happens)
     // If the "IsSpecial" flag is true, it means it is a system key (such as up/down/F1/Print) and not
     // an actual keyboard character
-    virtual void KeyEvent(unsigned char key, bool IsSpecial = false);
+    __g2EXPORT virtual void KeyEvent(unsigned char key, bool IsSpecial = false);
     
     // Glut mouse event callback for a full click
-    virtual void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    __g2EXPORT virtual void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
     
     // Glut mouse event callback for a hover
-    virtual void MouseHover(int x, int y);
+    __g2EXPORT virtual void MouseHover(int x, int y);
     
     // Glut mouse event callback for a drag
-    virtual void MouseDrag(int x, int y);
+    __g2EXPORT virtual void MouseDrag(int x, int y);
     
     /*** Internal Rendering Components & Helpers ***/
     
     // Draws a given source location to the on-screen descrition coordinates
-    void DrawComponent(int DestX, int DestY, g2ThemeElement ElementType);
+    __g2EXPORT void DrawComponent(int DestX, int DestY, g2ThemeElement ElementType);
     
     // Draws a given source location and size to the on-screen descrition coordinates
-    void DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType);
+    __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType);
     
     // Draws a given source location to the on-screen descrition coordinates
-    void DrawComponent(int DestX, int DestY, const char* ElementName);
+    __g2EXPORT void DrawComponent(int DestX, int DestY, const char* ElementName);
     
     // Draws a given source location and size to the on-screen descrition coordinates
-    void DrawComponent(int DestX, int DestY, int DestW, int DestH, const char* ElementName);
+    __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, const char* ElementName);
     
     // Draws a given rectangle and source textures; texture ID defaults to the theme texture
-    void DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID = -1);
+    __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID = -1);
     
     // Draw a character with 1-1 scale
-    void DrawCharacter(int DestX, int DestY, char Character);
+    __g2EXPORT void DrawCharacter(int DestX, int DestY, char Character);
     
     // Draw a character with given scales
-    void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, char Character);
+    __g2EXPORT void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, char Character);
     
     // Draw a character with given scales and a 4-channel color (RGBA)
-    void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, float R, float G, float B, float A, char Character);
+    __g2EXPORT void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, float R, float G, float B, float A, char Character);
     
     // Accessor to the global theme
-    g2Theme* GetTheme();
+    __g2EXPORT g2Theme* GetTheme();
     
     // Accessor to parent pointer
-    g2Controller* GetParent();
+    __g2EXPORT g2Controller* GetParent();
     
     // Get the controller state
-    g2ControllerState GetControllerState();
+    __g2EXPORT g2ControllerState GetControllerState();
     
 private:
     

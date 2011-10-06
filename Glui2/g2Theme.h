@@ -69,7 +69,11 @@
 #include "g2Config.h"
 
 // External image loading
-#include "SOIL.h"
+#ifdef _WIN32
+    #include "../SOIL/SOIL.h"
+#else
+    #include "SOIL.h"
+#endif
 
 // Total number of element types
 static const unsigned int g2ThemeElement_Count = 27;
@@ -125,7 +129,7 @@ enum g2ThemeElement
 
 // Look-up table between the theme enumeration and
 // the standard theme elements
-static const char g2ThemeElement_Names[g2ThemeElement_Count][__G2CONFIG_KEYSIZE__] =
+static const char g2ThemeElement_Names[g2ThemeElement_Count][g2Config_KeySize] =
 {
     "Button",
     "Button_Pressed",
@@ -162,38 +166,38 @@ class g2Theme
 public:
     
     // Standard constructor and destructor
-    g2Theme();
-    ~g2Theme();
+    __g2EXPORT g2Theme();
+    __g2EXPORT ~g2Theme();
     
     // Attempts to load a configuration file
-    void Load(const char* ThemeFile);
+    __g2EXPORT void Load(const char* ThemeFile);
     
     // Access a given UI component's bitmap data based on an enumeration
     // which inturn looks it up in the "g2ThemeElement_Names" string-table
     // Returns true if found, else false
-    bool GetComponent(g2ThemeElement Element, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
+    __g2EXPORT bool GetComponent(g2ThemeElement Element, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
     // Access a given UI component's bitmap data based on the configuration name
     // Returns true if found, else false
-    bool GetComponent(const char* ElementName, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
+    __g2EXPORT bool GetComponent(const char* ElementName, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
     // Access a given UI component's bitwise width and height based on an enumeration
-    bool GetComponentSize(g2ThemeElement Element, int* width = NULL, int* height = NULL);
+    __g2EXPORT bool GetComponentSize(g2ThemeElement Element, int* width = NULL, int* height = NULL);
     
     // Access a given UI component's bitwise width and height based on a string
-    bool GetComponentSize(const char* ElementName, int* width = NULL, int* height = NULL);
+    __g2EXPORT bool GetComponentSize(const char* ElementName, int* width = NULL, int* height = NULL);
     
     // Get a bitmap's individual position
-    void GetCharacter(char character, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
+    __g2EXPORT void GetCharacter(char character, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
     // Get a character's size
-    void GetCharacterSize(int* width = NULL, int* height = NULL);
+    __g2EXPORT void GetCharacterSize(int* width = NULL, int* height = NULL);
     
     // Get the them texture ID
-    GLuint GetTextureID();
+    __g2EXPORT GLuint GetTextureID();
     
     // Get the caracther maps texture ID
-    GLuint GetCharacterMapID();
+    __g2EXPORT GLuint GetCharacterMapID();
     
 private:
     

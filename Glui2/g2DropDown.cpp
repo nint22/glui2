@@ -6,9 +6,12 @@
  This source file is developed and maintained by:
  + Jeremy Bridon jbridon@cores2.com
  
- ***************************************************************/
+***************************************************************/
 
 #include "g2DropDown.h"
+
+// Alpha value when a button isn't selected
+static const float DeselectedAlpha = 0.5f;
 
 g2DropDown::g2DropDown(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
@@ -20,6 +23,7 @@ g2DropDown::g2DropDown(g2Controller* Parent, g2Theme* MainTheme)
     
     // Default options
     OptionCount = 0;
+	Buttons = NULL;
     ActiveIndex = 0;
     ActiveSelection = -1;
     

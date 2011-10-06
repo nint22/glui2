@@ -23,27 +23,27 @@ class g2CheckBox : public g2Controller
 public:
     
     // Checkbox constructor
-    g2CheckBox(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2CheckBox(g2Controller* Parent, g2Theme* MainTheme);
     
     // Get access to the label
-    g2Label* GetLabel();
+    __g2EXPORT g2Label* GetLabel();
     
     // Return the check state
-    bool IsChecked();
+    __g2EXPORT bool IsChecked();
     
     // Set the check state
-    void SetChecked(bool Check);
+    __g2EXPORT void SetChecked(bool Check);
     
     // Add a live variable; pass NULL (or leave blank) to disconect
-    void SetLiveVariable(bool* LiveCheckState = NULL);
+    __g2EXPORT void SetLiveVariable(bool* LiveCheckState = NULL);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
 private:
     

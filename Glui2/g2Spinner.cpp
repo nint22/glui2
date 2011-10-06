@@ -10,6 +10,15 @@
 
 #include "g2Spinner.h"
 
+
+// How much time it takes before we update the
+// spinner based on the user holding down
+static const float UpdateRate = 0.05f;
+
+// Number of seconds user needs to wait before
+// auto-update occures 
+static const float UpdateMin = 0.4f;
+
 g2Spinner::g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Type)
 : g2Controller(Parent, MainTheme)
 {

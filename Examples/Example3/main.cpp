@@ -235,9 +235,8 @@ void InitGlui2()
     Options[1] = "2. Apple";
     Options[2] = "3. Orange";
     
-    g2DropDown* DropDown = GluiHandle->AddDropDown(280, 230);
+    g2DropDown* DropDown = GluiHandle->AddDropDown(280, 230, Options, 3);
     DropDown->SetWidth(100);
-    DropDown->SetOptions(Options, 3);
     
     /*** g2ProgressBar ***/
     TempLabel = GluiHandle->AddLabel(410, 210, "g2ProgressBar");

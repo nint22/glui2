@@ -27,29 +27,29 @@ class g2Label : public g2Controller
 public:
     
     // Label constructor
-    g2Label(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2Label(g2Controller* Parent, g2Theme* MainTheme);
     
     // Label destructor
-    ~g2Label();
+    __g2EXPORT ~g2Label();
     
     // Set the text string; new lines WILL be printed on following lines
-    void SetText(const char* Text);
+    __g2EXPORT void SetText(const char* Text);
     
     // Return a constant buffer to the given string; should never be modified
     // The returned buffer may or may not exist soon after the direct call; you should
     // copy the buffer as soon as possible if it is to not be immediately used
-    const char* GetText();
+    __g2EXPORT const char* GetText();
     
     // Set the size of the output (as a ratio)
-    void SetSize(float Scale);
+    __g2EXPORT void SetSize(float Scale);
     
     // Get the width of the text label in pixels
-    int GetWidth();
+    __g2EXPORT int GetWidth();
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
 private:
     

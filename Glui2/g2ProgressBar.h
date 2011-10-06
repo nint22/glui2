@@ -24,30 +24,30 @@ class g2ProgressBar : public g2Controller
 public:
     
     // Progress bar constructor
-    g2ProgressBar(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2ProgressBar(g2Controller* Parent, g2Theme* MainTheme);
     
     // Get access to the label that is centered on the button
-    const g2Label* GetLabel();
+    __g2EXPORT const g2Label* GetLabel();
     
     // Set the min / max bounds of the progress bar; defaults to [0.0, 1.0]
-    void SetBounds(float Lower, float Upper);
+    __g2EXPORT void SetBounds(float Lower, float Upper);
     
     // Set the current progress of this progress bar; default bounds are [0.0, 1.0]
-    void SetProgress(float Progress);
+    __g2EXPORT void SetProgress(float Progress);
     
     // Set the button's text; note that the button will grow if needed
-    void SetText(const char* Text);
+    __g2EXPORT void SetText(const char* Text);
     
     // Set the width of the button in pixels
-    void SetWidth(int Width);
+    __g2EXPORT void SetWidth(int Width);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
 private:
     

@@ -19,8 +19,19 @@
 // Window includes
 #ifdef _WIN32
     
+	// Supress std-c lib buffer-overflow warnings
+    #pragma warning(disable:4996)
     #include <windows.h>
-    #include <GL/glut.h>
+    #include <gl/glut.h>
+    #include <gl/glext.h>
+    
+    // Windows doesn't implement fmin/fmax, so instead
+    // we do a macro-replacement
+    #define fmax max
+    #define fmin min
+    
+    // Define shorthand the DLL export macro
+    #define __g2EXPORT __declspec(dllexport)
     
 // Linux includes
 #elif __linux__
@@ -37,6 +48,9 @@
     #include <Carbon/Carbon.h>
     #include <execinfo.h>
     #include <sys/time.h>
+    
+    // Nothing to define for Apple's library creation
+    #define __g2EXPORT
 
 #endif
 
@@ -51,7 +65,7 @@
 
 // Assertion macro to help debug with critical-failure assertions
 #define g2Assert(...) __g2Assert(__FILE__, __LINE__, __VA_ARGS__)
-void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char* FailText, ...);
+__g2EXPORT void __g2Assert(const char* FileName, int LineNumber, bool Assertion, const char* FailText, ...);
 
 /*** Declare helper enumerations of the mouse press states based on GLUT definitions ***/
 
@@ -80,7 +94,7 @@ enum g2MouseClick
     {
     public:
         
-        g2Clock(bool StartTiming = false)
+        __g2EXPORT g2Clock(bool StartTiming = false)
         {
             // Setup the high-resolution timer
             QueryPerformanceFrequency(&TicksPerSec);
@@ -96,20 +110,20 @@ enum g2MouseClick
                 Start();
         }
         
-        void Stop()
+        __g2EXPORT void Stop()
         {
             QueryPerformanceCounter(&endTime);
         }
         
         // In seconds
-        float GetTime()
+        __g2EXPORT float GetTime()
         {
             // Measure the cycle time
             cpuTime.QuadPart = endTime.QuadPart - startTime.QuadPart;
             return (float)cpuTime.QuadPart / (float)TicksPerSec.QuadPart;
         }
         
-        void Start()
+        __g2EXPORT void Start()
         {
             QueryPerformanceCounter(&startTime);
         }

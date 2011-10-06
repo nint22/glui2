@@ -27,42 +27,42 @@ class g2TextField : public g2Controller
 public:
     
     // Standard constructor
-    g2TextField(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2TextField(g2Controller* Parent, g2Theme* MainTheme);
     
     // Set the text
-    void SetText(const char* Text);
+    __g2EXPORT void SetText(const char* Text);
     
     // Return a constant buffer to the given string; should never be modified
     // The returned buffer may or may not exist soon after the direct call; you should
     // copy the buffer as soon as possible if it is to not be immediately used
-    const char* GetText();
+    __g2EXPORT const char* GetText();
     
     // Set the width of the button in pixels
-    void SetWidth(int Width);
+    __g2EXPORT void SetWidth(int Width);
     
     // Get the width of the text field
-    int GetWidth();
+    __g2EXPORT int GetWidth();
     
     // Get the text object
-    g2Label* GetLabel();
+    __g2EXPORT g2Label* GetLabel();
     
     // Set a filter; an array of characters that are the only allowed input
     // characters. Pass null to remove the filter
-    void SetFilter(const char* Filter);
+    __g2EXPORT void SetFilter(const char* Filter);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Update
-    void Update(float dT);
+    __g2EXPORT void Update(float dT);
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
     // Handle user inputs
-    void KeyEvent(unsigned char key, bool IsSpecial);
+    __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);
     
 private:
     

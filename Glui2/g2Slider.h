@@ -26,40 +26,40 @@ class g2Slider : public g2Controller
 public:
     
     // Progress bar constructor
-    g2Slider(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2Slider(g2Controller* Parent, g2Theme* MainTheme);
     
     // Add a live variable; pass NULL (or leave blank) to disconect
-    void SetLiveVariable(float* LiveValue = NULL);
+    __g2EXPORT void SetLiveVariable(float* LiveValue = NULL);
     
     // Set the min / max bounds of the progress bar; defaults to [0.0, 1.0]
-    void SetBounds(float Lower, float Upper);
+    __g2EXPORT void SetBounds(float Lower, float Upper);
     
     // Set the current progress of this progress bar; accepts
     // values from 0 to 1 (floats)
-    void SetProgress(float Progress);
+    __g2EXPORT void SetProgress(float Progress);
     
     // Return the current progress
-    float GetProgress();
+    __g2EXPORT float GetProgress();
     
     // Set the width of the button in pixels
-    void SetWidth(int Width);
+    __g2EXPORT void SetWidth(int Width);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
     // Keep moving the controller based on the user's dragging
-    void MouseDrag(int x, int y);
+    __g2EXPORT void MouseDrag(int x, int y);
     
     // Used when releasing a drag
-    void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    __g2EXPORT void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
     
     // Get the mouse position; used for dragging outside of the controller
-    void MouseHover(int x, int y);
+    __g2EXPORT void MouseHover(int x, int y);
     
 private:
     

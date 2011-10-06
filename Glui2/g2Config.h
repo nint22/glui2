@@ -51,14 +51,14 @@
 #include "g2Utilities.h"
 
 // Define the maximum keysize
-#define __G2CONFIG_KEYSIZE__ 256
+static const int g2Config_KeySize = 256;
 
 // Key-data node structure; part of a linked list
 // Contains the key (lower-case) and data string (allocated in heap)
 struct KeyPair
 {
     // Key
-    char KeyName[__G2CONFIG_KEYSIZE__];
+    char KeyName[g2Config_KeySize];
     
     // Data
     char* DataString;
@@ -71,7 +71,7 @@ struct KeyPair
 struct KeyGroup
 {
     // Group name
-    char GroupName[__G2CONFIG_KEYSIZE__];
+    char GroupName[g2Config_KeySize];
     
     // Key-data linked-list
     KeyPair* Keys;
@@ -85,19 +85,19 @@ class g2Config
 public:
     
     // Default constructor; does nothing
-    g2Config();
+    __g2EXPORT g2Config();
     
     // Release internal handles
-    ~g2Config();
+    __g2EXPORT ~g2Config();
     
     // Attempts to load an ini-config file to parse
-    void LoadFile(const char* FileName);
+    __g2EXPORT void LoadFile(const char* FileName);
     
     // Read key-value pairs and places into given buffer; read-only buffers
     // Returns true on valid read, false on failure
-    bool GetValue(const char* Group, const char* Key, int* OutValue);
-    bool GetValue(const char* Group, const char* Key, float* OutValue);
-    bool GetValue(const char* Group, const char* Key, char** OutValue);
+    __g2EXPORT bool GetValue(const char* Group, const char* Key, int* OutValue);
+    __g2EXPORT bool GetValue(const char* Group, const char* Key, float* OutValue);
+    __g2EXPORT bool GetValue(const char* Group, const char* Key, char** OutValue);
     
 private:
     

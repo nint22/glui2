@@ -32,54 +32,54 @@ class g2Spinner : public g2Controller
 public:
     
     // Progress bar constructor
-    g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Type);
+    __g2EXPORT g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Type);
     
     // Set this controller's target width
-    void SetWidth(int Width);
+    __g2EXPORT void SetWidth(int Width);
     
     // Get the width of this controller
-    int GetWidth();
+    __g2EXPORT int GetWidth();
     
     // Set the value (as integer)
-    void SetInt(int Value);
+    __g2EXPORT void SetInt(int Value);
     
     // Get the int value
-    int GetInt();
+    __g2EXPORT int GetInt();
     
     // Set the value (as float)
-    void SetFloat(float Value);
+    __g2EXPORT void SetFloat(float Value);
     
     // Get the float value
-    float GetFloat();
+    __g2EXPORT float GetFloat();
     
     // Set the lower and upper mounds
-    void SetBounds(float min, float max);
-    void SetBounds(int min, int max);
+    __g2EXPORT void SetBounds(float min, float max);
+    __g2EXPORT void SetBounds(int min, int max);
     
     // Set the incrementation
-    void SetIncrement(float inc);
-    void SetIncrement(int inc);
+    __g2EXPORT void SetIncrement(float inc);
+    __g2EXPORT void SetIncrement(int inc);
     
     // Increment up or down
-    void IncrementUp();
-    void IncrementDown();
+    __g2EXPORT void IncrementUp();
+    __g2EXPORT void IncrementDown();
     
     // Add a live variable; pass NULL (or leave blank) to disconect
-    void SetLiveVariable(float* LiveValue = NULL);
+    __g2EXPORT void SetLiveVariable(float* LiveValue = NULL);
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
     
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
     // Update (grabs the time)
-    void Update(float dT);
+    __g2EXPORT void Update(float dT);
     
     // Get the mouse position; used to go either up or down on spinner
-    void MouseHover(int x, int y);
+    __g2EXPORT void MouseHover(int x, int y);
     
 private:
     
@@ -99,14 +99,6 @@ private:
     
     // Internal mouse position; needed for constant increase / decrease
     int MouseX, MouseY;
-    
-    // How much time it takes before we update the
-    // spinner based on the user holding down
-    static const float UpdateRate = 0.05f;
-    
-    // Number of seconds user needs to wait before
-    // auto-update occures 
-    static const float UpdateMin = 0.4f;
     
     // Time user has spent pressing the button
     float PressedTime;

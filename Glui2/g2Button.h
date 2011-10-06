@@ -23,26 +23,27 @@ class g2Button : public g2Controller
 public:
     
     // Button constructor
-    g2Button(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2Button(g2Controller* Parent, g2Theme* MainTheme);
     
     // Get access to the label
-    g2Label* GetLabel();
+    __g2EXPORT g2Label* GetLabel();
     
     // Set the button's text; note that the button will grow if needed
-    void SetText(const char* Text);
+    __g2EXPORT void SetText(const char* Text);
     
     // Set the width of the button in pixels
-    void SetWidth(int Width);
+    __g2EXPORT void SetWidth(int Width);
     
     // Return the current width
-    int GetWidth();
+    __g2EXPORT int GetWidth();
     
     // Define controller geometry
-    bool InController(int x, int y);
+    __g2EXPORT bool InController(int x, int y);
+
 protected:
     
     // Render
-    void Render();
+    __g2EXPORT void Render();
     
 private:
     
