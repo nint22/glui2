@@ -58,8 +58,6 @@
 		4872FECD142D406300D74141 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE9B142D406300D74141 /* License.txt */; };
 		4872FEE3142D422D00D74141 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FEE2142D422D00D74141 /* GLUT.framework */; };
 		4872FEE5142D423400D74141 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FEE4142D423300D74141 /* OpenGL.framework */; };
-		4872FEF8142D4B4100D74141 /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEEE142D4B4100D74141 /* SOIL.c */; };
-		4872FEF9142D4B4100D74141 /* SOIL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEEF142D4B4100D74141 /* SOIL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48E527F5142D803000775F4D /* g2AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 48E527F4142D803000775F4D /* g2AppKit.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		48E527FF142D8C4500775F4D /* g2AppKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48E527FE142D8C4500775F4D /* g2AppKit.mm */; };
 /* End PBXBuildFile section */
@@ -120,8 +118,6 @@
 		4872FE9B142D406300D74141 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		4872FEE2142D422D00D74141 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		4872FEE4142D423300D74141 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		4872FEEE142D4B4100D74141 /* SOIL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SOIL.c; path = SOIL/SOIL.c; sourceTree = "<group>"; };
-		4872FEEF142D4B4100D74141 /* SOIL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOIL.h; path = SOIL/SOIL.h; sourceTree = "<group>"; };
 		48E527F4142D803000775F4D /* g2AppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2AppKit.h; sourceTree = "<group>"; };
 		48E527FE142D8C4500775F4D /* g2AppKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = g2AppKit.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,7 +140,6 @@
 			isa = PBXGroup;
 			children = (
 				4872FDE1142D3FAB00D74141 /* Glui2 */,
-				4872FDED142D3FE300D74141 /* SOIL */,
 				4872FDDA142D3FAB00D74141 /* Frameworks */,
 				4872FDD9142D3FAB00D74141 /* Products */,
 			);
@@ -201,15 +196,6 @@
 				48657429143FB8EF00CD1381 /* stb_image.h */,
 			);
 			name = Shared;
-			sourceTree = "<group>";
-		};
-		4872FDED142D3FE300D74141 /* SOIL */ = {
-			isa = PBXGroup;
-			children = (
-				4872FEEE142D4B4100D74141 /* SOIL.c */,
-				4872FEEF142D4B4100D74141 /* SOIL.h */,
-			);
-			name = SOIL;
 			sourceTree = "<group>";
 		};
 		4872FDEE142D3FEB00D74141 /* Controllers */ = {
@@ -285,7 +271,6 @@
 				4872FEC4142D406300D74141 /* g2Theme.h in Headers */,
 				4872FEC6142D406300D74141 /* g2Utilities.h in Headers */,
 				4872FEC8142D406300D74141 /* glui2.h in Headers */,
-				4872FEF9142D4B4100D74141 /* SOIL.h in Headers */,
 				48E527F5142D803000775F4D /* g2AppKit.h in Headers */,
 				48657421143FAFD200CD1381 /* g2LabelEdit.h in Headers */,
 				48657426143FB0FF00CD1381 /* g2Images.h in Headers */,
@@ -379,7 +364,6 @@
 				4872FEC3142D406300D74141 /* g2Theme.cpp in Sources */,
 				4872FEC5142D406300D74141 /* g2Utilities.cpp in Sources */,
 				4872FEC7142D406300D74141 /* glui2.cpp in Sources */,
-				4872FEF8142D4B4100D74141 /* SOIL.c in Sources */,
 				48E527FF142D8C4500775F4D /* g2AppKit.mm in Sources */,
 				48657420143FAFD200CD1381 /* g2LabelEdit.cpp in Sources */,
 				48657425143FB0FF00CD1381 /* g2Images.cpp in Sources */,
