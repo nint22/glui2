@@ -6,31 +6,27 @@
  This source file is developed and maintained by:
  + Jeremy Bridon jbridon@cores2.com
  
- File: g2Label.cpp/h
- Desc: A text output; the text is generated and drawn using a
- bitmap. This bitmap is defined in the configuration file
- and must be mapped out as a 4bit x 4bit matrix. For example
- the letter 'A' is 0x41 so the higher nibble is 0x4 (0100)
- and the lower nibble is 0x1 (0001) and thus position (4, 1)
- in the table.
+ File: g2LabelEdit.cpp/h
+ Desc: An editable g2Label; allows for boxed rendering (i.e. only
+ renders within the target width).
  
 ***************************************************************/
 
 // Inclusion guard
-#ifndef __G2LABEL_H__
-#define __G2LABEL_H__
+#ifndef __G2LABELEDIT_H__
+#define __G2LABELEDIT_H__
 
 #include "g2Controller.h"
 
-class g2Label : public g2Controller
+class g2LabelEdit : public g2Controller
 {
 public:
     
     // Label constructor
-    __g2EXPORT g2Label(g2Controller* Parent, g2Theme* MainTheme);
+    __g2EXPORT g2LabelEdit(g2Controller* Parent, g2Theme* MainTheme);
     
     // Label destructor
-    __g2EXPORT ~g2Label();
+    __g2EXPORT ~g2LabelEdit();
     
     // Set the text string; new lines WILL be printed on following lines
     __g2EXPORT void SetText(const char* Text = NULL);

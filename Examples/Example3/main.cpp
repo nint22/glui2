@@ -165,7 +165,7 @@ void InitGLUT(int argc, char** argv)
 void InitGlui2()
 {
     // Create a glui instance and register neccesary handles
-    GluiHandle = new Glui2("g2Blue.cfg", NULL, Reshape);
+    GluiHandle = new Glui2("g2Default.cfg", NULL, Reshape);
     glutDisplayFunc(Render);
     
     // Generate all the example GUI elements

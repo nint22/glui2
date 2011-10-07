@@ -24,6 +24,7 @@ Glui2/g2Controller.cpp \
 Glui2/g2Dialog.cpp \
 Glui2/g2DropDown.cpp \
 Glui2/g2Label.cpp \
+Glui2/g2LabelEdit.cpp \
 Glui2/g2Panel.cpp \
 Glui2/g2ProgressBar.cpp \
 Glui2/g2RadioGroup.cpp \
@@ -32,11 +33,8 @@ Glui2/g2Spinner.cpp \
 Glui2/g2TextField.cpp \
 Glui2/g2Theme.cpp \
 Glui2/g2Utilities.cpp \
+Glui2/g2Images.cpp \
 Glui2/glui2.cpp \
-SOIL/image_DXT.c \
-SOIL/image_helper.c \
-SOIL/SOIL.c \
-SOIL/stb_image_aug.c
 
 # Define the output product
 product := libglui2.so
