@@ -1,0 +1,63 @@
+################################################################
+# 
+# GLUI 2 - OpenGL User Interface Library 2
+# Copyright 2011 Core S2 - See License.txt for details
+# 
+# This source file is developed and maintained by:
+# + Jeremy Bridon jbridon@cores2.com
+# 
+# File: makefile
+# Desc: The linux makefile for most linux and unix-like systems.
+# 
+################################################################
+
+# Supress verbose output
+.SILENT:
+
+# Define the source code / implementation files
+sources := \
+Glui2/g2Button.cpp \
+Glui2/g2CheckBox.cpp \
+Glui2/g2Config.cpp \
+Glui2/g2Console.cpp \
+Glui2/g2Controller.cpp \
+Glui2/g2Dialog.cpp \
+Glui2/g2DropDown.cpp \
+Glui2/g2Label.cpp \
+Glui2/g2Panel.cpp \
+Glui2/g2ProgressBar.cpp \
+Glui2/g2RadioGroup.cpp \
+Glui2/g2Slider.cpp \
+Glui2/g2Spinner.cpp \
+Glui2/g2TextField.cpp \
+Glui2/g2Theme.cpp \
+Glui2/g2Utilities.cpp \
+Glui2/glui2.cpp
+
+# Define the output product
+product := glui2.so.0.9
+
+# Define all object files we are compiling
+objects := $(sources:.cpp=.o)
+
+# Needed libraries
+libs := -lX11 -lXi -lXmu -lglut -lGL -lGLU -lm
+
+# Needed headers
+includes := -I/usr/include
+
+# Build the library itself
+all: $(objects)
+	@echo Building Glui2 lib...
+	g++ -Wall -Wextra $(libs) -shared -o $(product) Glui2/*.o
+	@echo Done!
+
+# Compile each individual object file
+%.o : %.cpp %.h
+	@echo Creating object file \"$<\"
+	g++ -Wall -Wextra $(libs) -fPIC -c $< -o $@ $(includes)
+	@echo Done with object file \"$<\"
+
+# Clean object files
+clean:
+	rm -rf Glui2/*.o $(product)

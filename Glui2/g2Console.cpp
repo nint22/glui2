@@ -193,6 +193,9 @@ void g2Console::WindowResizeEvent(int NewWidth, int NewHeight)
 
 void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
 {
+    // TODO: COALESCE THIS CODE WITH NEW INPUT METHODS
+    IsSpecial = IsSpecial;
+    
     // Are we executing our command?
     if(key == '\r')
     {
@@ -218,7 +221,7 @@ void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
     else
     {
         // Accepts all characters (ignore if not enough memory)
-        size_t length = strlen(InputBuffer);
+        int length = (int)strlen(InputBuffer);
         if(length + 1 >= MaxInputLength)
             return;
         

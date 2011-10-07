@@ -120,21 +120,23 @@ void g2Dialog::Show()
         if(Type == g2DialogType_Notification)
             printf("Message: \"%s\"", MessageBuffer);
         else if(Type == g2DialogType_Open)
-        {
             printf("Open file directory: \"%s\"\n> ", MessageBuffer);
-            getline(ResultBuffer, MaxBufferLength - 1, stdin);
-        }
         else if(Type == g2DialogType_Save)
-        {
             printf("Save file directory: \"%s\"\n> ", MessageBuffer);
-            getline(ResultBuffer, MaxBufferLength - 1, stdin);
-        }
         
-        // If input is empty, user cancled
-        if(ResultBuffer == NULL || strlen(ResultBuffer) < 0)
+        char* TempBuffer = NULL;
+        size_t ReadBuffer = 0;
+        getline(&TempBuffer, &ReadBuffer, stdin);
+        if(TempBuffer == NULL)
+        {
             Selection = g2DialogResult_Cancel;
+            strcpy(ResultBuffer, "");
+        }
         else
+        {
             Selection = g2DialogResult_OK;
+            strcpy(ResultBuffer, TempBuffer);
+        }
         
     // Apple/OSX includes
     #elif __APPLE__

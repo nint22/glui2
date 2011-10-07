@@ -216,8 +216,8 @@ bool g2Config::GetValue(const char* Group, const char* Key, float* OutValue)
 bool g2Config::GetValue(const char* Group, const char* Key, char** OutValue)
 {
     // Validate the inputs
-    g2Assert(Group != NULL && strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
-    g2Assert(Key != NULL && strlen(Key) < g2Config_KeySize, "Given key string is either NULL or too long.");
+    g2Assert(Group != NULL && (int)strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
+    g2Assert(Key != NULL && (int)strlen(Key) < g2Config_KeySize, "Given key string is either NULL or too long.");
     
     // Lowercase both the given groupname and key
     char LowerGroup[g2Config_KeySize];
@@ -266,7 +266,7 @@ bool g2Config::GetValue(const char* Group, const char* Key, char** OutValue)
 void g2Config::AddGroup(const char* Group)
 {
     // Validate the input
-    g2Assert(Group != NULL && strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
+    g2Assert(Group != NULL && (int)strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
     
     // Create the new group object
     KeyGroup* NewGroup = new KeyGroup;
@@ -307,8 +307,8 @@ void g2Config::AddGroup(const char* Group)
 void g2Config::AddKey(const char* Group, const char* Key, const char* Data)
 {
     // Validate the input
-    g2Assert(Group != NULL && strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
-    g2Assert(Key != NULL && strlen(Key) < g2Config_KeySize, "Given key string is either NULL or too long.");
+    g2Assert(Group != NULL && (int)strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
+    g2Assert(Key != NULL && (int)strlen(Key) < g2Config_KeySize, "Given key string is either NULL or too long.");
     
     // Lowercase both the given groupname and key
     char LowerGroup[g2Config_KeySize];

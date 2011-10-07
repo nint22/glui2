@@ -19,7 +19,7 @@
 // Window includes
 #ifdef _WIN32
     
-	// Supress std-c lib buffer-overflow warnings
+    // Supress std-c lib buffer-overflow warnings
     #pragma warning(disable:4996)
     #include <windows.h>
     #include <gl/glut.h>
@@ -40,6 +40,11 @@
     #include <unistd.h>
     #include <execinfo.h>
     #include <sys/time.h>
+    #include <stdarg.h>
+    #include <limits.h>
+    
+    // Nothing to define for GCC's library creation
+    #define __g2EXPORT
 
 // Apple/OSX includes
 #elif __APPLE__
@@ -59,6 +64,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
+#include <string.h>
 
 // Define the generic call back function type
 #define __g2CallBack(function_name) void (*function_name)(g2Controller* Sender)

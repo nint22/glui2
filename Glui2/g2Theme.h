@@ -71,6 +71,8 @@
 // External image loading
 #ifdef _WIN32
     #include "../SOIL/SOIL.h"
+#elif __linux__
+    #include "../SOIL/SOIL.h"
 #else
     #include "SOIL.h"
 #endif

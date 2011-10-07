@@ -202,7 +202,7 @@ void g2Controller::Render()
 bool g2Controller::InController(int x, int y)
 {
     // Supress warning
-    x = y;
+    y = x = y;
     
     // Allow the user to overload as needed...
     return false;
@@ -211,7 +211,7 @@ bool g2Controller::InController(int x, int y)
 void g2Controller::WindowResizeEvent(int NewWidth, int NewHeight)
 {
     // Supress warning
-    NewWidth = NewHeight;
+    NewHeight = NewWidth = NewHeight;
     
     // Allow the user to overload as needed...
 }
