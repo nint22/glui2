@@ -32,13 +32,17 @@ Glui2/g2Spinner.cpp \
 Glui2/g2TextField.cpp \
 Glui2/g2Theme.cpp \
 Glui2/g2Utilities.cpp \
-Glui2/glui2.cpp
+Glui2/glui2.cpp \
+SOIL/image_DXT.c \
+SOIL/image_helper.c \
+SOIL/SOIL.c \
+SOIL/stb_image_aug.c
 
 # Define the output product
-product := glui2.so.0.9
+product := libglui2.so
 
 # Define all object files we are compiling
-objects := $(sources:.cpp=.o)
+objects := $(sources:.cpp=.o) $(sources:.c=.o)
 
 # Needed libraries
 libs := -lX11 -lXi -lXmu -lglut -lGL -lGLU -lm
@@ -49,15 +53,26 @@ includes := -I/usr/include
 # Build the library itself
 all: $(objects)
 	@echo Building Glui2 lib...
-	g++ -Wall -Wextra $(libs) -shared -o $(product) Glui2/*.o
+	g++ -Wall -Wextra $(libs) -shared -o $(product) Glui2/*.o SOIL/*.o
 	@echo Done!
 
 # Compile each individual object file
-%.o : %.cpp %.h
+%.o : %.c %.cpp %.h
 	@echo Creating object file \"$<\"
 	g++ -Wall -Wextra $(libs) -fPIC -c $< -o $@ $(includes)
 	@echo Done with object file \"$<\"
 
+# Install the lib
+install:
+	cp $(product) /usr/lib/.
+	mkdir -p /usr/include/Glui2
+	cp Glui2/*.h /usr/include/Glui2/.
+	mkdir -p /usr/include/SOIL
+	cp SOIL/*.h /usr/include/SOIL/.
+
 # Clean object files
 clean:
+	@echo Cleaning...
 	rm -rf Glui2/*.o $(product)
+	rm -rf SOIL/*.o $(product)
+	@echo Done with cleaning

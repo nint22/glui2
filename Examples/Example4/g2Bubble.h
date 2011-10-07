@@ -23,7 +23,7 @@
 #define __G2BUBBLE_H__
 
 // Includes for creating custom g2 component
-#include <Glui2/Glui2.h>
+#include <Glui2/glui2.h>
 #include <Glui2/g2Controller.h>
 
 class g2Bubble : public g2Controller

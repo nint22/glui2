@@ -16,7 +16,7 @@
 
 // Standard includes
 #include <stdio.h>
-#include <Glui2/Glui2.h>
+#include <Glui2/glui2.h>
 
 // Operating system specific glut include
 #ifdef _WIN32
