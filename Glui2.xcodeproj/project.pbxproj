@@ -56,16 +56,8 @@
 		4872FECD142D406300D74141 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE9B142D406300D74141 /* License.txt */; };
 		4872FEE3142D422D00D74141 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FEE2142D422D00D74141 /* GLUT.framework */; };
 		4872FEE5142D423400D74141 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FEE4142D423300D74141 /* OpenGL.framework */; };
-		4872FEF4142D4B4100D74141 /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEEA142D4B4100D74141 /* image_DXT.c */; };
-		4872FEF5142D4B4100D74141 /* image_DXT.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEEB142D4B4100D74141 /* image_DXT.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		4872FEF6142D4B4100D74141 /* image_helper.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEEC142D4B4100D74141 /* image_helper.c */; };
-		4872FEF7142D4B4100D74141 /* image_helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEED142D4B4100D74141 /* image_helper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4872FEF8142D4B4100D74141 /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEEE142D4B4100D74141 /* SOIL.c */; };
 		4872FEF9142D4B4100D74141 /* SOIL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEEF142D4B4100D74141 /* SOIL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4872FEFA142D4B4100D74141 /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = 4872FEF0142D4B4100D74141 /* stb_image_aug.c */; };
-		4872FEFB142D4B4100D74141 /* stb_image_aug.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF1142D4B4100D74141 /* stb_image_aug.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		4872FEFC142D4B4100D74141 /* stbi_DDS_aug_c.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF2142D4B4100D74141 /* stbi_DDS_aug_c.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		4872FEFD142D4B4100D74141 /* stbi_DDS_aug.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FEF3142D4B4100D74141 /* stbi_DDS_aug.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		48E527F5142D803000775F4D /* g2AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 48E527F4142D803000775F4D /* g2AppKit.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		48E527FF142D8C4500775F4D /* g2AppKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48E527FE142D8C4500775F4D /* g2AppKit.mm */; };
 /* End PBXBuildFile section */
@@ -124,16 +116,8 @@
 		4872FE9B142D406300D74141 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		4872FEE2142D422D00D74141 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		4872FEE4142D423300D74141 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		4872FEEA142D4B4100D74141 /* image_DXT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_DXT.c; path = SOIL/image_DXT.c; sourceTree = "<group>"; };
-		4872FEEB142D4B4100D74141 /* image_DXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image_DXT.h; path = SOIL/image_DXT.h; sourceTree = "<group>"; };
-		4872FEEC142D4B4100D74141 /* image_helper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_helper.c; path = SOIL/image_helper.c; sourceTree = "<group>"; };
-		4872FEED142D4B4100D74141 /* image_helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image_helper.h; path = SOIL/image_helper.h; sourceTree = "<group>"; };
 		4872FEEE142D4B4100D74141 /* SOIL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SOIL.c; path = SOIL/SOIL.c; sourceTree = "<group>"; };
 		4872FEEF142D4B4100D74141 /* SOIL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOIL.h; path = SOIL/SOIL.h; sourceTree = "<group>"; };
-		4872FEF0142D4B4100D74141 /* stb_image_aug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = stb_image_aug.c; path = SOIL/stb_image_aug.c; sourceTree = "<group>"; };
-		4872FEF1142D4B4100D74141 /* stb_image_aug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_image_aug.h; path = SOIL/stb_image_aug.h; sourceTree = "<group>"; };
-		4872FEF2142D4B4100D74141 /* stbi_DDS_aug_c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stbi_DDS_aug_c.h; path = SOIL/stbi_DDS_aug_c.h; sourceTree = "<group>"; };
-		4872FEF3142D4B4100D74141 /* stbi_DDS_aug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stbi_DDS_aug.h; path = SOIL/stbi_DDS_aug.h; sourceTree = "<group>"; };
 		48E527F4142D803000775F4D /* g2AppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2AppKit.h; sourceTree = "<group>"; };
 		48E527FE142D8C4500775F4D /* g2AppKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = g2AppKit.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -216,16 +200,8 @@
 		4872FDED142D3FE300D74141 /* SOIL */ = {
 			isa = PBXGroup;
 			children = (
-				4872FEEA142D4B4100D74141 /* image_DXT.c */,
-				4872FEEB142D4B4100D74141 /* image_DXT.h */,
-				4872FEEC142D4B4100D74141 /* image_helper.c */,
-				4872FEED142D4B4100D74141 /* image_helper.h */,
 				4872FEEE142D4B4100D74141 /* SOIL.c */,
 				4872FEEF142D4B4100D74141 /* SOIL.h */,
-				4872FEF0142D4B4100D74141 /* stb_image_aug.c */,
-				4872FEF1142D4B4100D74141 /* stb_image_aug.h */,
-				4872FEF2142D4B4100D74141 /* stbi_DDS_aug_c.h */,
-				4872FEF3142D4B4100D74141 /* stbi_DDS_aug.h */,
 			);
 			name = SOIL;
 			sourceTree = "<group>";
@@ -305,11 +281,6 @@
 				4872FEC8142D406300D74141 /* glui2.h in Headers */,
 				4872FEF9142D4B4100D74141 /* SOIL.h in Headers */,
 				48E527F5142D803000775F4D /* g2AppKit.h in Headers */,
-				4872FEF5142D4B4100D74141 /* image_DXT.h in Headers */,
-				4872FEF7142D4B4100D74141 /* image_helper.h in Headers */,
-				4872FEFB142D4B4100D74141 /* stb_image_aug.h in Headers */,
-				4872FEFC142D4B4100D74141 /* stbi_DDS_aug_c.h in Headers */,
-				4872FEFD142D4B4100D74141 /* stbi_DDS_aug.h in Headers */,
 				48657421143FAFD200CD1381 /* g2LabelEdit.h in Headers */,
 				48657426143FB0FF00CD1381 /* g2Images.h in Headers */,
 			);
@@ -401,10 +372,7 @@
 				4872FEC3142D406300D74141 /* g2Theme.cpp in Sources */,
 				4872FEC5142D406300D74141 /* g2Utilities.cpp in Sources */,
 				4872FEC7142D406300D74141 /* glui2.cpp in Sources */,
-				4872FEF4142D4B4100D74141 /* image_DXT.c in Sources */,
-				4872FEF6142D4B4100D74141 /* image_helper.c in Sources */,
 				4872FEF8142D4B4100D74141 /* SOIL.c in Sources */,
-				4872FEFA142D4B4100D74141 /* stb_image_aug.c in Sources */,
 				48E527FF142D8C4500775F4D /* g2AppKit.mm in Sources */,
 				48657420143FAFD200CD1381 /* g2LabelEdit.cpp in Sources */,
 				48657425143FB0FF00CD1381 /* g2Images.cpp in Sources */,
