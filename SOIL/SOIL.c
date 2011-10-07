@@ -13,6 +13,8 @@
     * everybody at gamedev.net
 */
 
+
+
 #define SOIL_CHECK_FOR_GL_ERRORS 0
 
 #ifdef WIN32

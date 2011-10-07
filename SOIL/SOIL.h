@@ -1,3 +1,4 @@
+#ifdef __DO_NOT_CMPILE__
 /**
     @mainpage SOIL
 
@@ -431,3 +432,5 @@ const char*
 #endif
 
 #endif /* HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY    */
+
+#endif

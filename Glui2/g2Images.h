@@ -7,13 +7,8 @@
  + Jeremy Bridon jbridon@cores2.com
  
  File: g2Images.cpp/h
- Desc: Derived from SOIL (Simple OpenGL Image Library), this
- is a simplified and cleaned version that opens a given image
- and attempts to directly load it into OpenGL's memory. Manages
- an internal dictionary of loaded images so multiple open
- events of the same image will be optimized.
- 
- Original author is Jonathan Dummer; http://www.lonesock.net/
+ Desc: Based on interfacing with stb_image from author
+ Sean Barrett and his published code on http://nothings.org/
  
 ***************************************************************/
 

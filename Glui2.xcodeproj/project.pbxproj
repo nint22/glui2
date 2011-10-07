@@ -11,6 +11,8 @@
 		48657421143FAFD200CD1381 /* g2LabelEdit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4865741F143FAFD200CD1381 /* g2LabelEdit.h */; };
 		48657425143FB0FF00CD1381 /* g2Images.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48657423143FB0FF00CD1381 /* g2Images.cpp */; };
 		48657426143FB0FF00CD1381 /* g2Images.h in Headers */ = {isa = PBXBuildFile; fileRef = 48657424143FB0FF00CD1381 /* g2Images.h */; };
+		48657428143FB88000CD1381 /* stb_image.c in Sources */ = {isa = PBXBuildFile; fileRef = 48657427143FB88000CD1381 /* stb_image.c */; };
+		4865742A143FB8EF00CD1381 /* stb_image.h in Headers */ = {isa = PBXBuildFile; fileRef = 48657429143FB8EF00CD1381 /* stb_image.h */; };
 		4872FDDC142D3FAB00D74141 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FDDB142D3FAB00D74141 /* Cocoa.framework */; };
 		4872FE9C142D406300D74141 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE6A142D406100D74141 /* default.png */; };
 		4872FEA0142D406300D74141 /* g2Blue.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE6E142D406100D74141 /* g2Blue.cfg */; };
@@ -67,6 +69,8 @@
 		4865741F143FAFD200CD1381 /* g2LabelEdit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2LabelEdit.h; sourceTree = "<group>"; };
 		48657423143FB0FF00CD1381 /* g2Images.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = g2Images.cpp; sourceTree = "<group>"; };
 		48657424143FB0FF00CD1381 /* g2Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2Images.h; sourceTree = "<group>"; };
+		48657427143FB88000CD1381 /* stb_image.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stb_image.c; sourceTree = "<group>"; };
+		48657429143FB8EF00CD1381 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		4872FDD8142D3FAB00D74141 /* Glui2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Glui2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FDDB142D3FAB00D74141 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4872FDDE142D3FAB00D74141 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -189,10 +193,12 @@
 				4872FE75142D406100D74141 /* g2Config.h */,
 				4872FE91142D406200D74141 /* g2Theme.cpp */,
 				4872FE92142D406200D74141 /* g2Theme.h */,
-				48657423143FB0FF00CD1381 /* g2Images.cpp */,
-				48657424143FB0FF00CD1381 /* g2Images.h */,
 				4872FE93142D406300D74141 /* g2Utilities.cpp */,
 				4872FE94142D406300D74141 /* g2Utilities.h */,
+				48657423143FB0FF00CD1381 /* g2Images.cpp */,
+				48657424143FB0FF00CD1381 /* g2Images.h */,
+				48657427143FB88000CD1381 /* stb_image.c */,
+				48657429143FB8EF00CD1381 /* stb_image.h */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -283,6 +289,7 @@
 				48E527F5142D803000775F4D /* g2AppKit.h in Headers */,
 				48657421143FAFD200CD1381 /* g2LabelEdit.h in Headers */,
 				48657426143FB0FF00CD1381 /* g2Images.h in Headers */,
+				4865742A143FB8EF00CD1381 /* stb_image.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +383,7 @@
 				48E527FF142D8C4500775F4D /* g2AppKit.mm in Sources */,
 				48657420143FAFD200CD1381 /* g2LabelEdit.cpp in Sources */,
 				48657425143FB0FF00CD1381 /* g2Images.cpp in Sources */,
+				48657428143FB88000CD1381 /* stb_image.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
