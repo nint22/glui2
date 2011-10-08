@@ -7,12 +7,77 @@
 
 #include "g2Images.h"
 
-g2Images::g2Images()
+// Image allocation structure
+static const int __g2ImageFileNameLength = 512;
+struct __g2Image
 {
-    // Do nothing...
-}
+    // Name of file
+    char FileName[__g2ImageFileNameLength];
+    
+    // Width, height
+    int Width, Height;
+    
+    // Components (channel count)
+    int Channels;
+    
+    // The OpenGL texture ID
+    GLuint GlTextureID;
+};
 
-g2Images::~g2Images()
+// Internal allocations of images
+std::map<std::string, __g2Image> __g2ImageList;
+typedef std::map<std::string, __g2Image>::iterator __g2ImagesListIt;
+
+// Load any given image
+GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels, bool Wrap)
 {
-    // Release nothing...
+    // Does the image already exist in the dictionary?
+    __g2ImagesListIt Result = __g2ImageList.find(std::string(ImagePath));
+    
+    // If nothing is found...
+    if(Result == __g2ImageList.end())
+    {
+        // Create a new image instance
+        __g2Image Image;
+        strcpy(Image.FileName, ImagePath);
+        
+        // Allocate image; fail out on error
+        unsigned char* DataBuffer = stbi_load(ImagePath, &Image.Width, &Image.Height, &Image.Channels, 4);
+        if(DataBuffer == NULL)
+            return -1;
+        
+        // Allocate an OpenGL texture
+        glGenTextures(1, &Image.GlTextureID);
+        glBindTexture(GL_TEXTURE_2D, Image.GlTextureID);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, Image.Width, Image.Height, Image.Channels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
+        
+        // Release internal buffer
+        stbi_image_free(DataBuffer);
+        
+        // Set certain properties of texture
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        
+        // Wrap texture around
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Wrap ? GL_REPEAT : GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Wrap ? GL_REPEAT : GL_CLAMP);
+        
+        // Done setting image parameters
+        glDisable(GL_TEXTURE_2D);
+        
+        // Place in post-back as desired
+        if(Width != NULL)
+            *Width = Image.Width;
+        if(Height != NULL)
+            *Height = Image.Height;
+        if(Channels != NULL)
+            *Channels = Image.Channels;
+        
+        // Save to dictionary
+        __g2ImageList.insert(std::pair<std::string, __g2Image>(std::string(Image.FileName), Image));
+        return Image.GlTextureID;
+    }
+    
+    // Return what was already known
+    return Result->second.GlTextureID;
 }

@@ -67,15 +67,7 @@
 
 #include "g2Utilities.h"
 #include "g2Config.h"
-
-// External image loading
-#ifdef _WIN32
-    #include "../SOIL/SOIL.h"
-#elif __linux__
-    #include "../SOIL/SOIL.h"
-#else
-    #include "SOIL.h"
-#endif
+#include "g2Images.h"
 
 // Total number of element types
 static const unsigned int g2ThemeElement_Count = 27;

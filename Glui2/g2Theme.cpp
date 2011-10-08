@@ -35,7 +35,7 @@ void g2Theme::Load(const char* ThemeFile)
         
         // Load the texture itself into memory
         // Attempt to load the texture via soil (Noe the multiply_alpha flag is critial)
-        int TextureID = 0;//SOIL_load_OGL_texture(TextureName, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MULTIPLY_ALPHA);
+        int TextureID = g2LoadImage(TextureName);
         
         // Make sure the loaded image is valid
         g2Assert(TextureID > 0, "Unable to load image: %s", TextureName);
