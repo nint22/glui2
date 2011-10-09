@@ -153,6 +153,9 @@ private:
     // Active controller (last controller clicked)
     g2Controller* ActiveController;
     
+    // Special console handlers; allows for top-most rendering
+    g2Console* ActiveConsole;
+    
 };
 
 // End of inclusion guard

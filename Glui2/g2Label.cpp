@@ -15,6 +15,7 @@ g2Label::g2Label(g2Controller* Parent, g2Theme* MainTheme)
 {
     TextBuffer = NULL;
     Scale = 1.0f;
+    Shadow = true;
 }
 
 g2Label::~g2Label()
@@ -62,6 +63,16 @@ int g2Label::GetWidth()
     return CharWidth * (int)strlen(TextBuffer);
 }
 
+void g2Label::SetShadow(bool State)
+{
+    Shadow = State;
+}
+
+bool g2Label::GetShadow()
+{
+    return Shadow;
+}
+
 void g2Label::Render()
 {
     // Ignore if not null
@@ -84,6 +95,10 @@ void g2Label::Render()
     int level = 0;
     int offset = 0;
     
+    // Get active color for shadow
+    float Sr, Sg, Sb;
+    GetColor(&Sr, &Sg, &Sb);
+    
     // For each character...
     for(size_t i = 0; i < strlen(TextBuffer); i++)
     {
@@ -97,8 +112,14 @@ void g2Label::Render()
         }
         else
         {
+            // Draw with shadow
+            DrawCharacter(pX + offset * width + 1, pY + level * height + 1, Scale, Scale, Sr, Sg, Sb, 0.2f, c);
+            
             // Render text normally
-            DrawCharacter(pX + offset++ * width, pY + level * height, Scale, Scale, c);
+            DrawCharacter(pX + offset * width, pY + level * height, Scale, Scale, c);
+            
+            // Drow on horizontal
+            offset++;
         }
     }
 }

@@ -12,6 +12,31 @@
  queue (FIFO order) and prints out colors using a special
  extension based on Minecraft's own unique coloring system.
  
+ For colors, the text must start with character  '/'
+ followed by a 4-bit value ranging from 0 to 15. The following
+ is the color map: (Full CGA 16-color palette)
+ 
+ 0  - black
+ 1  - blue
+ 2  - green
+ 3  - cyan
+ 4  - red
+ 5  - magenta
+ 6  - brown
+ 7  - light gray
+ 8  - gray
+ 9  - light blue
+ 10 - light green
+ 11 - light cyan
+ 12 - light red
+ 13 - light magenta
+ 14 - yellow
+ 15 - white
+ 
+ The color only stays on the same line of text; any new-line
+ character will reset the color back to the default. Also note
+ that a console does not have shadows.
+ 
 ***************************************************************/
 
 // Inclusion guard
@@ -56,6 +81,9 @@ protected:
     __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);
     
 private:
+    
+    // Get a color from the internal 4-bit template
+    void GetTemplateColor(int Index, float* r, float* g, float* b);
     
     // Active width and height
     int WindowWidth, WindowHeight;

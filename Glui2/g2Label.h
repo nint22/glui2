@@ -46,6 +46,12 @@ public:
     // Get the width of the text label in pixels
     __g2EXPORT int GetWidth();
     
+    // Set a shadow (true to render a shadow with text)
+    __g2EXPORT void SetShadow(bool State);
+    
+    // Get the shadow state (true if shadow is visible)
+    __g2EXPORT bool GetShadow();
+    
 protected:
     
     // Render
@@ -59,6 +65,8 @@ private:
     // Internal size scale
     float Scale;
     
+    // Shadow state
+    bool Shadow;
 };
 
 // End of inclusion guard

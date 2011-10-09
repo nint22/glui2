@@ -45,6 +45,7 @@ Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutResha
     // Default root to have no ownership and active controller to none
     RootController = new g2Controller(NULL, &MainTheme);
     ActiveController = NULL;
+    ActiveConsole = NULL;
 }
 
 Glui2::~Glui2()
@@ -84,9 +85,9 @@ g2CheckBox* Glui2::AddCheckBox(int x, int y, const char* Text, __g2CallBack(call
 
 g2Console* Glui2::AddConsole()
 {
-    g2Console* NewConsole = new g2Console(RootController, &MainTheme);
-    NewConsole->__WindowResizeEvent(WindowWidth, WindowHeight);
-    return NewConsole;
+    ActiveConsole = new g2Console(RootController, &MainTheme);
+    ActiveConsole->__WindowResizeEvent(WindowWidth, WindowHeight);
+    return ActiveConsole;
 }
 
 g2TextField* Glui2::AddTextField(int x, int y, const char* Text)
@@ -187,8 +188,12 @@ void Glui2::Render()
     // Make sure we are in fill mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
-    // Update all children
+    // Render all children
     RootController->__Render();
+    
+    // Render the console LAST
+    if(ActiveConsole != NULL)
+        ActiveConsole->__Render();
     
     // End 2D mode
     glPopMatrix();
@@ -202,6 +207,10 @@ void Glui2::Update()
     
     // Render the root, thus rendering all GUI elements
     RootController->__Update(dT);
+    
+    // Update the console LAST
+    if(ActiveConsole != NULL)
+        ActiveConsole->__Update(dT);
     
     // End external time
     Clock.Stop();
@@ -228,6 +237,10 @@ void Glui2::__ReshapeFunc(int width, int height)
     // Reshape self
     __G2_HANDLE__->RootController->__WindowResizeEvent(width, height);
     
+    // Update the console LAST
+    if(__G2_HANDLE__->ActiveConsole != NULL)
+        __G2_HANDLE__->ActiveConsole->__WindowResizeEvent(width, height);
+    
     // Reshape host
     if(__G2_HANDLE__->GlutReshapeFunc != NULL)
         __G2_HANDLE__->GlutReshapeFunc(width, height);
@@ -235,28 +248,40 @@ void Glui2::__ReshapeFunc(int width, int height)
 
 void Glui2::__KeyboardFunc(unsigned char key, int x, int y)
 {
-    // Keyboard child if it has focus
-    if(__G2_HANDLE__->ActiveController != NULL)
-        __G2_HANDLE__->ActiveController->KeyEvent(key);
+    // Update console if allocated and not disabled
+    if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
+        __G2_HANDLE__->ActiveConsole->__KeyEvent(key);
     
-    // Special Keyboard host (if the GUI is not focused)
+    // Else, pass to active controller if active
+    else if(__G2_HANDLE__->ActiveController != NULL)
+        __G2_HANDLE__->ActiveController->__KeyEvent(key);
+    
+    // If nothign is focused, pass to glut
     else if(__G2_HANDLE__->GlutKeyboardFunc != NULL)
         __G2_HANDLE__->GlutKeyboardFunc(key, x, y);
 }
 
 void Glui2::__SpecialFunc(int key, int x, int y)
 {
-    // Special Keyboard if it has focus
-    if(__G2_HANDLE__->ActiveController != NULL)
-        __G2_HANDLE__->ActiveController->KeyEvent(key, true);
+    // Update console if allocated and not disabled
+    if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
+        __G2_HANDLE__->ActiveConsole->__KeyEvent(key, true);
     
-    // Special Keyboard host (if the GUI is not focused)
+    // Else, pass to active controller if active
+    else if(__G2_HANDLE__->ActiveController != NULL)
+        __G2_HANDLE__->ActiveController->__KeyEvent(key, true);
+    
+    // If nothign is focused, pass to glut
     else if(__G2_HANDLE__->GlutSpecialFunc != NULL)
         __G2_HANDLE__->GlutSpecialFunc(key, x, y);
 }
 
 void Glui2::__MouseFunc(int button, int state, int x, int y)
 {
+    // Ignore if  console if allocated and not disabled
+    if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
+        return;
+    
     // Mouse self
     __G2_HANDLE__->RootController->__MouseClick(g2MouseButton(button), g2MouseClick(state), x, y);
     
@@ -264,7 +289,7 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
     if(__G2_HANDLE__->ActiveController != NULL)
         __G2_HANDLE__->ActiveController->IsActive = false;
     
-    // Get new active controller
+    // Get new active controller or set it to the console if it's within bounds
     __G2_HANDLE__->ActiveController = __G2_HANDLE__->RootController->GetController(x, y);
     if(__G2_HANDLE__->ActiveController != NULL)
         __G2_HANDLE__->ActiveController->IsActive = true;
@@ -276,6 +301,10 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
 
 void Glui2::__HoverFunc(int x, int y)
 {
+    // Ignore if  console if allocated and not disabled
+    if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
+        return;
+    
     // Mouse self
     __G2_HANDLE__->RootController->__MouseHover(x, y);
     

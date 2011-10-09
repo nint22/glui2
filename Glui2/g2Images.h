@@ -39,7 +39,7 @@
 // if the image has not yet been opened before, then a unique reference
 // is made, otherwise a copy isn't made but the same reference is returned
 // Return a negative value if unable to open file / image
-GLuint g2LoadImage(const char* ImagePath, int* Width = NULL, int* Height = NULL, int* Channels = NULL, bool Wrap = false);
+__g2EXPORT GLuint g2LoadImage(const char* ImagePath, int* Width = NULL, int* Height = NULL, int* Channels = NULL, bool Wrap = false);
 
 // End of inclusion guard
 #endif

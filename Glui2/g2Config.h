@@ -49,35 +49,24 @@
 
 // Includes
 #include "g2Utilities.h"
+#include <map>
+#include <string>
 
 // Define the maximum keysize
-static const int g2Config_KeySize = 256;
+static const int g2Config_KeySize = 128;
 
 // Key-data node structure; part of a linked list
 // Contains the key (lower-case) and data string (allocated in heap)
 struct KeyPair
 {
-    // Key
-    char KeyName[g2Config_KeySize];
-    
-    // Data
-    char* DataString;
-    
-    // Next key, or null of last key
-    KeyPair* Next;
-};
-
-// Group node structure
-struct KeyGroup
-{
     // Group name
     char GroupName[g2Config_KeySize];
     
-    // Key-data linked-list
-    KeyPair* Keys;
+    // Key name
+    char KeyName[g2Config_KeySize];
     
-    // Next key group
-    KeyGroup* Next;
+    // Data (allocated on heap)
+    char* DataString;
 };
 
 class g2Config
@@ -101,14 +90,12 @@ public:
     
 private:
     
-    // Insert a new group (does collision detection, fails if it already exists)
-    void AddGroup(const char* Group);
-    
     // Add a new key (does collision detection, fails if it already exists)
     void AddKey(const char* Group, const char* Key, const char* Data);
     
-    // Key group linked-list
-    KeyGroup* KeyGroups;
+    // Internal allocations of keys; keys are of the pattern <group name lowercase>_<key name lowercase>
+    std::map<std::string, KeyPair> Keys;
+    typedef std::map<std::string, KeyPair>::iterator KeysIterator;
 };
 
 // End of inclusion guard

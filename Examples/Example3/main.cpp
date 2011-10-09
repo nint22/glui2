@@ -37,6 +37,9 @@ const int WindowHeight = 600;
 // Global Glui2 Handle
 Glui2* GluiHandle = NULL;
 
+// Global console access
+g2Console* Console;
+
 // Global label and value to print the result from the g2Slider
 g2Label* SliderValue = NULL;
 float GlobalFloat = 0.5f;
@@ -121,14 +124,8 @@ void DialogSave(g2Controller* Caller)
 
 void ToggleConsole(g2Controller* Caller)
 {
-    // Allocate only one console
-    // Would be better to have this as a global, but this is an example
-    static bool Visibility = false;
-    static g2Console* Console = GluiHandle->AddConsole();
-    
-    // Flip visibility
-    Visibility = !Visibility;
-    Console->SetVisibility(Visibility);
+    // Flip the visability
+    Console->SetVisibility(!Console->GetVisibility());
 }
 
 /*** Main and Init Functions ***/
@@ -211,6 +208,10 @@ void InitGlui2()
     /*** g2Console ***/
     TempLabel = GluiHandle->AddLabel(20, 210, "g2Console");
     TempLabel->SetColor(0.0f, 0.0f, 0.0f);
+    
+    // Allocate the console and default invisible
+    Console = GluiHandle->AddConsole();
+    Console->SetVisibility(false);
     
     // Note that we register the callback to toggle the console
     GluiHandle->AddButton(20, 230, "Toggle console", ToggleConsole);

@@ -13,9 +13,16 @@
 // The start message of the input buffer
 static const char* InputBufferStart = "g2Console:>";
 
+// Only one console should be created at a time
+static int g2Console_RefCount = 0;
+
 g2Console::g2Console(g2Controller* Parent, g2Theme* MainTheme)
-: g2Controller(Parent, MainTheme)
+: g2Controller(NULL, MainTheme)
 {
+    // We should only create one console at a time!
+    g2Assert(g2Console_RefCount <= 0, "Only one g2Console can be allocated at a time!");
+    g2Console_RefCount++;
+    
     // Initialize nothing in the input buffer
     strcpy(InputBuffer, InputBufferStart);
     CursorTime = 0.0f;
@@ -42,6 +49,9 @@ g2Console::~g2Console()
         delete[] ConsoleOut.front();
         ConsoleOut.pop();
     }
+    
+    // Release console
+    g2Console_RefCount--;
 }
 
 void g2Console::printf(const char* format, ...)
@@ -143,10 +153,31 @@ void g2Console::Render()
         char* Text = ConsoleOut.front();
         ConsoleOut.pop();
         
+        // Get the default color
+        float TempR, TempG, TempB, TempA;
+        GetColor(&TempR, &TempG, &TempB, &TempA);
+        
         // Print to screen
         for(size_t j = 0; j < strlen(Text); j++)
         {
-            DrawCharacter(cX, cY - (OutLength - i) * CharHeight, Text[j]);
+            // Is this character a backslash?
+            if(Text[j] == '\\')
+            {
+                // Attempt to read an integer
+                int ColorID = -1;
+                sscanf(Text + j + 1, "%d", &ColorID);
+                if(ColorID >= 0 && ColorID < 16)
+                {
+                    // Change color and move ahead until non-numeric
+                    do {
+                        j++;
+                    } while(Text[j] >= '0' && Text[j] <= '9');
+                    GetTemplateColor(ColorID, &TempR, &TempG, &TempB);
+                }
+            }
+            
+            // Draw the shadow first
+            DrawCharacter(cX, cY - (OutLength - i) * CharHeight, 1, 1, TempR, TempG, TempB, TempA, Text[j]);
             cX += CharWidth;
         }
         
@@ -203,12 +234,21 @@ void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
         char* buffer = new char[strlen(InputBuffer) - strlen(InputBufferStart) + 1];
         strcpy(buffer, InputBuffer + strlen(InputBufferStart));
         
+        // Are we closing the console?
+        if(strcmp(buffer, "close") == 0 || strcmp(buffer, "quit") == 0 || strcmp(buffer, "exit") == 0)
+        {
+            // No need to keep the bufer, just clear
+            delete[] buffer;
+            SetVisibility(false);
+        }
+        
         // Save to the input buffer and push to the standard printf
         ConsoleIn.push(buffer);
         this->printf("%s", buffer);
         
         // Reset the input buffer
         strcpy(InputBuffer, InputBufferStart);
+        
     }
     // Backspace (8 on windows, 127 on OSX)
     else if(key == 8 || key == 127)
@@ -228,5 +268,29 @@ void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
         // Write to the old string-end and move the terminator a little further
         InputBuffer[length + 0] = key;
         InputBuffer[length + 1] = '\0';
+    }
+}
+
+void g2Console::GetTemplateColor(int Index, float* r, float* g, float* b)
+{
+    // Simple look-up table
+    switch(Index)
+    {
+        case 0:  *r = 0.0f; *g = 0.0f; *b = 0.0f; break;
+        case 1:  *r = 0.0f; *g = 0.0f; *b = 0.5f; break;
+        case 2:  *r = 0.0f; *g = 0.5f; *b = 0.0f; break;
+        case 3:  *r = 0.0f; *g = 0.5f; *b = 0.5f; break;
+        case 4:  *r = 0.5f; *g = 0.0f; *b = 0.0f; break;
+        case 5:  *r = 0.5f; *g = 0.0f; *b = 0.5f; break;
+        case 6:  *r = 0.5f; *g = 0.3f; *b = 0.0f; break;
+        case 7:  *r = 0.5f; *g = 0.5f; *b = 0.5f; break;
+        case 8:  *r = 0.3f; *g = 0.3f; *b = 0.3f; break;
+        case 9:  *r = 0.3f; *g = 0.3f; *b = 1.0f; break;
+        case 10: *r = 3.0f; *g = 1.0f; *b = 0.3f; break;
+        case 11: *r = 3.0f; *g = 1.0f; *b = 1.0f; break;
+        case 12: *r = 1.0f; *g = 0.3f; *b = 0.3f; break;
+        case 13: *r = 1.0f; *g = 0.3f; *b = 1.0f; break;
+        case 14: *r = 1.0f; *g = 1.0f; *b = 0.3f; break;
+        case 15: *r = 1.0f; *g = 1.0f; *b = 1.0f; break;
     }
 }

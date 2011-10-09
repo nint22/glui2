@@ -13,34 +13,17 @@
 
 g2Config::g2Config()
 {
-    // Default the root group pointer to NULL
-    KeyGroups = NULL;
+    // Nothing to do...
 }
 
 g2Config::~g2Config()
 {
-    // Release all keygroups and their individual keys
-    KeyGroup* ActiveGroup = KeyGroups;
-    while(ActiveGroup != NULL)
-    {
-        // For all key-pairs
-        KeyPair* ActiveKey = KeyGroups->Keys;
-        while(ActiveKey != NULL)
-        {
-            // Release all internal data
-            delete[] ActiveKey->DataString;
-            
-            // Go to the next key while releasing this node
-            KeyPair* ReleaseKey = ActiveKey;
-            ActiveKey = ActiveKey->Next;
-            delete ReleaseKey;
-        }
-        
-        // Go to the next group while releasing this node
-        KeyGroup* ReleaseGroup = ActiveGroup;
-        ActiveGroup = ActiveGroup->Next;
-        delete ReleaseGroup;
-    }
+    // For each key pair in the dictionary, release it
+    for(KeysIterator Key = Keys.begin(); Key != Keys.end(); Key++)
+        delete[] Key->second.DataString;
+    
+    // Release the entire dictionary
+    Keys.clear();
 }
 
 void g2Config::LoadFile(const char* FileName)
@@ -83,9 +66,6 @@ void g2Config::LoadFile(const char* FileName)
             // Remove surrounding tokens
             strcpy(GroupName, TokenBuffer+1);
             GroupName[strlen(GroupName)-1] = '\0';
-            
-            // Save as new groupd
-            AddGroup(GroupName);
         }
         
         // Is this a key?
@@ -231,76 +211,21 @@ bool g2Config::GetValue(const char* Group, const char* Key, char** OutValue)
     for(size_t i = 0; i < strlen(LowerKey); i++)
         LowerKey[i] = tolower(LowerKey[i]);
     
-    // Search through the groups linked list
-    KeyGroup* ActiveGroup = KeyGroups;
-    while(ActiveGroup != NULL)
+    // Create the official key entry
+    char MapKey[g2Config_KeySize];
+    sprintf(MapKey, "%s_%s", LowerGroup, LowerKey);
+    
+    // Ket the object
+    KeysIterator Handle = Keys.find(std::string(MapKey));
+    if(Handle == Keys.end())
+        return false;
+    else
     {
-        // Is this the group we want?
-        if(strcmp(ActiveGroup->GroupName, LowerGroup) == 0)
-        {
-            // Search all key-pairs
-            KeyPair* ActiveKey = ActiveGroup->Keys;
-            while(ActiveKey != NULL)
-            {
-                // Is this the key we want?
-                if(strcmp(ActiveKey->KeyName, LowerKey) == 0)
-                {
-                    // Set the pointer and return true; found and set
-                    *OutValue = ActiveKey->DataString;
-                    return true;
-                }
-                
-                // Go to the next key
-                ActiveKey = ActiveKey->Next;
-            }
-        }
-        
-        // Go to the next group
-        ActiveGroup = ActiveGroup->Next;
-    }
-    
-    // Never found
-    return false;
-}
-
-void g2Config::AddGroup(const char* Group)
-{
-    // Validate the input
-    g2Assert(Group != NULL && (int)strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
-    
-    // Create the new group object
-    KeyGroup* NewGroup = new KeyGroup;
-    strcpy(NewGroup->GroupName, Group);
-    NewGroup->Keys = NULL;
-    NewGroup->Next = NULL;
-    
-    // Lowercase the group name
-    for(size_t i = 0; i < strlen(NewGroup->GroupName); i++)
-        NewGroup->GroupName[i] = tolower(NewGroup->GroupName[i]);
-    
-    // Is the root empty?
-    if(KeyGroups == NULL)
-    {
-        KeyGroups = NewGroup;
-        return;
-    }
-    
-    // Else, appent to list
-    KeyGroup* ActiveGroup = KeyGroups;
-    while(ActiveGroup != NULL)
-    {
-        // Does this group already exist?
-        g2Assert(strcmp(ActiveGroup->GroupName, NewGroup->GroupName) != 0, "Duplicate group name \"%s\"", ActiveGroup->GroupName);
-        
-        // Is this next empty?
-        if(ActiveGroup->Next == NULL)
-        {
-            ActiveGroup->Next = NewGroup;
-            return;
-        }
-        
-        // Go to the next group
-        ActiveGroup = ActiveGroup->Next;
+        // Copy over the parameters
+        Group = Handle->second.GroupName;
+        Key = Handle->second.KeyName;
+        *OutValue = Handle->second.DataString;
+        return true;
     }
 }
 
@@ -322,50 +247,19 @@ void g2Config::AddKey(const char* Group, const char* Key, const char* Data)
     for(size_t i = 0; i < strlen(LowerKey); i++)
         LowerKey[i] = tolower(LowerKey[i]);
     
-    // For each key group
-    KeyGroup* ActiveGroup = KeyGroups;
-    while(ActiveGroup != NULL)
-    {
-        // Is this the group we want?
-        if(strcmp(ActiveGroup->GroupName, LowerGroup) == 0)
-        {
-            // Allocate key
-            KeyPair* NewKey = new KeyPair;
-            strcpy(NewKey->KeyName, LowerKey);
-            NewKey->Next = NULL;
-            NewKey->DataString = new char[strlen(Data) + 1];
-            strcpy(NewKey->DataString, Data);
-            
-            // Is the key empty?
-            if(ActiveGroup->Keys == NULL)
-            {
-                ActiveGroup->Keys = NewKey;
-                return;
-            }
-            
-            // Search all key-pairs
-            KeyPair* ActiveKey = ActiveGroup->Keys;
-            while(ActiveKey != NULL)
-            {
-                // Do we have conflicting keys?
-                g2Assert(strcmp(ActiveKey->KeyName, LowerKey) != 0, "Duplicate key \"%s\"", LowerKey);
-                
-                // Are we at the end?
-                if(ActiveKey->Next == NULL)
-                {
-                    // Save and finish done
-                    ActiveKey->Next = NewKey;
-                    return;
-                }
-                
-                // Go to the next key
-                ActiveKey = ActiveKey->Next;
-            }
-        }
-        
-        // Go to the next group
-        ActiveGroup = ActiveGroup->Next;
-    }
+    // Create the official key entry
+    char MapKey[g2Config_KeySize];
+    sprintf(MapKey, "%s_%s", LowerGroup, LowerKey);
     
-    // Else, never found so ignore...
+    // Allocate key
+    KeyPair NewKey;
+    
+    strcpy(NewKey.GroupName, LowerGroup);
+    strcpy(NewKey.KeyName, LowerKey);
+    
+    NewKey.DataString = new char[strlen(Data) + 1];
+    strcpy(NewKey.DataString, Data);
+    
+    // Place into map
+    Keys.insert(std::pair<std::string, KeyPair>(std::string(MapKey), NewKey));
 }
