@@ -10,9 +10,6 @@
 
 #include "g2DropDown.h"
 
-// Alpha value when a button isn't selected
-static const float DeselectedAlpha = 0.5f;
-
 g2DropDown::g2DropDown(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {

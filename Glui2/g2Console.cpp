@@ -134,10 +134,9 @@ void g2Console::Render()
     glColor3f(1.0f, 1.0f, 1.0f);
     
     // Cursor position (Pixel offsets to look better)
-    int CharWidth, CharHeight;
-    GetTheme()->GetCharacterSize(&CharWidth, &CharHeight);
+    int CharHeight;
+    GetTheme()->GetCharacterSize('X', &CharHeight);
     CharHeight += 1;
-    CharWidth -= 1;
     
     // 2 Pixel offset from the left, start two rows up so
     // we can have it on the gray console background AND
@@ -178,7 +177,9 @@ void g2Console::Render()
             
             // Draw the shadow first
             DrawCharacter(cX, cY - (OutLength - i) * CharHeight, 1, 1, TempR, TempG, TempB, TempA, Text[j]);
-            cX += CharWidth;
+            int CharWidth;
+            GetTheme()->GetCharacterSize(Text[j], &CharWidth);
+            cX += CharWidth + 2;
         }
         
         // Reset x position
@@ -200,7 +201,9 @@ void g2Console::Render()
     for(size_t i = 0; i < strlen(InputBuffer_Cursor); i++)
     {
         DrawCharacter(cX, cY, InputBuffer_Cursor[i]);
-        cX += CharWidth;
+        int CharWidth;
+        GetTheme()->GetCharacterSize(InputBuffer_Cursor[i], &CharWidth);
+        cX += CharWidth + 2;
     }
 }
 

@@ -7,12 +7,6 @@
 
 #include "glui2.h"
 
-// Internal instance handle
-static Glui2* __G2_HANDLE__ = NULL;
-
-// Define the default theme file name
-static const char* __G2_DEFAULT_THEME__ = "g2Default.cfg";
-
 Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutReshapeFunc)(int width, int height), void (*GlutKeyboardFunc)(unsigned char key, int x, int y), void (*GlutSpecialFunc)(int key, int x, int y), void (*GlutMouseFunc)(int button, int state, int x, int y), void (*GlutHoverFunc)(int x, int y))
 {
     // Save self reference

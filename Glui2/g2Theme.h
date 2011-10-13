@@ -185,7 +185,7 @@ public:
     __g2EXPORT void GetCharacter(char character, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
     // Get a character's size
-    __g2EXPORT void GetCharacterSize(int* width = NULL, int* height = NULL);
+    __g2EXPORT void GetCharacterSize(char character, int* width = NULL, int* height = NULL);
     
     // Get the them texture ID
     __g2EXPORT GLuint GetTextureID();
@@ -206,6 +206,8 @@ private:
     GLuint CharacterMapID;
     int CharacterMapWidth, CharacterMapHeight;
     
+    // 16 x 16 (256) character bitmap width
+    int CharacterWidths[16][16];
 };
 
 // End of inclusion guard

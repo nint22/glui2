@@ -7,23 +7,6 @@
 
 #include "g2Images.h"
 
-// Image allocation structure
-static const int __g2ImageFileNameLength = 512;
-struct __g2Image
-{
-    // Name of file
-    char FileName[__g2ImageFileNameLength];
-    
-    // Width, height
-    int Width, Height;
-    
-    // Components (channel count)
-    int Channels;
-    
-    // The OpenGL texture ID
-    GLuint GlTextureID;
-};
-
 // Internal allocations of images
 std::map<std::string, __g2Image> __g2ImageList;
 typedef std::map<std::string, __g2Image>::iterator __g2ImagesListIt;
@@ -80,4 +63,24 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
     
     // Return what was already known
     return Result->second.GlTextureID;
+}
+
+void g2LoadImageBuffer(const char* ImagePath, unsigned char** OutBuffer, int* Width, int* Height, int* Channels)
+{
+    // Create temporary retainers
+    int TempWidth, TempHeight, TempChannels;
+    
+    // Allocate image; fail out on error
+    *OutBuffer = stbi_load(ImagePath, &TempWidth, &TempHeight, &TempChannels, 4);
+    if(Width != NULL)
+        *Width = TempWidth;
+    if(Height != NULL)
+        *Height = TempHeight;
+    if(Channels != NULL)
+        *Channels = TempChannels;
+}
+
+void g2UnloadImageBuffer(unsigned char* OutBuffer)
+{
+    stbi_image_free(OutBuffer);
 }

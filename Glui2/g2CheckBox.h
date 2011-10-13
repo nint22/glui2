@@ -18,6 +18,9 @@
 #include "g2Controller.h"
 #include "g2Label.h"
 
+// The pixel offset from the label icon itself
+static const int TextOffset = 18;
+
 class g2CheckBox : public g2Controller
 {
 public:
@@ -52,9 +55,6 @@ private:
     
     // Current check status
     bool Checked;
-    
-    // The pixel offset from the label icon itself
-    static const int TextOffset = 18;
     
     // Live value
     bool* LiveCheckState;

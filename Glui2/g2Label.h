@@ -22,6 +22,9 @@
 
 #include "g2Controller.h"
 
+// Number if pixels between characters draw on-screen
+static const int CharacterSpacing = 2;
+
 class g2Label : public g2Controller
 {
 public:

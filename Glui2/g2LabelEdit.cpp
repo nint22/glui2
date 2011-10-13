@@ -58,7 +58,7 @@ int g2LabelEdit::GetWidth()
     
     // Else, just the number of chars x pixel width
     int CharWidth = 0;
-    GetTheme()->GetCharacterSize(&CharWidth);
+    GetTheme()->GetCharacterSize('X', &CharWidth);
     return CharWidth * (int)strlen(TextBuffer);
 }
 
@@ -74,7 +74,7 @@ void g2LabelEdit::Render()
     
     // Get character size
     int width, height;
-    GetTheme()->GetCharacterSize(&width, &height);
+    GetTheme()->GetCharacterSize('X', &width, &height);
     
     // Added a pixel offset; visual improvement
     width -= 1;

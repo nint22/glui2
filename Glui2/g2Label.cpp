@@ -57,10 +57,14 @@ int g2Label::GetWidth()
     if(TextBuffer == NULL)
         return 0;
     
-    // Else, just the number of chars x pixel width
-    int CharWidth = 0;
-    GetTheme()->GetCharacterSize(&CharWidth);
-    return CharWidth * (int)strlen(TextBuffer);
+    // Else, just sum the character lengths to get the width
+    int CharWidth, Sum = 0;
+    for(size_t i = 0; i < strlen(TextBuffer); i++)
+    {
+        GetTheme()->GetCharacterSize(TextBuffer[i], &CharWidth);
+        Sum += CharWidth + CharacterSpacing;
+    }
+    return Sum;
 }
 
 void g2Label::SetShadow(bool State)
@@ -84,11 +88,10 @@ void g2Label::Render()
     GetPos(&pX, &pY);
     
     // Get character size
-    int width, height;
-    GetTheme()->GetCharacterSize(&width, &height);
+    int height;
+    GetTheme()->GetCharacterSize(' ', NULL, &height);
     
     // Added a pixel offset; visual improvement
-    width -= 1;
     height += 1;
     
     // Character positioning
@@ -104,22 +107,27 @@ void g2Label::Render()
     {
         // Get char and character information
         char c = TextBuffer[i];
+        
+        // Reset for the next line
         if(c == '\n')
         {
-            // Reset for the next line
             level++;
             offset = 0;
         }
+        // Draw normally
         else
         {
-            // Draw with shadow
-            DrawCharacter(pX + offset * width + 1, pY + level * height + 1, Scale, Scale, Sr, Sg, Sb, 0.2f, c);
+            // Draw shadow if on
+            if(Shadow)
+                DrawCharacter(pX + offset + 1, pY + level * height + 1, Scale, Scale, Sr, Sg, Sb, 0.2f, c);
             
             // Render text normally
-            DrawCharacter(pX + offset * width, pY + level * height, Scale, Scale, c);
+            DrawCharacter(pX + offset, pY + level * height, Scale, Scale, c);
             
-            // Drow on horizontal
-            offset++;
+            // Get this character's width and offset
+            int width;
+            GetTheme()->GetCharacterSize(c, &width, NULL);
+            offset += width + CharacterSpacing;
         }
     }
 }

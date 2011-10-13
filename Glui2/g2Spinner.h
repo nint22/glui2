@@ -20,6 +20,14 @@
 #include "g2Controller.h"
 #include "g2TextField.h"
 
+// How much time it takes before we update the
+// spinner based on the user holding down
+static const float UpdateRate = 0.05f;
+
+// Number of seconds user needs to wait before
+// auto-update occures 
+static const float UpdateMin = 0.4f;
+
 // Define the two spinner types: int or float
 enum g2SpinnerType
 {

@@ -3,24 +3,13 @@ License Details for Developers and Users
 
 -----
 
-Open Source License
-
-Copyright (c)2010, Core S2 Software Solutions. All rights reserved. Redistribution of this product
-in source or binary forms, with or without modifications, is permitted for educational or academic
-use only, and must be for non-profit and non-commercial redistribution, provided the following
-conditions are met: 1. This entire license, as a whole, must be included with the distribution of
-either source and/or binary form. 2. Neither the name "Core S2 Software Solutions" nor the author
-names may be removed from any material in source and/or binary form. 3. The Core S2 Software
-Solutions EULA must be included with this license.
-
------
-
 End User License Agreement
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS, AUTHORS, AND CONTRIBUTORS "AS IS". IN NO EVENT
-SHALL THE COPYRIGHT HOLDER, OR ANY AUTHORS, OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION).
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS, AUTHORS, AND
+CONTRIBUTORS "AS IS". IN NO EVENT SHALL THE COPYRIGHT HOLDER, OR ANY
+AUTHORS, OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+TO LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION).
 
 -----
 

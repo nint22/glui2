@@ -57,6 +57,9 @@
 #include "g2ProgressBar.h"
 #include "g2Spinner.h"
 
+// Define the default theme file name
+static const char* __G2_DEFAULT_THEME__ = "g2Default.cfg";
+
 // GLUI2 main interfacing / factory class
 class Glui2
 {
@@ -157,6 +160,9 @@ private:
     g2Console* ActiveConsole;
     
 };
+
+// Internal instance handle
+static Glui2* __G2_HANDLE__ = NULL;
 
 // End of inclusion guard
 #endif

@@ -22,6 +22,9 @@
 #include "g2Button.h"
 #include "g2Label.h"
 
+// Alpha value when a button isn't selected
+static const float DeselectedAlpha = 0.5f;
+
 class g2DropDown : public g2Controller
 {
 public:

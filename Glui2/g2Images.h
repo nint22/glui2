@@ -35,11 +35,36 @@
 #include <map>
 #include <string>
 
+// Image allocation structure
+static const int __g2ImageFileNameLength = 512;
+struct __g2Image
+{
+    // Name of file
+    char FileName[__g2ImageFileNameLength];
+    
+    // Width, height
+    int Width, Height;
+    
+    // Components (channel count)
+    int Channels;
+    
+    // The OpenGL texture ID
+    GLuint GlTextureID;
+};
+
 // Open a given image and copy it into the OpenGL image buffers;
 // if the image has not yet been opened before, then a unique reference
 // is made, otherwise a copy isn't made but the same reference is returned
 // Return a negative value if unable to open file / image
 __g2EXPORT GLuint g2LoadImage(const char* ImagePath, int* Width = NULL, int* Height = NULL, int* Channels = NULL, bool Wrap = false);
+
+// Open a given image and provide directly memory access to it; must
+// be released using the "g2UnloadImageBuffer" function when done with
+// the buffer. Sets the given buffer to NULL if unable to load image
+void g2LoadImageBuffer(const char* ImagePath, unsigned char** OutBuffer, int* Width = NULL, int* Height = NULL, int* Channels = NULL);
+
+// Release a buffer allocated by "g2LoadImageBuffer"
+void g2UnloadImageBuffer(unsigned char* OutBuffer);
 
 // End of inclusion guard
 #endif

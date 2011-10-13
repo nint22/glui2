@@ -25,8 +25,7 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
     
     // Compute the offsets so the text is correctly cenetered
     int CharHeight;
-    GetTheme()->GetCharacterSize(&CharWidth, &CharHeight);
-    CharWidth--; // g2Label actually makes chars 1 pixel less for more "dense" look
+    GetTheme()->GetCharacterSize('X', NULL, &CharHeight);
     
     GetTheme()->GetComponentSize(g2Theme_TextField, &OffsetWidth, &OffsetHeight);
     OffsetWidth *= 0.2f;
@@ -162,7 +161,14 @@ void g2TextField::Render()
     if(GetActive() && !GetDisabled())
     {
         // What is the pixel offset?
-        int CursorPos = CharWidth * CursorIndex;
+        int CursorPos = 0;
+        for(int i = 0; i < CursorIndex; i++)
+        {
+            int CharWidth;
+            GetTheme()->GetCharacterSize(Label->GetText()[i], &CharWidth);
+            CursorPos += CharWidth + 2;
+        }
+        
         float tR, tG, tB, tA;
         Label->GetColor(&tR, &tG, &tB, &tA);
         DrawCharacter(pX + OffsetWidth + CursorPos, pY + OffsetHeight, 1.0f, 1.0f, tR, tG, tB, tA, CursorState ? '|' : ' ');

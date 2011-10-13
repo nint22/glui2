@@ -23,56 +23,64 @@ void g2Theme::Load(const char* ThemeFile)
     g2Assert(ThemeFile != NULL, "Give theme file is null");
     Configuration.LoadFile(ThemeFile);
     
-    // Load both image and character map
-    for(int i = 0; i < 2; i++)
+    // Load the theme image and font files
+    char* TextureName = NULL;
+    int Channels;
+    
+    Configuration.GetValue("general", "image", &TextureName);
+    TextureID = g2LoadImage(TextureName, &TextureWidth, &TextureHeight, &Channels);
+    g2Assert(TextureID > 0, "Unable to load image: %s", TextureName);
+    
+    Configuration.GetValue("general", "font", &TextureName);
+    CharacterMapID = g2LoadImage(TextureName, &CharacterMapWidth, &CharacterMapHeight, &Channels);
+    g2Assert(CharacterMapID > 0, "Unable to load image: %s", TextureName);
+    
+    // Get the character map image buffer
+    unsigned char* CharacterImageBuffer = NULL;
+    g2LoadImageBuffer(TextureName, &CharacterImageBuffer, NULL, NULL, &Channels);
+    g2Assert(CharacterImageBuffer != NULL, "Unable to load image as a direct-buffer in main memory: %s", TextureName);
+    g2Assert(Channels == 4, "The character bitmap must use 4 channels (RGBA): %s", TextureName);
+    
+    // Compute the width of each character in the character bitmap
+    int CharacterWidth = CharacterMapWidth / 16;
+    int CharacterHeight = CharacterMapHeight / 16;
+    for(int y = 0; y < 16; y++)
+    for(int x = 0; x < 16; x++)
     {
-        // Get the texture name
-        char* TextureName = NULL;
-        if(i == 0)
-            Configuration.GetValue("general", "image", &TextureName);
-        else if(i == 1)
-            Configuration.GetValue("general", "font", &TextureName);
+        // Default to full width
+        CharacterWidths[y][x] = CharacterWidth;
         
-        // Load the texture itself into memory
-        // Attempt to load the texture via soil (Noe the multiply_alpha flag is critial)
-        int TextureID = g2LoadImage(TextureName);
-        
-        // Make sure the loaded image is valid
-        g2Assert(TextureID > 0, "Unable to load image: %s", TextureName);
-        
-        // Initialize texture
-        glEnable(GL_TEXTURE_2D); // Enable 2D texturing
-        glBindTexture(GL_TEXTURE_2D, TextureID); // Set as the current texture
-        
-        // Get the current texture size
-        if(i == 0)
+        // Keep checking each from right to left
+        for(int i = CharacterWidth - 1; i >= 0; i--)
         {
-            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &TextureWidth);
-            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &TextureHeight);
+            // Keep going down
+            bool CollisionFound = false;
+            for(int j = 0; j < CharacterHeight; j++)
+            {
+                // Get the alpha value, offset needed for 3 (alpha channel, last byte)
+                unsigned char alpha = CharacterImageBuffer[((y * CharacterMapHeight * CharacterWidth + x * CharacterWidth) + j * CharacterMapWidth + i) * 4 + 3];
+                if(alpha > 0)
+                {
+                    CollisionFound = true;
+                    break;
+                }
+            }
+            
+            // If there is no collision or end of character width,
+            // save this width in the character map
+            if(CollisionFound == true)
+            {
+                CharacterWidths[y][x] = i + 1;
+                break;
+            }
         }
-        else if(i == 1)
-        {
-            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &CharacterMapWidth);
-            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &CharacterMapHeight);
-        }
-        
-        // Set certain properties of texture
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        // Remove edge lines
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-        // Done setting image parameters
-        glDisable(GL_TEXTURE_2D);
-        
-        // Save texture ID
-        if(i == 0)
-            this->TextureID = TextureID;
-        else if(i == 1)
-            this->CharacterMapID = TextureID;
     }
+    
+    // Done working on the character map, release the data
+    g2UnloadImageBuffer(CharacterImageBuffer);
+    
+    // One special exception: The ' ' (space) character should be about 60% of the character width
+    CharacterWidths[4][0] = int(0.5f * float(CharacterWidth));
 }
 
 bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
@@ -173,17 +181,17 @@ void g2Theme::GetCharacter(char character, float* tSrcX, float* tSrcY, float* tS
     // Low nibble is x-axis, high nibble is y axis
     // Note to self: would it be faster to do a bit-wise manipulation?
     // sourceX = (character & 0xf0) >> 4 to cast a byte's higher nibble to lower nibble
-    int w = CharacterMapWidth / 16;
-    int h = CharacterMapHeight / 16;
+    int w, h;
+    GetCharacterSize(character, &w, &h);
     if(width != NULL)
         *width = w;
     if(height != NULL)
-        *height = h;
+        *height= h;
     
     if(tSrcX != NULL)
-        *tSrcX = float((character % 16) * w) / float(CharacterMapWidth);
+        *tSrcX = float((character % 16) * (CharacterMapWidth / 16)) / float(CharacterMapWidth);
     if(tSrcY != NULL)
-        *tSrcY = float((character / 16) * h) / float(CharacterMapHeight);
+        *tSrcY = float((character / 16) * (CharacterMapHeight / 16)) / float(CharacterMapHeight);
     
     if(tSrcWidth != NULL)
         *tSrcWidth = float(w) / float(CharacterMapWidth);
@@ -195,10 +203,10 @@ void g2Theme::GetCharacter(char character, float* tSrcX, float* tSrcY, float* tS
         *textID = CharacterMapID;
 }
 
-void g2Theme::GetCharacterSize(int* width, int* height)
+void g2Theme::GetCharacterSize(char character, int* width, int* height)
 {
     if(width != NULL)
-        *width = CharacterMapWidth / 16;
+        *width = CharacterWidths[character / 16][character % 16];
     if(height != NULL)
         *height = CharacterMapHeight / 16;
 }
