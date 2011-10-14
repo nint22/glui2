@@ -73,12 +73,8 @@ void g2RadioGroup::SetLiveVariable(int* LiveIndex)
     this->LiveIndex = LiveIndex;
 }
 
-void g2RadioGroup::Render()
+void g2RadioGroup::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // Get the size of a radio button
     int RadioWidth, RadioHeight;
     GetTheme()->GetComponentSize(g2Theme_RadioButton, &RadioWidth, &RadioHeight);

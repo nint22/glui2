@@ -67,7 +67,7 @@ public:
     
     // Takes a theme file; defaults to the g2Default theme
     // X and Y Offsets are the distance from the anchor; default to 0
-    // Width and height are how big the UI window is; based on the anchor, either the width or hieght will be ignored (i.e. left / right anchor ignores height)
+    // Width and height are how big the UI window is; based on the anchor, either the width or height will be ignored (i.e. left / right anchor ignores height)
     // windowPlacement is a bitwise structure that can be combined (i.e. using "|" ) to define window anchor
     // ThemFile is the location of the theme file to load
     __g2EXPORT Glui2(const char* ThemeFile = NULL, void (*GlutIdleFunc)(void) = NULL, void (*GlutReshapeFunc)(int width, int height) = NULL, void (*GlutKeyboardFunc)(unsigned char key, int x, int y) = NULL, void (*GlutSpecialFunc)(int key, int x, int y) = NULL, void (*GlutMouseFunc)(int button, int state, int x, int y) = NULL, void (*GlutHoverFunc)(int x, int y) = NULL);

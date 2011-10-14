@@ -100,7 +100,7 @@ void InitGLUT(int argc, char** argv)
 // Initialize Glui2 library
 void InitGlui2()
 {
-    // Create a glui instance and register neccesary handles
+    // Create a glui instance and register necessary handles
     GluiHandle = new Glui2("g2Default.cfg", NULL, Reshape);
     glutDisplayFunc(Render);
     
@@ -122,6 +122,6 @@ int main(int argc, char** argv)
     // Start the main rendering loop
     glutMainLoop();
     
-    // Supress warning
+    // Suppress warning
     return 0;
 }

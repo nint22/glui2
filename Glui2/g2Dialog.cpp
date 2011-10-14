@@ -16,7 +16,7 @@
 
 g2Dialog::g2Dialog(g2DialogType Type, const char* Message)
 {
-    // Supress warning
+    // Suppress warning
     g2Assert(Message != NULL, "Given message buffer was null.");
     
     // Default user's choice to nothing
@@ -151,7 +151,7 @@ void g2Dialog::Show()
             result = __g2ShowSaveDialog(MessageBuffer, ResultBuffer, MaxBufferLength);
         
         // Based on the result (i.e. button index) save
-        // the corrent enumeration type
+        // the correct enumeration type
         if(result == true)
             Selection = g2DialogResult_OK;
         else

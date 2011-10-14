@@ -37,22 +37,38 @@ public:
     // Return the current width
     __g2EXPORT int GetWidth();
     
+    // Set the button's icon source
+    // The given icon name is a component defined in the theme file
+    // which requires an origin and size; Pass to arguments to reset icon
+    __g2EXPORT void SetIcon(const char* IconName = NULL);
+    
     // Define controller geometry
     __g2EXPORT bool InController(int x, int y);
+    
+    // Set the text's alignment, accepts either none / left alignment (default), centered, or right alignment
+    __g2EXPORT void SetAlignment(g2Anchor Alignment = g2Anchor_None);
 
 protected:
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
 private:
     
     // Text label
     g2Label* Label;
     
+    // Text label's alignment (either left [default], center, or right)
+    g2Anchor LabelAnchor;
+    
     // Target width of this instance
     int Width;
     
+    // Icon name, if length 0 then no icon
+    char UsingIcon[g2Config_KeySize];
+    
+    // Static text offset; only computed once
+    int LabelOffsetX, LabelOffsetY;
 };
 
 // End of inclusion guard

@@ -109,7 +109,7 @@ void g2Console::Update(float dT)
     }
 }
 
-void g2Console::Render()
+void g2Console::Render(int x, int y)
 {
     // Set the current color and alpha
     glColor4f(0, 0, 0, 0.5f);
@@ -209,7 +209,7 @@ void g2Console::Render()
 
 bool g2Console::InController(int x, int y)
 {
-    // Supress x warning
+    // Suppress x warning
     x = x;
     
     // If in the top half..
@@ -240,7 +240,7 @@ void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
         // Are we closing the console?
         if(strcmp(buffer, "close") == 0 || strcmp(buffer, "quit") == 0 || strcmp(buffer, "exit") == 0)
         {
-            // No need to keep the bufer, just clear
+            // No need to keep the buffer, just clear
             delete[] buffer;
             SetVisibility(false);
         }

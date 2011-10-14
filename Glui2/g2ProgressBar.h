@@ -47,7 +47,7 @@ public:
 protected:
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
 private:
     

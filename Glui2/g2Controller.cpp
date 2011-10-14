@@ -16,9 +16,11 @@ g2Controller::g2Controller(g2Controller* Parent, g2Theme* MainTheme)
     Alpha = 1.0f;
     R = G = B = 1.0f;
     IsVisible = true;
-    x = y = 0;
     ControllerState = g2ControllerState_None;
     IsDisabled = false;
+    
+    // Default position to the origin relative to the parent
+    pX = pY = 0;
     
     // Save parent and theme
     ParentObject = Parent;
@@ -57,7 +59,7 @@ g2Controller::~g2Controller()
         g2Controller* Child = ChildObjects.front();
         ChildObjects.pop();
         
-        // Is this its own class, if so leave it poped and stop
+        // Is this its own class, if so leave it popped and stop
         if(Child == this)
             break;
         
@@ -111,38 +113,18 @@ bool g2Controller::GetDisabled()
 
 void g2Controller::SetPos(int x, int y)
 {
-    // Find the new detla
-    int dx = x - this->x;
-    int dy = y - this->y;
-    
-    // Save for this position
-    this->x = x;
-    this->y = y;
-    
-    // Update all children by setting the offsets
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update child mouse drags
-        int xi, yi;
-        Child->GetPos(&xi, &yi);
-        Child->SetPos(xi + dx, yi + dy);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    // Save the new offset
+    pX = x;
+    pY = y;
 }
 
 void g2Controller::GetPos(int* x, int* y)
 {
+    // Post local offsets
     if(x != NULL)
-        *x = this->x;
+        *x = pX;
     if(y != NULL)
-        *y = this->y;
+        *y = pY;
 }
 
 bool g2Controller::GetActive()
@@ -173,7 +155,7 @@ g2Controller* g2Controller::GetController(int x, int y)
         ChildObjects.push(Child);
     }
     
-    // No children have an interesection, as the parent do we intersect?
+    // No children have an intersection, as the parent do we intersect?
     if(ActiveController == NULL && InController(x, y))
         ActiveController = this;
     
@@ -190,18 +172,18 @@ void g2Controller::Update(float dT)
 {
     // Allow the user to overload as needed...
     
-    // Supress warning
+    // Suppress warning
     dT = dT;
 }
 
-void g2Controller::Render()
+void g2Controller::Render(int x, int y)
 {
     // Allow the user to overload as needed...
 }
 
 bool g2Controller::InController(int x, int y)
 {
-    // Supress warning
+    // Suppress warning
     y = x = y;
     
     // Allow the user to overload as needed...
@@ -210,7 +192,7 @@ bool g2Controller::InController(int x, int y)
 
 void g2Controller::WindowResizeEvent(int NewWidth, int NewHeight)
 {
-    // Supress warning
+    // Suppress warning
     NewHeight = NewWidth = NewHeight;
     
     // Allow the user to overload as needed...
@@ -218,7 +200,7 @@ void g2Controller::WindowResizeEvent(int NewWidth, int NewHeight)
 
 void g2Controller::KeyEvent(unsigned char key, bool IsSpecial)
 {
-    // Supress warning
+    // Suppress warning
     key = key;
     IsSpecial = IsSpecial;
     
@@ -227,7 +209,7 @@ void g2Controller::KeyEvent(unsigned char key, bool IsSpecial)
 
 void g2Controller::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
 {
-    // Supress warning
+    // Suppress warning
     button = g2MouseButton_Left;
     state = g2MouseClick_Down;
     x = y;
@@ -237,7 +219,7 @@ void g2Controller::MouseClick(g2MouseButton button, g2MouseClick state, int x, i
 
 void g2Controller::MouseHover(int x, int y)
 {
-    // Supress warning
+    // Suppress warning
     x = y;
     
     // Allow the user to overload as needed...
@@ -245,7 +227,7 @@ void g2Controller::MouseHover(int x, int y)
 
 void g2Controller::MouseDrag(int x, int y)
 {
-    // Supress warning
+    // Suppress warning
     x = y;
     
     // Allow the user to overload as needed...
@@ -444,14 +426,14 @@ void g2Controller::__Update(float dT)
     }
 }
 
-void g2Controller::__Render()
+void g2Controller::__Render(int x, int y)
 {
     // Ignore if not visible
     if(!GetVisibility())
         return;
     
     // Render self
-    Render();
+    Render(x, y);
     
     // Update all children
     int QueueSize = (int)ChildObjects.size();
@@ -461,8 +443,10 @@ void g2Controller::__Render()
         g2Controller* Child = ChildObjects.front();
         ChildObjects.pop();
         
-        // Render
-        Child->__Render();
+        // Render (note the offset for the child)
+        int OffsetX, OffsetY;
+        Child->GetPos(&OffsetX, &OffsetY);
+        Child->__Render(x + OffsetX, y + OffsetY);
         
         // Put back
         ChildObjects.push(Child);

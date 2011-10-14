@@ -28,7 +28,7 @@ public:
     // Progress bar constructor
     __g2EXPORT g2Slider(g2Controller* Parent, g2Theme* MainTheme);
     
-    // Add a live variable; pass NULL (or leave blank) to disconect
+    // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(float* LiveValue = NULL);
     
     // Set the min / max bounds of the progress bar; defaults to [0.0, 1.0]
@@ -50,7 +50,7 @@ public:
 protected:
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
     // Keep moving the controller based on the user's dragging
     __g2EXPORT void MouseDrag(int x, int y);

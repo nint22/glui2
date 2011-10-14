@@ -89,7 +89,7 @@ bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, f
     if(Element < 0 || Element >= g2ThemeElement_Count)
         return false;
     
-    // Does the config file have theis content?
+    // Does the config file have this content?
     const char* ElementName = g2ThemeElement_Names[(int)Element];
     if(!GetComponent(ElementName, tSrcX, tSrcY, tSrcWidth, tSrcHeight, width, height, textID))
         return false;

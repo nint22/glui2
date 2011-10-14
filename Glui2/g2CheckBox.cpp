@@ -14,7 +14,7 @@ g2CheckBox::g2CheckBox(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
     // Allocate text and set initial position
-    // Note that we are registereting to this button, not the root-parent
+    // Note that we are registering to this button, not the root-parent
     Label = new g2Label(this, MainTheme);
     Label->SetPos(TextOffset, 2);
     Label->SetColor(0, 0, 0);
@@ -48,12 +48,8 @@ void g2CheckBox::SetLiveVariable(bool* LiveCheckState)
     this->LiveCheckState = LiveCheckState;
 }
 
-void g2CheckBox::Render()
+void g2CheckBox::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // Draw based on the current state
     if(GetControllerState() == g2ControllerState_Clicked)
     {

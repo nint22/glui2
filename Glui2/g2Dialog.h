@@ -68,7 +68,7 @@ private:
     // Maximum input/output/message length
     static const int MaxBufferLength = 1024;
     
-    // Mesage buffer
+    // Message buffer
     char MessageBuffer[MaxBufferLength];
     
     // Result (user input) buffer

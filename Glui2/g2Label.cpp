@@ -77,15 +77,11 @@ bool g2Label::GetShadow()
     return Shadow;
 }
 
-void g2Label::Render()
+void g2Label::Render(int pX, int pY)
 {
     // Ignore if not null
     if(TextBuffer == NULL)
         return;
-    
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
     
     // Get character size
     int height;

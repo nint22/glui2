@@ -103,7 +103,7 @@ void Render()
     for(int i = 0; i < 3; i++)
     {
         // Create a text buffer to place the fraction in it
-        // Note the embeded trinary-comparison order, pretty awesome
+        // Note the embedded ternary-comparison order, pretty awesome
         char Buffer[256];
         sprintf(Buffer, "Color %c: %.2f%%", (i == 0 ? 'R' : (i == 1 ? 'G' : 'B')), ColorSliders[i]->GetProgress() * 100.0f);
         ColorLabels[i]->SetText(Buffer);
@@ -213,7 +213,7 @@ void InitGLUT(int argc, char** argv)
 // Initialize Glui2 library
 void InitGlui2()
 {
-    // Create a glui instance and register neccesary handles
+    // Create a glui instance and register necessary handles
     GluiHandle = new Glui2("g2Default.cfg", NULL, Reshape);
     glutDisplayFunc(Render);
     
@@ -280,6 +280,6 @@ int main(int argc, char** argv)
     // Start the main rendering loop
     glutMainLoop();
     
-    // Supress warning
+    // Suppress warning
     return 0;
 }

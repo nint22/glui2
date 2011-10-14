@@ -8,15 +8,15 @@
  
  File: g2AppKit.mm/h
  Desc: Objective-C specific App Kit based API callbacks. It
- is necessary to split this code into a seperate h/m pair
+ is necessary to split this code into a separate h/m pair
  to access the OS-level (in ObjC) open/save panels.
  
- Note that the *.mm extension to the implimentation file is
+ Note that the *.mm extension to the implementation file is
  critical as it tells the compiler it is a mix of C, C++,
  and Objective-C (so we can have C-style global functions yet
  includes Objective-C AppKit function calls).
  
- Outbuffer will be written to as much as possible.
+ OutBuffer will be written to as much as possible.
  
  Results are based on true: success, false: failure
  

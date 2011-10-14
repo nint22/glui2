@@ -47,7 +47,7 @@ public:
     // Get the current selection; defaults to 0
     __g2EXPORT int GetSelectionIndex();
     
-    // Add a live variable; pass NULL (or leave blank) to disconect
+    // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(int* LiveIndex = NULL);
     
     // Define controller geometry
@@ -56,7 +56,7 @@ public:
 protected:
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
 public:
     

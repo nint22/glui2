@@ -9,13 +9,13 @@
  File: g2Config.cpp/h
  Desc: g2Theme is a way to "skin" or "theme" a GLUI2 on-screen.
  Only one theme may be active at a time; a default theme is loaded
- when not specificed with "g2Default.cfg". An example theme
+ when not specified with "g2Default.cfg". An example theme
  is "g2Blue.cfg".
  
  All themes require a source image that must of *.png file type.
  
  A theme configuration file follows the below specification, and
- is loaded using the g2Config system; it is roughly equivalient
+ is loaded using the g2Config system; it is roughly equivalent
  to *ini grouped key-data value data.
  
  There are in total 10 groups, 1 used to define the source image,
@@ -45,7 +45,7 @@
  
  Each of these group need a source key which are two integers (x y)
  delimited by a space, and needs a size (width height), which are
- also two integers. These specificy the sub-image's origin and size.
+ also two integers. These specify the sub-image's origin and size.
  This data cuts out the UI sub-image for the given source image.
  
  For example:
@@ -154,6 +154,17 @@ static const char g2ThemeElement_Names[g2ThemeElement_Count][g2Config_KeySize] =
     "SliderButton_Disabled",
 };
 
+// Define an anchor style, or how controller are added
+// Note that these are uints so we can combine flags together
+// It is up to the end-developer to combine them using the bit-wise or operator
+typedef unsigned int g2Anchor;
+static const g2Anchor g2Anchor_None    =   0;    // Same as a top-left anchor; i.e. never moves
+static const g2Anchor g2Anchor_Top     =   1;    // Anchor is from top of screen
+static const g2Anchor g2Anchor_Left    =   2;    // Anchor is on left-screen edge
+static const g2Anchor g2Anchor_Bottom  =   4;    // Anchor is from bottom of screen
+static const g2Anchor g2Anchor_Right   =   8;    // Anchor is on the right-screen edge
+static const g2Anchor g2Anchor_Center  =  16;    // Anchor is the horizontal middle
+
 // Theme implementation class
 class g2Theme
 {
@@ -167,7 +178,7 @@ public:
     __g2EXPORT void Load(const char* ThemeFile);
     
     // Access a given UI component's bitmap data based on an enumeration
-    // which inturn looks it up in the "g2ThemeElement_Names" string-table
+    // which in turn looks it up in the "g2ThemeElement_Names" string-table
     // Returns true if found, else false
     __g2EXPORT bool GetComponent(g2ThemeElement Element, float* tSrcX = NULL, float* tSrcY = NULL, float* tSrcWidth = NULL, float* tSrcHeight = NULL, int* width = NULL, int* height = NULL, GLuint* textID = NULL);
     
@@ -190,7 +201,7 @@ public:
     // Get the them texture ID
     __g2EXPORT GLuint GetTextureID();
     
-    // Get the caracther maps texture ID
+    // Get the character maps texture ID
     __g2EXPORT GLuint GetCharacterMapID();
     
 private:

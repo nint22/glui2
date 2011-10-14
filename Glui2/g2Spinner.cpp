@@ -14,7 +14,7 @@ g2Spinner::g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Typ
 : g2Controller(Parent, MainTheme)
 {
     // Allocate textfield and set initial position
-    // Note that we are registereting to this button, not the root-parent
+    // Note that we are registering to this button, not the root-parent
     TextField = new g2TextField(this, MainTheme);
     
     // Save given type
@@ -148,12 +148,8 @@ void g2Spinner::SetLiveVariable(float* LiveValue)
     this->LiveValue = LiveValue;
 }
 
-void g2Spinner::Render()
+void g2Spinner::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // Source texture coordinates for spinner
     float SourceX, SourceY, SourceWidth, SourceHeight;
     int OutWidth, OutHeight;
@@ -166,7 +162,7 @@ void g2Spinner::Render()
     OffsetY = OffsetY / 2 - OutHeight / 2; // Centered vertically
     
     // Is the user's mouse on the top or bottom of the button?
-    // Note the trinay comparison operator to do the half-height offset
+    // Note the ternary comparison operator to do the half-height offset
     bool IsAbove = MouseY <= (pY + OffsetY + (OutHeight / 2));
     
     // Disabled

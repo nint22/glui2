@@ -23,7 +23,7 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
     // Default the width to the minimum width of the source image
     GetTheme()->GetComponentSize(g2Theme_TextField, &Width);
     
-    // Compute the offsets so the text is correctly cenetered
+    // Compute the offsets so the text is correctly centered
     int CharHeight;
     GetTheme()->GetCharacterSize('X', NULL, &CharHeight);
     
@@ -36,7 +36,7 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
     Label->SetPos(OffsetWidth, OffsetHeight);
     Label->SetColor(0.0f, 0.0f, 0.0f);
     
-    // Default to no fillter mechanism
+    // Default to no filter mechanism
     FilterBuffer = NULL;
 }
 
@@ -114,12 +114,8 @@ void g2TextField::Update(float dT)
     }
 }
 
-void g2TextField::Render()
+void g2TextField::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     /*** Draw Background (Text field) ***/
     
     // What state is the component currently in?

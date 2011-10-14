@@ -11,7 +11,7 @@
  single row of text only. End-developers should always use
  the "SetText" method of this class to set the text for the
  field; using the "SetText" from GetLabel() will cause
- editing inconsistences.
+ editing inconsistencies.
  
 ***************************************************************/
 
@@ -59,7 +59,7 @@ protected:
     __g2EXPORT void Update(float dT);
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
     // Handle user inputs
     __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);

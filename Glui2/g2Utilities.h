@@ -19,7 +19,7 @@
 // Window includes
 #ifdef _WIN32
     
-    // Supress std-c lib buffer-overflow warnings
+    // Suppress std-c lib buffer-overflow warnings
     #pragma warning(disable:4996)
     #include <windows.h>
     #include <gl/glut.h>
@@ -106,7 +106,7 @@ enum g2MouseClick
             // Setup the high-resolution timer
             QueryPerformanceFrequency(&TicksPerSec);
             
-            // High-resolution timers, iniitalized timer
+            // High-resolution timers, initialized timer
             QueryPerformanceCounter(&startTime);
             
             // Start off the timer
@@ -150,7 +150,7 @@ enum g2MouseClick
         
         g2Clock(bool StartTiming = false)
         {
-            // High-resolution timers, iniitalized timer
+            // High-resolution timers, initialized timer
             gettimeofday(&startTime, NULL);
             
             // Start off the timer

@@ -62,15 +62,11 @@ int g2LabelEdit::GetWidth()
     return CharWidth * (int)strlen(TextBuffer);
 }
 
-void g2LabelEdit::Render()
+void g2LabelEdit::Render(int pX, int pY)
 {
     // Ignore if not null
     if(TextBuffer == NULL)
         return;
-    
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
     
     // Get character size
     int width, height;

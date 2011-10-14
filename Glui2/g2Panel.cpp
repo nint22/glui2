@@ -48,12 +48,8 @@ void g2Panel::SetSize(int NewWidth, int NewHeight)
     Height = NewHeight;
 }
 
-void g2Panel::Render()
+void g2Panel::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // Get the size of the original tile
     int tWidth, tHeight;
     GetTheme()->GetComponentSize(g2Theme_Panel, &tWidth, &tHeight);

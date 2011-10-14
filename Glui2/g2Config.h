@@ -9,7 +9,7 @@
  File: g2Config.cpp/h
  Desc: Read a configuration file based on the ini-config file
  format (described below). Configuration variables are group
- based on a header tag. Comments begin with the "#" (hash) chracter
+ based on a header tag. Comments begin with the "#" (hash) character
  and all following characters are ignored until a new-line. Files must
  end in *.cfg or *.ini, but it should be noted this is not a strict
  implementation of ini-config file parsing.
@@ -21,7 +21,7 @@
  General ini-config file format:
  
  All keys must be in a group, and groups are defined as a string
- encased within brackers (i.e. [sample group]). Group names are
+ encased within brackets (i.e. [sample group]). Group names are
  not case sensitive, and neither are key names. Data for each
  key can be anything, ranging from integers to strings, but
  it must be ascii-encoded (i.e. written in plain-text, not in
@@ -39,7 +39,7 @@
  with each group having a linked-list of key-data pairs. Though
  this could be implemented as a hash-map, the goal of GLUI2 is
  to keep code simple and maintainable; adding the STL map struct
- is too unrely to work with, ugly, and big...
+ is too unruly to work with, ugly, and big...
  
 ***************************************************************/
 
@@ -52,7 +52,7 @@
 #include <map>
 #include <string>
 
-// Define the maximum keysize
+// Define the maximum key size
 static const int g2Config_KeySize = 128;
 
 // Key-data node structure; part of a linked list

@@ -63,10 +63,6 @@ void g2DropDown::SetOptions(const char** OptionLabels, int OptionCount)
         delete[] Buttons;
     Buttons = new g2Button*[OptionCount];
     
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // Get the vertical size of characters
     int CharHeight;
     GetTheme()->GetCharacterSize(NULL, &CharHeight);
@@ -85,7 +81,7 @@ void g2DropDown::SetOptions(const char** OptionLabels, int OptionCount)
         
         // Create a new label with these properties (move down for each option)
         Buttons[i] = new g2Button(this, GetTheme());
-        Buttons[i]->SetPos(pX, pY + i * ButtonHeight + ButtonHeight);
+        Buttons[i]->SetPos(0, i * ButtonHeight + ButtonHeight);
         Buttons[i]->SetText(OptionLabels[i]);
         Buttons[i]->SetDisabled(true);
         Buttons[i]->SetWidth(ButtonField->GetWidth());
@@ -126,12 +122,8 @@ void g2DropDown::SetLiveVariable(int* LiveIndex)
     this->LiveIndex = LiveIndex;
 }
 
-void g2DropDown::Render()
+void g2DropDown::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // Get the width and offsets
     int DropdownWidth, DropdownOffset;
     GetTheme()->GetComponentSize(g2Theme_DropDown, &DropdownWidth);

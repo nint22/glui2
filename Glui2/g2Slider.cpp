@@ -62,12 +62,8 @@ void g2Slider::SetWidth(int Width)
         this->Width = MinWidth;
 }
 
-void g2Slider::Render()
+void g2Slider::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // What is the slider bar's minimum size?
     int MinWidth = 0;
     GetTheme()->GetComponentSize(g2Theme_Slider, &MinWidth);
@@ -137,7 +133,7 @@ void g2Slider::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y
 
 void g2Slider::MouseHover(int x, int y)
 {
-    // Are we draggig?
+    // Are we dragging?
     if(IsDragging)
     {
         // Get the GUI position

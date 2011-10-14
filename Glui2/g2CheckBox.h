@@ -37,7 +37,7 @@ public:
     // Set the check state
     __g2EXPORT void SetChecked(bool Check);
     
-    // Add a live variable; pass NULL (or leave blank) to disconect
+    // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(bool* LiveCheckState = NULL);
     
     // Define controller geometry
@@ -46,7 +46,7 @@ public:
 protected:
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
 private:
     

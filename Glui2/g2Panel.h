@@ -22,16 +22,6 @@
 
 #include "g2Controller.h"
 
-// Define an anchor style, or how controller are added
-// Note that these are uints so we can combine flags together
-// It is up to the end-developer to combine them using the bit-wise or operator
-typedef unsigned int g2Anchor;
-static const g2Anchor g2Anchor_None     = 0x0000;    // Same as a top-left anchor; i.e. never moves
-static const g2Anchor g2Anchor_Top      = 0x0001;    // Anchor is from top of screen
-static const g2Anchor g2Anchor_Left     = 0x0002;    // Anchor is on left-screen edge
-static const g2Anchor g2Anchor_Bottom   = 0x0004;    // Anchor is from bottom fo screen
-static const g2Anchor g2Anchor_Right    = 0x0008;    // Anchor is on the right-screen edge
-
 class g2Panel : public g2Controller
 {
 public:
@@ -58,7 +48,7 @@ public:
 protected:
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
     // Window resize event
     __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);

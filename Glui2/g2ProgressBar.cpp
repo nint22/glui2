@@ -14,7 +14,7 @@ g2ProgressBar::g2ProgressBar(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
     // Allocate text and set initial position
-    // Note that we are registereting to this button, not the root-parent
+    // Note that we are registering to this button, not the root-parent
     Label = new g2Label(this, MainTheme);
     Label->SetPos(5, 5);
     Label->SetColor(0, 0, 0);
@@ -60,9 +60,7 @@ void g2ProgressBar::SetText(const char* Text)
         Width = NewLength;
     
     // Center text
-    int pX, pY;
-    GetPos(&pX, &pY);
-    Label->SetPos(pX + 5 + Width / 2 - Label->GetWidth() / 2, pY + 5);
+    Label->SetPos(5 + Width / 2 - Label->GetWidth() / 2, 5);
 }
 
 void g2ProgressBar::SetWidth(int Width)
@@ -77,17 +75,11 @@ void g2ProgressBar::SetWidth(int Width)
         this->Width = MinWidth;
     
     // Center text
-    int pX, pY;
-    GetPos(&pX, &pY);
-    Label->SetPos(pX + 5 + Width / 2 - Label->GetWidth() / 2, pY + 5);
+    Label->SetPos(5 + Width / 2 - Label->GetWidth() / 2, 5);
 }
 
-void g2ProgressBar::Render()
+void g2ProgressBar::Render(int pX, int pY)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
     // What component should we be rendering?
     g2ThemeElement ProgressState = g2Theme_ProgressBar;
     if(GetDisabled())

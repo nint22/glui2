@@ -80,7 +80,7 @@ void g2Config::LoadFile(const char* FileName)
             int DataBufferSize = 8;
             int DataLength = 0;
             
-            // Read off any whitespaces
+            // Read off any white-spaces
             while(true)
             {
                 char temp = fgetc(FileHandle);
@@ -199,7 +199,7 @@ bool g2Config::GetValue(const char* Group, const char* Key, char** OutValue)
     g2Assert(Group != NULL && (int)strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
     g2Assert(Key != NULL && (int)strlen(Key) < g2Config_KeySize, "Given key string is either NULL or too long.");
     
-    // Lowercase both the given groupname and key
+    // Lowercase both the given group name and key
     char LowerGroup[g2Config_KeySize];
     char LowerKey[g2Config_KeySize];
     
@@ -235,7 +235,7 @@ void g2Config::AddKey(const char* Group, const char* Key, const char* Data)
     g2Assert(Group != NULL && (int)strlen(Group) < g2Config_KeySize, "Given group string is either NULL or too long.");
     g2Assert(Key != NULL && (int)strlen(Key) < g2Config_KeySize, "Given key string is either NULL or too long.");
     
-    // Lowercase both the given groupname and key
+    // Lowercase both the given group name and key
     char LowerGroup[g2Config_KeySize];
     char LowerKey[g2Config_KeySize];
     

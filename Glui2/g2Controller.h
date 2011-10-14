@@ -20,7 +20,7 @@
 #include "g2Utilities.h"
 #include "g2Theme.h"
 
-// Necesary STL for the child list; should consider replacing
+// Necessary STL for the child list; should consider replacing
 #include <queue>
 
 // Enumerate all button states
@@ -49,7 +49,7 @@ public:
     // Set visibility (if invisible, it is both deactivated AND invisible)
     __g2EXPORT void SetVisibility(bool Visible);
     
-    // Get visability
+    // Get visibility
     __g2EXPORT bool GetVisibility();
     
     // Set color (defaults to white)
@@ -64,10 +64,12 @@ public:
     // Get enabled / disabled modes
     __g2EXPORT bool GetDisabled();
     
-    // Set position
+    // Set position (position from parent)
+    // This is the offset from the parent's origin
     __g2EXPORT void SetPos(int x, int y);
     
-    // Get x and y position
+    // Get x and y position (position from parent)
+    // This is the offset from the parent's origin
     __g2EXPORT void GetPos(int* x = NULL, int* y = NULL);
     
     // Returns true if we are the active controller
@@ -78,11 +80,11 @@ public:
     // Returns a pointer to an intersecting controller either owned
     // by this controller, the controller itself, or null. An active
     // controller is the controller that can be directly clicked on
-    // as determined using "InController(...)" and the the lowesr-rendering
+    // as determined using "InController(...)" and the the lower-rendering
     // order which means the visibility top-most layer
     __g2EXPORT g2Controller* GetController(int x, int y);
     
-    // Set a callback function for a full clickthrough event
+    // Set a callback function for a full click-through event
     // Note that if there is no argument passed, the callback is set back to none
     __g2EXPORT void SetCallback(__g2CallBack(PressedCallback) = 0);
     
@@ -97,7 +99,8 @@ protected:
     __g2EXPORT virtual void Update(float dT);
     
     // Render object (Required to overload)
-    __g2EXPORT virtual void Render();
+    // The given coordinate is the global position of this object (includes all parent offsets)
+    __g2EXPORT virtual void Render(int x, int y);
     
     // Window resize event
     __g2EXPORT virtual void WindowResizeEvent(int NewWidth, int NewHeight);
@@ -118,16 +121,16 @@ protected:
     
     /*** Internal Rendering Components & Helpers ***/
     
-    // Draws a given source location to the on-screen descrition coordinates
+    // Draws a given source location to the on-screen description coordinates
     __g2EXPORT void DrawComponent(int DestX, int DestY, g2ThemeElement ElementType);
     
-    // Draws a given source location and size to the on-screen descrition coordinates
+    // Draws a given source location and size to the on-screen description coordinates
     __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType);
     
-    // Draws a given source location to the on-screen descrition coordinates
+    // Draws a given source location to the on-screen description coordinates
     __g2EXPORT void DrawComponent(int DestX, int DestY, const char* ElementName);
     
-    // Draws a given source location and size to the on-screen descrition coordinates
+    // Draws a given source location and size to the on-screen description coordinates
     __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, const char* ElementName);
     
     // Draws a given rectangle and source textures; texture ID defaults to the theme texture
@@ -155,16 +158,16 @@ private:
     
     /*** Rendering Properties ***/
     
-    // Position
-    int x, y;
+    // Position from parent (how many pixels offset from the parent's origin)
+    int pX, pY;
     
-    // Object color, from 0.0f to 1.0f per chanel
+    // Object color, from 0.0f to 1.0f per channel
     float R, G, B;
     
     // Alpha value, from 0.0f to 1.0f
     float Alpha;
     
-    // Visable/Renderable, propagates down to children objects
+    // Visible/Renderable, propagates down to children objects
     bool IsVisible;
     
     // Disabled/enabled
@@ -173,7 +176,7 @@ private:
     // Active state
     bool IsActive;
     
-    // Callback function; called when a full clickthrough event was detected
+    // Callback function; called when a full click-through event was detected
     __g2CallBack(PressedCallback);
     
     /*** Managed Object Events ***/
@@ -182,7 +185,7 @@ private:
     void __Update(float dT);
     
     // Internal render function
-    void __Render();
+    void __Render(int x, int y);
     
     // Window resize event
     void __WindowResizeEvent(int NewWidth, int NewHeight);

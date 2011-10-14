@@ -14,17 +14,25 @@ g2Button::g2Button(g2Controller* Parent, g2Theme* MainTheme)
     : g2Controller(Parent, MainTheme)
 {
     // Allocate text and set initial position
-    // Note that we are registereting to this button, not the root-parent
     Label = new g2Label(this, MainTheme);
-    Label->SetPos(5, 5);
     Label->SetColor(0, 0, 0);
     Label->SetText("Undefined g2Button");
     
-    // Default width
-    GetTheme()->GetComponentSize(g2Theme_Button, &Width);
+    // Compute the label's offsets
+    int ButtonHeight;
+    GetTheme()->GetComponentSize(g2Theme_Button, NULL, &ButtonHeight);
+    GetTheme()->GetCharacterSize(' ', &LabelOffsetX, &LabelOffsetY);
+    LabelOffsetY = ButtonHeight / 2 - LabelOffsetY / 2;
+    Label->SetPos(LabelOffsetX, LabelOffsetY);
     
-    // Set the initial width to a default width value
-    GetTheme()->GetComponentSize(g2Theme_Button, &Width);
+    // Default width
+    SetWidth(0);
+    
+    // Default the button's icon to none
+    SetIcon();
+    
+    // Default alignment to left
+    SetAlignment();
 }
 
 g2Label* g2Button::GetLabel()
@@ -38,11 +46,12 @@ void g2Button::SetText(const char* Text)
     Label->SetText(Text == NULL ? "" : Text);
     
     // What is the new length of this text?
-    int NewLength = Label->GetWidth();
+    // Note the 2x which is used as the forward and back space-buffering
+    int NewLength = Label->GetWidth() + 2 * LabelOffsetX;
     
     // Is this new length bigger than the old width? If so, save
     if(NewLength > Width)
-        Width = NewLength;
+        SetWidth(NewLength);
 }
 
 void g2Button::SetWidth(int Width)
@@ -62,12 +71,17 @@ int g2Button::GetWidth()
     return Width;
 }
 
-void g2Button::Render()
+void g2Button::SetIcon(const char* IconName)
 {
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
+    // If null, make icon empty
+    if(IconName == NULL)
+        strcpy(UsingIcon, "");
+    else
+        strcpy(UsingIcon, IconName);
+}
+
+void g2Button::Render(int pX, int pY)
+{
     // What component should we be rendering?
     g2ThemeElement ButtonState = g2Theme_Button;
     
@@ -77,16 +91,25 @@ void g2Button::Render()
     else if(GetControllerState() == g2ControllerState_Pressed)
         ButtonState = g2Theme_Button_Pressed;
     
-    // Shift the text bottom right by 1 pixel to make the
-    // text label look more active
-    if(ButtonState == g2Theme_Button_Pressed)
-        Label->SetPos(pX + 5, pY + 6);
+    // Compute the label anchor offset
+    int LabelAnchorOffset = 0;
+    if(LabelAnchor == g2Anchor_Right)
+        LabelAnchorOffset = GetWidth() - LabelOffsetX - Label->GetWidth();
+    else if(LabelAnchor == g2Anchor_Center)
+        LabelAnchorOffset = GetWidth() / 2 - (Label->GetWidth()) / 2;
     else
-        Label->SetPos(pX + 5, pY + 5);
+        LabelAnchorOffset = LabelOffsetX;
+    
+    // Shift the text bottom right by 1 pixel to make the
+    // button look more active when being pressed
+    if(ButtonState == g2Theme_Button_Pressed)
+        Label->SetPos(LabelAnchorOffset, LabelOffsetY + 1);
+    else
+        Label->SetPos(LabelAnchorOffset, LabelOffsetY);
     
     // What is the button's minimum size?
-    int MinWidth = 0;
-    GetTheme()->GetComponentSize(g2Theme_Button, &MinWidth);
+    int MinWidth, ButtonHeight;
+    GetTheme()->GetComponentSize(g2Theme_Button, &MinWidth, &ButtonHeight);
     
     // If default size, just render normally
     if(Width == MinWidth)
@@ -111,6 +134,26 @@ void g2Button::Render()
         // This is to make sure there isn't a pixel space
         DrawComponent(pX + OutWidth / 3.0f, pY, Width - (2.0f * OutWidth) / 3.0f + 1, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, SourceWidth - (2.0f * SourceWidth) / 3.0f, SourceHeight);
     }
+    
+    // Draw the icon if we have one
+    if(strlen(UsingIcon) > 0)
+    {
+        // Get the size of the component
+        int IconWidth, IconHeight;
+        GetTheme()->GetComponentSize(UsingIcon, &IconWidth, &IconHeight);
+        
+        // Computer the offsets
+        int IconOffsetX = 5;
+        int IconOffsetY = ButtonHeight / 2 - IconHeight / 2;
+        
+        // Draw icon centered to the left
+        DrawComponent(pX + IconOffsetX, pY + IconOffsetY, UsingIcon);
+        
+        // Offset the text some more
+        int LabelX, LabelY;
+        Label->GetPos(&LabelX, &LabelY);
+        Label->SetPos(LabelX + IconWidth, LabelY);
+    }
 }
 
 bool g2Button::InController(int x, int y)
@@ -125,4 +168,9 @@ bool g2Button::InController(int x, int y)
         return true;
     else
         return false;
+}
+
+void g2Button::SetAlignment(g2Anchor Alignment)
+{
+    LabelAnchor = Alignment;
 }

@@ -72,7 +72,7 @@ protected:
     __g2EXPORT void Update(float dT);
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
     // Gets the screen width and heigh
     __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);

@@ -25,7 +25,7 @@
 static const float UpdateRate = 0.05f;
 
 // Number of seconds user needs to wait before
-// auto-update occures 
+// auto-update occurs 
 static const float UpdateMin = 0.4f;
 
 // Define the two spinner types: int or float
@@ -72,7 +72,7 @@ public:
     __g2EXPORT void IncrementUp();
     __g2EXPORT void IncrementDown();
     
-    // Add a live variable; pass NULL (or leave blank) to disconect
+    // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(float* LiveValue = NULL);
     
     // Define controller geometry
@@ -81,7 +81,7 @@ public:
 protected:
     
     // Render
-    __g2EXPORT void Render();
+    __g2EXPORT void Render(int pX, int pY);
     
     // Update (grabs the time)
     __g2EXPORT void Update(float dT);

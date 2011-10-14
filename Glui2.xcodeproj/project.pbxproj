@@ -14,9 +14,6 @@
 		48657428143FB88000CD1381 /* stb_image.c in Sources */ = {isa = PBXBuildFile; fileRef = 48657427143FB88000CD1381 /* stb_image.c */; };
 		4865742A143FB8EF00CD1381 /* stb_image.h in Headers */ = {isa = PBXBuildFile; fileRef = 48657429143FB8EF00CD1381 /* stb_image.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FDDC142D3FAB00D74141 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FDDB142D3FAB00D74141 /* Cocoa.framework */; };
-		4872FE9C142D406300D74141 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE6A142D406100D74141 /* default.png */; };
-		4872FEA0142D406300D74141 /* g2Blue.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE6E142D406100D74141 /* g2Blue.cfg */; };
-		4872FEA1142D406300D74141 /* g2Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE6F142D406100D74141 /* g2Blue.png */; };
 		4872FEA2142D406300D74141 /* g2Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE70142D406100D74141 /* g2Button.cpp */; };
 		4872FEA3142D406300D74141 /* g2Button.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE71142D406100D74141 /* g2Button.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEA4142D406300D74141 /* g2CheckBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE72142D406100D74141 /* g2CheckBox.cpp */; };
@@ -27,8 +24,6 @@
 		4872FEA9142D406300D74141 /* g2Console.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE77142D406200D74141 /* g2Console.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEAA142D406300D74141 /* g2Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE78142D406200D74141 /* g2Controller.cpp */; };
 		4872FEAB142D406300D74141 /* g2Controller.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE79142D406200D74141 /* g2Controller.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4872FEAC142D406300D74141 /* g2Default.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE7A142D406200D74141 /* g2Default.cfg */; };
-		4872FEAD142D406300D74141 /* g2Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE7B142D406200D74141 /* g2Default.png */; };
 		4872FEAE142D406300D74141 /* g2Dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE7C142D406200D74141 /* g2Dialog.cpp */; };
 		4872FEAF142D406300D74141 /* g2Dialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE7D142D406200D74141 /* g2Dialog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEB0142D406300D74141 /* g2DropDown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE7E142D406200D74141 /* g2DropDown.cpp */; };
@@ -53,9 +48,6 @@
 		4872FEC6142D406300D74141 /* g2Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE94142D406300D74141 /* g2Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4872FEC7142D406300D74141 /* glui2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4872FE95142D406300D74141 /* glui2.cpp */; };
 		4872FEC8142D406300D74141 /* glui2.h in Headers */ = {isa = PBXBuildFile; fileRef = 4872FE96142D406300D74141 /* glui2.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4872FECB142D406300D74141 /* GWEN.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE99142D406300D74141 /* GWEN.cfg */; };
-		4872FECC142D406300D74141 /* GWEN.png in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE9A142D406300D74141 /* GWEN.png */; };
-		4872FECD142D406300D74141 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4872FE9B142D406300D74141 /* License.txt */; };
 		4872FEE3142D422D00D74141 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FEE2142D422D00D74141 /* GLUT.framework */; };
 		4872FEE5142D423400D74141 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872FEE4142D423300D74141 /* OpenGL.framework */; };
 		48E527F5142D803000775F4D /* g2AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 48E527F4142D803000775F4D /* g2AppKit.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -329,14 +321,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4872FE9C142D406300D74141 /* default.png in Resources */,
-				4872FEA0142D406300D74141 /* g2Blue.cfg in Resources */,
-				4872FEA1142D406300D74141 /* g2Blue.png in Resources */,
-				4872FEAC142D406300D74141 /* g2Default.cfg in Resources */,
-				4872FEAD142D406300D74141 /* g2Default.png in Resources */,
-				4872FECB142D406300D74141 /* GWEN.cfg in Resources */,
-				4872FECC142D406300D74141 /* GWEN.png in Resources */,
-				4872FECD142D406300D74141 /* License.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

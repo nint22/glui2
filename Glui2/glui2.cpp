@@ -182,12 +182,12 @@ void Glui2::Render()
     // Make sure we are in fill mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
-    // Render all children
-    RootController->__Render();
+    // Render all children (this controller is the root of all controllers)
+    RootController->__Render(0, 0);
     
     // Render the console LAST
     if(ActiveConsole != NULL)
-        ActiveConsole->__Render();
+        ActiveConsole->__Render(0, 0);
     
     // End 2D mode
     glPopMatrix();
@@ -250,7 +250,7 @@ void Glui2::__KeyboardFunc(unsigned char key, int x, int y)
     else if(__G2_HANDLE__->ActiveController != NULL)
         __G2_HANDLE__->ActiveController->__KeyEvent(key);
     
-    // If nothign is focused, pass to glut
+    // If nothing is focused, pass to glut
     else if(__G2_HANDLE__->GlutKeyboardFunc != NULL)
         __G2_HANDLE__->GlutKeyboardFunc(key, x, y);
 }
