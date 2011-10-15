@@ -397,35 +397,30 @@ void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int Dest
     // Left, middle, right
     int X1 = DestX;
     int W1 = OutWidth / 3;
+    float SourceWidthLeft = SourceWidth / 3.0f;
+    if(Width < W1 * 2)
+    {
+        W1 = Width / 2;
+        SourceWidthLeft *= float(W1) / float(float(OutWidth) / 3.0f);
+    }
     
     int X2 = X1 + W1;
-    int W2 = Width - 2 * W1;
+    int W2 = fmax(0, Width - 2 * W1);
+    float SourceWidthMiddle = SourceWidth / 100.0f;
     
     int X3 = X2 + W2;
     int W3 = Width - W1 - W2;
-    
-    // Compute the middle source width
-    float MiddleSourceWidth = (SourceWidth / 3.0f) * (float(W2) / float(Width));
-    float VisibleWidth = SourceWidth / 3.0f;
-    
-    // Change the widths if the bar is getting too small
-    if(Width / 2 < W1)
+    float SourceWidthRight = SourceWidth / 3.0f;
+    if(Width < W3 * 2)
     {
-        // Change width so they are getting smaller; hide middle part
-        W1 = W3 = (int)fmax(0, Width / 2);
-        W2 = 0;
-        
-        // Move the right component to merge with the left
-        X3 = DestX + W1;
-        
-        // Change the visible width as needed
-        VisibleWidth *= float(W1) / float(Width / 2);
+        W3 = Width / 2;
+        SourceWidthRight *= float(W3) / float(float(OutWidth) / 3.0f);
     }
     
     // Draw the left, middle, right
-    DrawComponent(X1, DestY, W1, OutHeight, SourceX, SourceY, VisibleWidth, SourceHeight);
-    DrawComponent(X2, DestY, W2, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, MiddleSourceWidth, SourceHeight);
-    DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth / 1.5f + (SourceWidth / 3.0f - VisibleWidth), SourceY, VisibleWidth, SourceHeight);
+    DrawComponent(X1, DestY, W1, OutHeight, SourceX, SourceY, SourceWidthLeft, SourceHeight);
+    DrawComponent(X2, DestY, W2, OutHeight, SourceX + SourceWidthLeft, SourceY, SourceWidthMiddle, SourceHeight);
+    DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth - SourceWidthLeft, SourceY, SourceWidthLeft, SourceHeight);
 }
 
 void g2Controller::DrawComponent(const char* ElementName, int DestX, int DestY, int Width)
