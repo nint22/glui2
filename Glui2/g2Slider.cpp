@@ -62,41 +62,17 @@ void g2Slider::SetWidth(int Width)
         this->Width = MinWidth;
 }
 
+int g2Slider::GetWidth()
+{
+    return Width;
+}
+
 void g2Slider::Render(int pX, int pY)
 {
-    // What is the slider bar's minimum size?
-    int MinWidth = 0;
-    GetTheme()->GetComponentSize(g2Theme_Slider, &MinWidth);
+    // Render the background
+    DrawComponent(g2Theme_Slider, pX, pY, Width);
     
-    /*** Background ***/
-    
-    // If default size, just render normally
-    if(Width == MinWidth)
-        DrawComponent(pX, pY, g2Theme_Slider);
-    
-    // Else, we have to draw the two sides and stretch the middle
-    else
-    {
-        // Source texture coordinates
-        float SourceX, SourceY, SourceWidth, SourceHeight;
-        int OutWidth, OutHeight;
-        GetTheme()->GetComponent(g2Theme_Slider, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
-        
-        // Draw the left-most third
-        DrawComponent(pX, pY, OutWidth / 3, OutHeight, SourceX, SourceY, SourceWidth / 3.0f, SourceHeight);
-        
-        // Draw the right-most third
-        DrawComponent(pX + Width - OutWidth / 3, pY, OutWidth / 3, OutHeight, SourceX + (2.0f * SourceWidth) / 3.0f, SourceY, SourceWidth / 3.0f, SourceHeight);
-        
-        // Draw the middle two positions
-        // Note the overlap between the middle's right side and the right side's left lip
-        // This is to make sure there isn't a pixel space
-        DrawComponent(pX + OutWidth / 3.0f, pY, Width - (2.0f * OutWidth) / 3.0f + 1, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, SourceWidth - (2.0f * SourceWidth) / 3.0f, SourceHeight);
-    }
-    
-    /*** Foreground ***/
-    
-    // Center on the vertical
+    // Center on the vertical the user's slider controller
     int SliderWidth, SliderHeight;
     int ControllerHeight;
     GetTheme()->GetComponentSize(g2Theme_SliderButton, &SliderWidth, &SliderHeight);
@@ -104,20 +80,27 @@ void g2Slider::Render(int pX, int pY)
     
     // Computer offsets
     float ProgressRatio = Progress / fabs(MaxBound - MinBound);
-    int OffsetX = int(float(Width) * ProgressRatio) - SliderWidth / 2;
+    int OffsetX = int(float(Width - 2 * SidePixelBuffer) * ProgressRatio) - SliderWidth / 2 + SidePixelBuffer;
     int OffsetY = ControllerHeight / 2 - SliderHeight / 2;
     
     // Draw slider button
     if(GetDisabled())
-        DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_SliderButton_Disabled);
+        DrawComponent(g2Theme_SliderButton_Disabled, pX + OffsetX, pY + OffsetY);
     else if(IsDragging || GetControllerState() == g2ControllerState_Pressed)
-        DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_SliderButton_Pressed);
+        DrawComponent(g2Theme_SliderButton_Pressed, pX + OffsetX, pY + OffsetY);
     else
-        DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_SliderButton);
+        DrawComponent(g2Theme_SliderButton, pX + OffsetX, pY + OffsetY);
     
     // Update the live value as needed
     if(LiveValue != NULL)
         *LiveValue = Progress;
+}
+
+void g2Slider::GetCollisionRect(int* Width, int* Height)
+{
+    // Post back slider length
+    GetTheme()->GetComponentSize(g2Theme_SliderButton, NULL, Height);
+    *Width = GetWidth();
 }
 
 void g2Slider::MouseDrag(int x, int y)
@@ -137,32 +120,14 @@ void g2Slider::MouseHover(int x, int y)
     if(IsDragging)
     {
         // Get the GUI position
-        int pX, pY;
-        GetPos(&pX, &pY);
+        int gX, gY;
+        GetGlobalPos(&gX, &gY);
         
-        // Bounds check
-        if(x < pX)
+        // Compute the progress
+        Progress = fabs(MaxBound - MinBound) * ((x - gX - SidePixelBuffer) / float(Width - 2 * SidePixelBuffer));
+        if(Progress < MinBound)
             Progress = MinBound;
-        else if(x > pX + Width)
+        else if(Progress > MaxBound)
             Progress = MaxBound;
-        else
-        {
-            // Find the ratio and apply the min/max bounds
-            Progress = fabs(MaxBound - MinBound) * ((x - pX) / float(Width));
-        }
     }
-}
-
-bool g2Slider::InController(int x, int y)
-{
-    // Current GUI position and size
-    int pX, pY, height;
-    GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_SliderButton, NULL, &height);
-    
-    // Are we in it?
-    if(x >= pX && x <= pX + Width && y >= pY && y <= pY + height)
-        return true;
-    else
-        return false;
 }

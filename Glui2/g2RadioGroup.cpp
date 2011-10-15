@@ -99,19 +99,9 @@ void g2RadioGroup::Render(int pX, int pY)
     {
         // Draw the radio button
         if(GetDisabled())
-        {
-            if(i == ActiveIndex)
-                DrawComponent(pX, pY + i * (RadioHeight + 1), g2Theme_RadioButton_Pressed_Disabled);
-            else
-                DrawComponent(pX, pY + i * (RadioHeight + 1), g2Theme_RadioButton_Disabled);
-        }
+            DrawComponent((i == ActiveIndex) ? g2Theme_RadioButton_Pressed_Disabled : g2Theme_RadioButton_Disabled, pX, pY + i * (RadioHeight + 1));
         else
-        {
-            if(i == ActiveIndex)
-                DrawComponent(pX, pY + i * (RadioHeight + 1), g2Theme_RadioButton_Pressed);
-            else
-                DrawComponent(pX, pY + i * (RadioHeight + 1), g2Theme_RadioButton);
-        }
+            DrawComponent((i == ActiveIndex) ? g2Theme_RadioButton_Pressed : g2Theme_RadioButton, pX, pY + i * (RadioHeight + 1));
     }
     
     // Note that labels self-draw as they are registered as children
@@ -121,36 +111,24 @@ void g2RadioGroup::Render(int pX, int pY)
         *LiveIndex = ActiveIndex;
 }
 
+void g2RadioGroup::GetCollisionRect(int* Width, int* Height)
+{
+    // Get the size of a radio button
+    GetTheme()->GetComponentSize(g2Theme_RadioButton, Width, Height);
+    
+    // For each option, save the biggest text length
+    for(int i = 0; i < OptionCount; i++)
+    {
+        // Get current labels length
+        int LabelWidth = Labels[i]->GetWidth();
+        if(LabelWidth > *Width)
+            *Width = LabelWidth;
+    }
+}
+
 void g2RadioGroup::MouseHover(int x, int y)
 {
     // Save the mouse location
     MouseX = x;
     MouseY = y;
-}
-
-bool g2RadioGroup::InController(int x, int y)
-{
-    // Get origin
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
-    // Get the size of a radio button
-    int RadioWidth, RadioHeight;
-    GetTheme()->GetComponentSize(g2Theme_RadioButton, &RadioWidth, &RadioHeight);
-    
-    // For each option
-    for(int i = 0; i < OptionCount; i++)
-    {
-        // Computer height and width
-        int Height = RadioHeight;
-        int Width = RadioWidth + int(float(RadioWidth) * 0.4f) + Labels[i]->GetWidth();
-        int OffsetY = i * (RadioHeight + 1);
-        
-        // Are we in it?
-        if(x >= pX && x <= pX + Width && y >= (pY + OffsetY) && y <= (pY + OffsetY + Height))
-            return true;
-    }
-    
-    // No collisions
-    return false;
 }

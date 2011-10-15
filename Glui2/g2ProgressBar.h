@@ -41,9 +41,6 @@ public:
     // Set the width of the button in pixels
     __g2EXPORT void SetWidth(int Width);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
 protected:
     
     // Render

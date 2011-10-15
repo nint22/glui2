@@ -37,13 +37,13 @@ public:
     // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(int* LiveIndex = NULL);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
 protected:
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
     // Get the mouse position; used to go either up or down on spinner
     __g2EXPORT void MouseHover(int x, int y);

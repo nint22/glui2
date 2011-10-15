@@ -50,13 +50,13 @@ public:
     // characters. Pass null to remove the filter
     __g2EXPORT void SetFilter(const char* Filter);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
 protected:
     
     // Update
     __g2EXPORT void Update(float dT);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
     // Render
     __g2EXPORT void Render(int pX, int pY);

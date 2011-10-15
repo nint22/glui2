@@ -72,8 +72,15 @@ public:
     // This is the offset from the parent's origin
     __g2EXPORT void GetPos(int* x = NULL, int* y = NULL);
     
+    // Get the global x and y position of this controller
+    // This is the offset from the screen's origin
+    __g2EXPORT void GetGlobalPos(int* x = NULL, int* y = NULL);
+    
     // Returns true if we are the active controller
     __g2EXPORT bool GetActive();
+    
+    // Returns true if we are currently intersecting this controller given the global position
+    __g2EXPORT bool InController(int x, int y);
     
     /*** Active State Management ***/
     
@@ -88,9 +95,6 @@ public:
     // Note that if there is no argument passed, the callback is set back to none
     __g2EXPORT void SetCallback(__g2CallBack(PressedCallback) = 0);
     
-    // Returns true if the mouse is in the controller's geometry (Required to overload)
-    __g2EXPORT virtual bool InController(int x, int y);
-    
 protected:
     
     /*** Update, Render, and Input Handlers ***/
@@ -101,6 +105,10 @@ protected:
     // Render object (Required to overload)
     // The given coordinate is the global position of this object (includes all parent offsets)
     __g2EXPORT virtual void Render(int x, int y);
+    
+    // Returns the size of the object that inherits from g2Controller
+    // It is up the end-developers to explicitly overload this function if they want user input events
+    __g2EXPORT virtual void GetCollisionRect(int* Width, int* Height);
     
     // Window resize event
     __g2EXPORT virtual void WindowResizeEvent(int NewWidth, int NewHeight);
@@ -122,19 +130,25 @@ protected:
     /*** Internal Rendering Components & Helpers ***/
     
     // Draws a given source location to the on-screen description coordinates
-    __g2EXPORT void DrawComponent(int DestX, int DestY, g2ThemeElement ElementType);
+    __g2EXPORT void DrawComponent(g2ThemeElement ElementType, int DestX, int DestY);
     
     // Draws a given source location and size to the on-screen description coordinates
-    __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType);
+    __g2EXPORT void DrawComponent(g2ThemeElement ElementType, int DestX, int DestY, int DestW, int DestH);
     
     // Draws a given source location to the on-screen description coordinates
-    __g2EXPORT void DrawComponent(int DestX, int DestY, const char* ElementName);
+    __g2EXPORT void DrawComponent(const char* ElementName, int DestX, int DestY);
     
     // Draws a given source location and size to the on-screen description coordinates
-    __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, const char* ElementName);
+    __g2EXPORT void DrawComponent(const char* ElementName, int DestX, int DestY, int DestW, int DestH);
     
     // Draws a given rectangle and source textures; texture ID defaults to the theme texture
     __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID = -1);
+    
+    // Draw a given source location into a spcific width, like a three-part button
+    __g2EXPORT void DrawComponent(g2ThemeElement ElementType, int DestX, int DestY, int Width);
+    
+    // Draw a given source location into a spcific width, like a three-part button
+    __g2EXPORT void DrawComponent(const char* ElementName, int DestX, int DestY, int Width);
     
     // Draw a character with 1-1 scale
     __g2EXPORT void DrawCharacter(int DestX, int DestY, char Character);

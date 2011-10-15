@@ -13,15 +13,10 @@
 g2ProgressBar::g2ProgressBar(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
-    // Allocate text and set initial position
-    // Note that we are registering to this button, not the root-parent
+    // Allocate text and set initial position vertically centered
     Label = new g2Label(this, MainTheme);
-    Label->SetPos(5, 5);
     Label->SetColor(0, 0, 0);
-    SetText("Undefined");
-    
-    // Set the initial width to a default width value
-    GetTheme()->GetComponentSize(g2Theme_ProgressBar, &Width);
+    SetText("");
     
     // Default progress to none
     Progress = 0.0f;
@@ -57,10 +52,9 @@ void g2ProgressBar::SetText(const char* Text)
     
     // Is this new length bigger than the old width? If so, save
     if(NewLength > Width)
-        Width = NewLength;
-    
-    // Center text
-    Label->SetPos(5 + Width / 2 - Label->GetWidth() / 2, 5);
+        SetWidth(NewLength);
+    else
+        SetWidth(Width);
 }
 
 void g2ProgressBar::SetWidth(int Width)
@@ -74,8 +68,13 @@ void g2ProgressBar::SetWidth(int Width)
     else
         this->Width = MinWidth;
     
+    // Set the initial width to a default width value
+    int BarHeight;
+    GetTheme()->GetComponentSize(g2Theme_ProgressBar, NULL, &BarHeight);
+    int Centered = BarHeight / 2 - GetTheme()->GetCharacterHeight() / 2;
+    
     // Center text
-    Label->SetPos(5 + Width / 2 - Label->GetWidth() / 2, 5);
+    Label->SetPos(this->Width / 2 - Label->GetWidth() / 2, Centered);
 }
 
 void g2ProgressBar::Render(int pX, int pY)
@@ -85,61 +84,18 @@ void g2ProgressBar::Render(int pX, int pY)
     if(GetDisabled())
         ProgressState = g2Theme_ProgressBar_Disabled;
     
-    // What is the progress bar's minimum size?
-    int MinWidth = 0;
-    GetTheme()->GetComponentSize(ProgressState, &MinWidth);
+    // Render the background using a target width
+    DrawComponent(ProgressState, pX, pY, Width);
     
-    /*** Background ***/
-    
-    // If default size, just render normally
-    if(Width == MinWidth)
-        DrawComponent(pX, pY, ProgressState);
-    
-    // Else, we have to draw the two sides and stretch the middle
-    else
-    {
-        // Source texture coordinates
-        float SourceX, SourceY, SourceWidth, SourceHeight;
-        int OutWidth, OutHeight;
-        GetTheme()->GetComponent(ProgressState, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
-        
-        // Draw the left-most third
-        DrawComponent(pX, pY, OutWidth / 3, OutHeight, SourceX, SourceY, SourceWidth / 3.0f, SourceHeight);
-        
-        // Draw the right-most third
-        DrawComponent(pX + Width - OutWidth / 3, pY, OutWidth / 3, OutHeight, SourceX + (2.0f * SourceWidth) / 3.0f, SourceY, SourceWidth / 3.0f, SourceHeight);
-        
-        // Draw the middle two positions
-        // Note the overlap between the middle's right side and the right side's left lip
-        // This is to make sure there isn't a pixel space
-        DrawComponent(pX + OutWidth / 3.0f, pY, Width - (2.0f * OutWidth) / 3.0f + 1, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, SourceWidth - (2.0f * SourceWidth) / 3.0f, SourceHeight);
-    }
-    
-    /*** Foreground ***/
+    // Get the height of both the background and foreground (for centering)
+    int BackHeight, FrontHeight;
+    GetTheme()->GetComponentSize(g2Theme_ProgressBar, NULL, &BackHeight);
+    GetTheme()->GetComponentSize(g2Theme_ProgressBar_Fill, NULL, &FrontHeight);
     
     // Draw the fill based on the fill ratio
     float FillRatio = Progress / fabs(MaxBound - MinBound);
     int FillWidth = int(float(Width) * FillRatio);
     
-    // Source texture coordinates
-    float SourceX, SourceY, SourceWidth, SourceHeight;
-    int OutWidth, OutHeight;
-    GetTheme()->GetComponent(g2Theme_ProgressBar_Fill, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
-    
-    // Draw the left-most third
-    DrawComponent(pX, pY, OutWidth / 3, OutHeight, SourceX, SourceY, SourceWidth / 3.0f, SourceHeight);
-    
-    // Draw the right-most third
-    DrawComponent(pX + FillWidth - OutWidth / 3, pY, OutWidth / 3, OutHeight, SourceX + (2.0f * SourceWidth) / 3.0f, SourceY, SourceWidth / 3.0f, SourceHeight);
-    
-    // Draw the middle two positions
-    // Note the overlap between the middle's right side and the right side's left lip
-    // This is to make sure there isn't a pixel space
-    DrawComponent(pX + OutWidth / 3.0f, pY, FillWidth - (2.0f * OutWidth) / 3.0f + 1, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, SourceWidth - (2.0f * SourceWidth) / 3.0f, SourceHeight);
-}
-
-bool g2ProgressBar::InController(int x, int y)
-{
-    // User never interacts with a progress bar
-    return false;
+    // Render the filler graphic
+    DrawComponent(g2Theme_ProgressBar_Fill, pX, pY + BackHeight / 2 - FrontHeight / 2, FillWidth);
 }

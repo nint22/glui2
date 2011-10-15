@@ -211,6 +211,11 @@ void g2Theme::GetCharacterSize(char character, int* width, int* height)
         *height = CharacterMapHeight / 16;
 }
 
+int g2Theme::GetCharacterHeight()
+{
+    return CharacterMapHeight / 16;
+}
+
 GLuint g2Theme::GetTextureID()
 {
     return TextureID;

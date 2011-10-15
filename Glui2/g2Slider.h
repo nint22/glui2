@@ -21,6 +21,9 @@
 #include "g2Controller.h"
 #include "g2Label.h"
 
+// The pixel buffer from the left side and right side
+static const int SidePixelBuffer = 10;
+
 class g2Slider : public g2Controller
 {
 public:
@@ -41,16 +44,19 @@ public:
     // Return the current progress
     __g2EXPORT float GetProgress();
     
-    // Set the width of the button in pixels
+    // Set the width of the slider in pixels
     __g2EXPORT void SetWidth(int Width);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
+    // Get the current width of the slider in pixels
+    __g2EXPORT int GetWidth();
     
 protected:
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
     // Keep moving the controller based on the user's dragging
     __g2EXPORT void MouseDrag(int x, int y);

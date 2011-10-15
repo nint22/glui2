@@ -207,16 +207,11 @@ void g2Console::Render(int x, int y)
     }
 }
 
-bool g2Console::InController(int x, int y)
+void g2Console::GetCollisionRect(int* Width, int* Height)
 {
-    // Suppress x warning
-    x = x;
-    
-    // If in the top half..
-    if(y < WindowHeight / 2)
-        return true;
-    else
-        return false;
+    // Post-back the size of this controller
+    *Height = WindowHeight / 2;
+    *Width = WindowWidth;
 }
 
 void g2Console::WindowResizeEvent(int NewWidth, int NewHeight)

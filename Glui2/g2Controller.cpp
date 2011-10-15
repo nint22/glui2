@@ -127,9 +127,49 @@ void g2Controller::GetPos(int* x, int* y)
         *y = pY;
 }
 
+void g2Controller::GetGlobalPos(int* x, int* y)
+{
+    // Get this controller's global position
+    // Which is the summation of all parent offsets
+    int gX, gY, tX, tY; // Global, temp holders
+    GetPos(&gX, &gY);
+    
+    g2Controller* Parent = GetParent();
+    while(Parent != NULL)
+    {
+        Parent->GetPos(&tX, &tY);
+        gX += tX;
+        gY += tY;
+        Parent = Parent->GetParent();
+    }
+    
+    // Post results
+    if(x != NULL)
+        *x = gX;
+    if(y != NULL)
+        *y = gY;
+}
+
 bool g2Controller::GetActive()
 {
     return IsActive;
+}
+
+bool g2Controller::InController(int x, int y)
+{
+    // Get the global position of this controller
+    int gX, gY;
+    GetGlobalPos(&gX, &gY);
+    
+    // Get this controller's collision rectangle
+    int Width, Height;
+    GetCollisionRect(&Width, &Height);
+    
+    // Simple rectangle collision check
+    if(x > gX && x <= gX + Width && y > gY && y <= gY + Height)
+        return true;
+    else
+        return false;
 }
 
 g2Controller* g2Controller::GetController(int x, int y)
@@ -181,13 +221,11 @@ void g2Controller::Render(int x, int y)
     // Allow the user to overload as needed...
 }
 
-bool g2Controller::InController(int x, int y)
+void g2Controller::GetCollisionRect(int* Width, int* Height)
 {
-    // Suppress warning
-    y = x = y;
-    
-    // Allow the user to overload as needed...
-    return false;
+    // Return an empty controller
+    *Width = 0;
+    *Height = 0;
 }
 
 void g2Controller::WindowResizeEvent(int NewWidth, int NewHeight)
@@ -248,7 +286,7 @@ g2ControllerState g2Controller::GetControllerState()
     return ControllerState;
 }
 
-void g2Controller::DrawComponent(int DestX, int DestY, g2ThemeElement ElementType)
+void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int DestY)
 {
     // Are we allowed to draw?
     if(!IsVisible)
@@ -265,7 +303,7 @@ void g2Controller::DrawComponent(int DestX, int DestY, g2ThemeElement ElementTyp
     DrawComponent(DestX, DestY, width, height, tx, ty, tw, th, textID);
 }
 
-void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, g2ThemeElement ElementType)
+void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int DestY, int DestW, int DestH)
 {
     // Are we allowed to draw?
     if(!IsVisible)
@@ -281,7 +319,7 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, g2T
     DrawComponent(DestX, DestY, DestW, DestH, tx, ty, tw, th, textID);
 }
 
-void g2Controller::DrawComponent(int DestX, int DestY, const char* ElementName)
+void g2Controller::DrawComponent(const char* ElementName, int DestX, int DestY)
 {
     // Are we allowed to draw?
     if(!IsVisible)
@@ -297,7 +335,7 @@ void g2Controller::DrawComponent(int DestX, int DestY, const char* ElementName)
     DrawComponent(DestX, DestY, width, height, tx, ty, tw, th);
 }
 
-void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, const char* ElementName)
+void g2Controller::DrawComponent(const char* ElementName, int DestX, int DestY, int DestW, int DestH)
 {
     // Are we allowed to draw?
     if(!IsVisible)
@@ -346,6 +384,53 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, flo
     
     // Release texture
     glDisable(GL_TEXTURE_2D);
+}
+
+void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int DestY, int Width)
+{
+    // Get the source texture coordinates of the element
+    float SourceX, SourceY, SourceWidth, SourceHeight;
+    int OutWidth, OutHeight;
+    GetTheme()->GetComponent(ElementType, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
+    
+    // Compute the three-component's placement and width
+    // Left, middle, right
+    int X1 = DestX;
+    int W1 = OutWidth / 3;
+    
+    int X2 = X1 + W1;
+    int W2 = Width - 2 * W1;
+    
+    int X3 = X2 + W2;
+    int W3 = Width - W1 - W2;
+    
+    // Compute the middle source width
+    float MiddleSourceWidth = (SourceWidth / 3.0f) * (float(W2) / float(Width));
+    float VisibleWidth = SourceWidth / 3.0f;
+    
+    // Change the widths if the bar is getting too small
+    if(Width / 2 < W1)
+    {
+        // Change width so they are getting smaller; hide middle part
+        W1 = W3 = (int)fmax(0, Width / 2);
+        W2 = 0;
+        
+        // Move the right component to merge with the left
+        X3 = DestX + W1;
+        
+        // Change the visible width as needed
+        VisibleWidth *= float(W1) / float(Width / 2);
+    }
+    
+    // Draw the left, middle, right
+    DrawComponent(X1, DestY, W1, OutHeight, SourceX, SourceY, VisibleWidth, SourceHeight);
+    DrawComponent(X2, DestY, W2, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, MiddleSourceWidth, SourceHeight);
+    DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth / 1.5f + (SourceWidth / 3.0f - VisibleWidth), SourceY, VisibleWidth, SourceHeight);
+}
+
+void g2Controller::DrawComponent(const char* ElementName, int DestX, int DestY, int Width)
+{
+    // ...
 }
 
 void g2Controller::DrawCharacter(int DestX, int DestY, char Character)
@@ -547,12 +632,15 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
     // Are we in this object's volume and do we have a full left-click?
     if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Down)
         ControllerState = g2ControllerState_Pressed;
+    
     // Else, if there is a mouse release AND we are coming from a pressed state....
     else if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Up && ControllerState == g2ControllerState_Pressed)
         ControllerState = g2ControllerState_Clicked;
+    
     // Else, reset to either hover or none...
     else if(InController(x, y))
         ControllerState = g2ControllerState_Hover;
+    
     else
         ControllerState = g2ControllerState_None;
     

@@ -75,19 +75,23 @@ public:
     // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(float* LiveValue = NULL);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
 protected:
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
     // Update (grabs the time)
     __g2EXPORT void Update(float dT);
     
     // Get the mouse position; used to go either up or down on spinner
     __g2EXPORT void MouseHover(int x, int y);
+    
+    // If the user is dragging, then we can assume they are attempting
+    // to increment fast up/down via a slider effect
+    __g2EXPORT void MouseDrag(int x, int y);
     
 private:
     

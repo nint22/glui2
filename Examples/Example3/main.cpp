@@ -44,6 +44,10 @@ g2Console* Console;
 g2Label* SliderValue = NULL;
 float GlobalFloat = 0.5f;
 
+// Globel slider to change the progress bar
+g2Slider* ProgressBarSlider = NULL;
+g2ProgressBar* SampleProgressBar = NULL;
+
 /*** Global Functions ***/
 
 // Main render function
@@ -58,10 +62,13 @@ void Render()
     // Left empty on purpose
     // ...
     
-    // Update g2Slider-demo label with new value
+    // Update slider label with it's latest value
     char Buffer[256];
     sprintf(Buffer, "(%.2f)", GlobalFloat);
     SliderValue->SetText(Buffer);
+    
+    // Update the progress bar with the slider's latest value
+    SampleProgressBar->SetProgress(ProgressBarSlider->GetProgress());
     
     // Explicitly call the Glui2 render last
     GluiHandle->Render();
@@ -262,10 +269,14 @@ void InitGlui2()
     ComponentTitle = GluiHandle->AddLabel(410, 210, "g2ProgressBar");
     ComponentTitle->SetColor(0.0f, 0.0f, 0.0f);
     
-    g2ProgressBar* SampleProgressBar = GluiHandle->AddProgressBar(410, 240);
+    SampleProgressBar = GluiHandle->AddProgressBar(410, 240);
     SampleProgressBar->SetWidth(150);
-    SampleProgressBar->SetProgress(0.25f);
+    SampleProgressBar->SetProgress(0.5f);
     SampleProgressBar->SetText("Progress bar...");
+    
+    // Bind a global slider, so that the progress bar can be changed in the demo
+    ProgressBarSlider = GluiHandle->AddSlider(410, 270);
+    ProgressBarSlider->SetWidth(150);
     
     /*** g2RadioGroup ***/
     ComponentTitle = GluiHandle->AddLabel(20, 410, "g2RadioGroup");

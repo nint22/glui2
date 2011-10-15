@@ -18,9 +18,6 @@
 #include "g2Controller.h"
 #include "g2Label.h"
 
-// The pixel offset from the label icon itself
-static const int TextOffset = 18;
-
 class g2CheckBox : public g2Controller
 {
 public:
@@ -40,13 +37,13 @@ public:
     // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(bool* LiveCheckState = NULL);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
 protected:
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
 private:
     

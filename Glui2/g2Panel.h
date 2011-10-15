@@ -42,13 +42,13 @@ public:
     // Set the overlap ratio
     __g2EXPORT void SetSize(float Ratio);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
 protected:
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
     // Window resize event
     __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);

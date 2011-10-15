@@ -123,33 +123,8 @@ void g2TextField::Render(int pX, int pY)
     if(GetDisabled())
         TextFieldState = g2Theme_TextField_Disabled;
     
-    // What is this controller's minimum size?
-    int MinWidth = 0;
-    GetTheme()->GetComponentSize(g2Theme_TextField, &MinWidth);
-    
-    // If default size, just render normally
-    if(Width == MinWidth)
-        DrawComponent(pX, pY, TextFieldState);
-    
-    // Else, we have to draw the two sides and stretch the middle
-    else
-    {
-        // Source texture coordinates
-        float SourceX, SourceY, SourceWidth, SourceHeight;
-        int OutWidth, OutHeight;
-        GetTheme()->GetComponent(TextFieldState, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
-        
-        // Draw the left-most third
-        DrawComponent(pX, pY, OutWidth / 3, OutHeight, SourceX, SourceY, SourceWidth / 3.0f, SourceHeight);
-        
-        // Draw the right-most third
-        DrawComponent(pX + Width - OutWidth / 3, pY, OutWidth / 3, OutHeight, SourceX + (2.0f * SourceWidth) / 3.0f, SourceY, SourceWidth / 3.0f, SourceHeight);
-        
-        // Draw the middle two positions
-        // Note the overlap between the middle's right side and the right side's left lip
-        // This is to make sure there isn't a pixel space
-        DrawComponent(pX + OutWidth / 3.0f, pY, Width - (2.0f * OutWidth) / 3.0f + 1, OutHeight, SourceX + SourceWidth / 3.0f, SourceY, SourceWidth - (2.0f * SourceWidth) / 3.0f, SourceHeight);
-    }
+    // Render the background
+    DrawComponent(TextFieldState, pX, pY, Width);
     
     /*** Draw Cursor (Only if active) ***/
     
@@ -171,18 +146,11 @@ void g2TextField::Render(int pX, int pY)
     }
 }
 
-bool g2TextField::InController(int x, int y)
+void g2TextField::GetCollisionRect(int* Width, int* Height)
 {
     // Current GUI position and size
-    int pX, pY, height;
-    GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_TextField, NULL, &height);
-    
-    // Are we in it?
-    if(x >= pX && x <= pX + Width && y >= pY && y <= pY + height)
-        return true;
-    else
-        return false;
+    GetTheme()->GetComponentSize(g2Theme_TextField, NULL, Height);
+    *Width = GetWidth();
 }
 
 void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)

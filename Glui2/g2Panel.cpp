@@ -53,7 +53,7 @@ void g2Panel::Render(int pX, int pY)
     // Get the size of the original tile
     int tWidth, tHeight;
     GetTheme()->GetComponentSize(g2Theme_Panel, &tWidth, &tHeight);
-    
+    /*
     // Draw all major tiles we can in a grid
     for(int y = 0; y < int(float(Height) / float(tHeight)); y++)
     for(int x = 0; x < int(float(Width) / float(tWidth)); x++)
@@ -85,6 +85,13 @@ void g2Panel::Render(int pX, int pY)
         // Draw the bottom right corner
         DrawComponent(pX, pY, int(float(tWidth) * wOverlap), int(float(tHeight) * hOverlap), g2Theme_Panel);
     }
+     */
+}
+
+void g2Panel::GetCollisionRect(int* Width, int* Height)
+{
+    // Post width and height
+    GetTheme()->GetComponentSize(g2Theme_Button, Width, Height);
 }
 
 void g2Panel::WindowResizeEvent(int NewWidth, int NewHeight)
@@ -117,18 +124,4 @@ void g2Panel::WindowResizeEvent(int NewWidth, int NewHeight)
         Height = NewHeight;
         SetPos(NewWidth - Width, 0);
     }    
-}
-
-bool g2Panel::InController(int x, int y)
-{
-    // Current GUI position and size
-    int pX, pY, width, height;
-    GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_Button, &width, &height);
-    
-    // Are we in it?
-    if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)
-        return true;
-    else
-        return false;
 }

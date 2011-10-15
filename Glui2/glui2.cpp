@@ -265,7 +265,7 @@ void Glui2::__SpecialFunc(int key, int x, int y)
     else if(__G2_HANDLE__->ActiveController != NULL)
         __G2_HANDLE__->ActiveController->__KeyEvent(key, true);
     
-    // If nothign is focused, pass to glut
+    // If nothing is focused, pass to glut
     else if(__G2_HANDLE__->GlutSpecialFunc != NULL)
         __G2_HANDLE__->GlutSpecialFunc(key, x, y);
 }
@@ -288,8 +288,8 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
     if(__G2_HANDLE__->ActiveController != NULL)
         __G2_HANDLE__->ActiveController->IsActive = true;
     
-    // Mouse host
-    if(__G2_HANDLE__->GlutMouseFunc != NULL)
+    // If nothing is focused, mouse glut
+    else if(__G2_HANDLE__->GlutMouseFunc != NULL)
         __G2_HANDLE__->GlutMouseFunc(button, state, x, y);
 }
 
@@ -302,7 +302,7 @@ void Glui2::__HoverFunc(int x, int y)
     // Mouse self
     __G2_HANDLE__->RootController->__MouseHover(x, y);
     
-    // Mouse host
+    // Always pass to glut; any code should read this
     if(__G2_HANDLE__->GlutHoverFunc != NULL)
         __G2_HANDLE__->GlutHoverFunc(x, y);
 }

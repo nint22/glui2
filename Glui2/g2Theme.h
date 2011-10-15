@@ -198,6 +198,9 @@ public:
     // Get a character's size
     __g2EXPORT void GetCharacterSize(char character, int* width = NULL, int* height = NULL);
     
+    // Get a all character's height
+    __g2EXPORT int GetCharacterHeight();
+    
     // Get the them texture ID
     __g2EXPORT GLuint GetTextureID();
     

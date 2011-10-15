@@ -167,17 +167,17 @@ void g2Spinner::Render(int pX, int pY)
     
     // Disabled
     if(GetDisabled())
-        DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_Spinner_Disabled);
+        DrawComponent(g2Theme_Spinner_Disabled, pX + OffsetX, pY + OffsetY);
     // Actively pressed, need to draw only the pressed button
     else if(GetControllerState() == g2ControllerState_Pressed)
     {
         // Draw background normally, then draw the pressed button
-        DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_Spinner);
+        DrawComponent(g2Theme_Spinner, pX + OffsetX, pY + OffsetY);
         DrawComponent(pX + OffsetX, pY + OffsetY + (IsAbove ? 0 : (OutHeight / 2)), OutWidth, OutHeight / 2, SourceX, SourceY + (SourceHeight / 2.0f) * (IsAbove ? 0.0f : 1.0f), SourceWidth, SourceHeight / 2.0f);
     }
     // Normal
     else
-        DrawComponent(pX + OffsetX, pY + OffsetY, g2Theme_Spinner);
+        DrawComponent(g2Theme_Spinner, pX + OffsetX, pY + OffsetY);
     
     // Increase or decrease the value based on timing
     if((PressedTime > (UpdateRate + UpdateMin)) || GetControllerState() == g2ControllerState_Clicked)
@@ -193,6 +193,13 @@ void g2Spinner::Render(int pX, int pY)
     // Set the live value based on what the field currently has
     if(LiveValue != NULL)
         *LiveValue = (Type == g2SpinnerType_Float) ? GetFloat() : (float)GetInt();
+}
+
+void g2Spinner::GetCollisionRect(int* Width, int* Height)
+{
+    // Get the spinner size then add text length
+    GetTheme()->GetComponentSize(g2Theme_Spinner, Width, Height);
+    *Width += TextField->GetWidth();
 }
 
 void g2Spinner::Update(float dT)
@@ -212,26 +219,7 @@ void g2Spinner::MouseHover(int x, int y)
     MouseY = y;
 }
 
-bool g2Spinner::InController(int x, int y)
+void g2Spinner::MouseDrag(int x, int y)
 {
-    // Current GUI position and size
-    int pX, pY, Width, Height;
-    GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_Spinner, &Width, &Height);
-    
-    // Compute the offsets based on the size of the text field
-    int OffsetX = TextField->GetWidth();
-    int OffsetY = 0;
-    GetTheme()->GetComponentSize(g2Theme_TextField, NULL, &OffsetY);
-    OffsetY = OffsetY / 2 - Height / 2; // Centered vertically
-    
-    // Grow to the correct controller offset, ignoring the text fiend
-    pX += OffsetX;
-    pY += OffsetY;
-    
-    // Are we in it? We IGNORE the text field
-    if(x >= pX && x <= pX + Width && y >= pY && y <= pY + Height)
-        return true;
-    else
-        return false;
+    printf("Dragging at the spinner!\n");
 }

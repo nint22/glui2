@@ -63,9 +63,6 @@ public:
     // Note that the returned buffer MUST be released when you are done with it
     __g2EXPORT char* gets();
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
 protected:
     
     // Update
@@ -73,6 +70,9 @@ protected:
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
     // Gets the screen width and heigh
     __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);

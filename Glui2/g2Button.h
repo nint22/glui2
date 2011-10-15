@@ -42,9 +42,6 @@ public:
     // which requires an origin and size; Pass to arguments to reset icon
     __g2EXPORT void SetIcon(const char* IconName = NULL);
     
-    // Define controller geometry
-    __g2EXPORT bool InController(int x, int y);
-    
     // Set the text's alignment, accepts either none / left alignment (default), centered, or right alignment
     __g2EXPORT void SetAlignment(g2Anchor Alignment = g2Anchor_None);
 
@@ -52,6 +49,9 @@ protected:
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
+    
+    // Define controller geometry
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
 private:
     

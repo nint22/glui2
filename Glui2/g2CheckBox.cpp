@@ -13,10 +13,17 @@
 g2CheckBox::g2CheckBox(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
+    // Center text as best as possible
+    int TextOffsetX, TextOffsetY;
+    GetTheme()->GetComponentSize(g2Theme_CheckBox, &TextOffsetX, &TextOffsetY);
+    
+    TextOffsetX += GetTheme()->GetCharacterHeight(); // Good spacing rule
+    TextOffsetY = TextOffsetY / 2 - GetTheme()->GetCharacterHeight() / 2;
+    
     // Allocate text and set initial position
     // Note that we are registering to this button, not the root-parent
     Label = new g2Label(this, MainTheme);
-    Label->SetPos(TextOffset, 2);
+    Label->SetPos(TextOffsetX, TextOffsetY);
     Label->SetColor(0, 0, 0);
     Label->SetText("Undefined g2CheckBox");
     
@@ -63,26 +70,16 @@ void g2CheckBox::Render(int pX, int pY)
     
     // Draw based on the current check state
     if(GetDisabled())
-        DrawComponent(pX, pY, Checked ? g2Theme_CheckBox_Pressed_Disabled : g2Theme_CheckBox_Disabled);
+        DrawComponent(Checked ? g2Theme_CheckBox_Pressed_Disabled : g2Theme_CheckBox_Disabled, pX, pY);
     
     // Normal selection
     else
-        DrawComponent(pX, pY, Checked ? g2Theme_CheckBox_Pressed : g2Theme_CheckBox);
+        DrawComponent(Checked ? g2Theme_CheckBox_Pressed : g2Theme_CheckBox, pX, pY);
 }
 
-bool g2CheckBox::InController(int x, int y)
+void g2CheckBox::GetCollisionRect(int* Width, int* Height)
 {
-    // Current GUI position and size
-    int pX, pY, width, height;
-    GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize(g2Theme_CheckBox, &width, &height);
-    
-    // Add the text length and offset
-    width += Label->GetWidth();
-    
-    // Are we in it?
-    if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)
-        return true;
-    else
-        return false;
+    // Post-back the size of this controller
+    GetTheme()->GetComponentSize(g2Theme_Button, Width, Height);
+    *Width += Label->GetWidth();
 }

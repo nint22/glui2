@@ -131,14 +131,14 @@ void g2DropDown::Render(int pX, int pY)
     
     // Draw based on the current state
     if(GetDisabled())
-        DrawComponent(pX + DropdownOffset, pY, g2Theme_DropDown_Disabled);
+        DrawComponent(g2Theme_DropDown_Disabled, pX + DropdownOffset, pY);
     else if(GetControllerState() == g2ControllerState_Pressed)
     {
         IsDragging = true;
-        DrawComponent(pX + DropdownOffset, pY, g2Theme_DropDown_Pressed);
+        DrawComponent(g2Theme_DropDown_Pressed, pX + DropdownOffset, pY);
     }
     else
-        DrawComponent(pX + DropdownOffset, pY, g2Theme_DropDown);
+        DrawComponent(g2Theme_DropDown, pX + DropdownOffset, pY);
     
     // Did we click? If so, cycle visibility
     for(int i = 0; i < OptionCount; i++)
@@ -147,6 +147,13 @@ void g2DropDown::Render(int pX, int pY)
     // Update the live variable
     if(LiveIndex != NULL)
         *LiveIndex = ActiveIndex;
+}
+
+void g2DropDown::GetCollisionRect(int* Width, int* Height)
+{
+    // Get the width and offsets
+    GetTheme()->GetComponentSize(g2Theme_DropDown, Width, Height);
+    *Width += ButtonField->GetWidth();
 }
 
 void g2DropDown::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
@@ -185,22 +192,4 @@ void g2DropDown::MouseHover(int x, int y)
                 Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, DeselectedAlpha);
         }
     }
-}
-
-bool g2DropDown::InController(int x, int y)
-{
-    // Current GUI position and size
-    int pX, pY;
-    GetPos(&pX, &pY);
-    
-    // Get the width and offsets
-    int DropdownWidth, DropdownHeight;
-    GetTheme()->GetComponentSize(g2Theme_DropDown, &DropdownWidth, &DropdownHeight);
-    DropdownWidth += ButtonField->GetWidth();
-    
-    // Are we in it?
-    if(x >= pX && x <= pX + DropdownWidth && y >= pY && y <= pY + DropdownHeight)
-        return true;
-    else
-        return false;
 }
