@@ -42,7 +42,7 @@ bool __g2ShowDialog(const char* Message)
         return false;
 }
 
-bool __g2ShowSaveDialog(const char* Message, char* OutBuffer, int OutLength)
+bool __g2ShowSaveDialog(const char* Message, const char* FileExtension, char* OutBuffer, int OutLength)
 { 
     // Alloc a temporary ObjC memory manager
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -51,6 +51,7 @@ bool __g2ShowSaveDialog(const char* Message, char* OutBuffer, int OutLength)
     // Open panel to open file
     NSSavePanel* spanel = [NSSavePanel savePanel];
     [spanel setTitle:[NSString stringWithCString:Message encoding:NSASCIIStringEncoding]];
+    [spanel setAllowedFileTypes:[NSArray arrayWithObjects:[NSString stringWithCString:FileExtension encoding:NSASCIIStringEncoding], nil]];
     NSInteger returnCode = [spanel runModal];
     
     if(returnCode == NSOKButton)
@@ -69,7 +70,7 @@ bool __g2ShowSaveDialog(const char* Message, char* OutBuffer, int OutLength)
     return result;
 }
 
-bool __g2ShowOpenDialog(const char* Message, char* OutBuffer, int OutLength)
+bool __g2ShowOpenDialog(const char* Message, const char* FileExtension, char* OutBuffer, int OutLength)
 {
     // Alloc a temporary ObjC memory manager
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -79,6 +80,7 @@ bool __g2ShowOpenDialog(const char* Message, char* OutBuffer, int OutLength)
     NSOpenPanel* opanel = [NSOpenPanel openPanel];
     [opanel setTitle:[NSString stringWithCString:Message encoding:NSASCIIStringEncoding]];
     [opanel setAllowsMultipleSelection:NO];
+    [opanel setAllowedFileTypes:[NSArray arrayWithObjects:[NSString stringWithCString:FileExtension encoding:NSASCIIStringEncoding], nil]];
     NSInteger returnCode = [opanel runModalForDirectory:nil file:nil types:nil];
     
     if(returnCode == NSOKButton)

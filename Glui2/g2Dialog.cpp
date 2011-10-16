@@ -134,22 +134,35 @@ void g2Dialog::Show()
         if(Type == g2DialogType_Notification)
             printf("Message: \"%s\"", MessageBuffer);
         else if(Type == g2DialogType_Open)
-            printf("Open file directory: \"%s\"\n> ", MessageBuffer);
+            printf("\"%s\"\n> ", MessageBuffer);
         else if(Type == g2DialogType_Save)
-            printf("Save file directory: \"%s\"\n> ", MessageBuffer);
+            printf("\"%s\"\n> ", MessageBuffer);
         
         char* TempBuffer = NULL;
-        size_t ReadBuffer = 0;
-        getline(&TempBuffer, &ReadBuffer, stdin);
-        if(TempBuffer == NULL)
+        if(scanf("%s", TempBuffer) > 0)
         {
-            Selection = g2DialogResult_Cancel;
-            strcpy(ResultBuffer, "");
+            Selection = g2DialogResult_OK;
+            
+            // Special rule: if we are saving, make sure to
+            // add the extension if it exists
+            if(Type == g2DialogType_Save && strlen(FileExtension) > 0)
+            {
+                // If this file does not end in the extension...
+                char* ExtLocation = strrchr(TempBuffer, '.');
+                if(strcmp(ExtLocation + 1, FileExtension) != 0)
+                    sprintf(ResultBuffer, "%s.%s", TempBuffer, FileExtension);
+                // Else, it does, just copy it over
+                else
+                    strcpy(ResultBuffer, TempBuffer);
+            }
+            // Else, just do a regular copy
+            else
+                strcpy(ResultBuffer, TempBuffer);
         }
         else
         {
-            Selection = g2DialogResult_OK;
-            strcpy(ResultBuffer, TempBuffer);
+            Selection = g2DialogResult_Cancel;
+            strcpy(ResultBuffer, "");
         }
         
     // Apple/OSX includes
@@ -160,9 +173,9 @@ void g2Dialog::Show()
         if(Type == g2DialogType_Notification)
             result = __g2ShowDialog(MessageBuffer);
         else if(Type == g2DialogType_Open)
-            result = __g2ShowOpenDialog(MessageBuffer, ResultBuffer, MaxBufferLength);
+            result = __g2ShowOpenDialog(MessageBuffer, FileExtension, ResultBuffer, MaxBufferLength);
         else if(Type == g2DialogType_Save)
-            result = __g2ShowSaveDialog(MessageBuffer, ResultBuffer, MaxBufferLength);
+            result = __g2ShowSaveDialog(MessageBuffer, FileExtension, ResultBuffer, MaxBufferLength);
         
         // Based on the result (i.e. button index) save
         // the correct enumeration type

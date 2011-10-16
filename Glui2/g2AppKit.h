@@ -33,10 +33,10 @@
 bool __g2ShowDialog(const char* Message);
 
 // Open a save-file dialog
-bool __g2ShowSaveDialog(const char* Message, char* OutBuffer, int OutLength);
+bool __g2ShowSaveDialog(const char* Message, const char* FileExtension, char* OutBuffer, int OutLength);
 
 // Open an open-file dialog
-bool __g2ShowOpenDialog(const char* Message, char* OutBuffer, int OutLength);
+bool __g2ShowOpenDialog(const char* Message, const char* FileExtension, char* OutBuffer, int OutLength);
 
 // End of inclusion guard
 #endif
