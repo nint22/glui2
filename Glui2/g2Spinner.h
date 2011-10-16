@@ -89,10 +89,6 @@ protected:
     // Get the mouse position; used to go either up or down on spinner
     __g2EXPORT void MouseHover(int x, int y);
     
-    // If the user is dragging, then we can assume they are attempting
-    // to increment fast up/down via a slider effect
-    __g2EXPORT void MouseDrag(int x, int y);
-    
 private:
     
     // Text label

@@ -63,9 +63,6 @@ void g2DropDown::SetOptions(const char** OptionLabels, int OptionCount)
         delete[] Buttons;
     Buttons = new g2Button*[OptionCount];
     
-    // Get the vertical size of characters
-    int CharHeight = GetTheme()->GetCharacterHeight() + 2;
-    
     // Get the button height to offset
     int ButtonHeight;
     GetTheme()->GetComponentSize(g2Theme_Button, NULL, &ButtonHeight);
@@ -181,7 +178,14 @@ void g2DropDown::MouseHover(int x, int y)
         // Color hovered objects
         for(int i = 0; i < OptionCount; i++)
         {
-            if(Buttons[i]->InController(x, y))
+            // Localize this hover poisition
+            int LocalX, LocalY;
+            Buttons[i]->GetPos(&LocalX, &LocalY);
+            LocalX = x - LocalX;
+            LocalY = y - LocalY;
+            
+            // Check if it is in the controller
+            if(Buttons[i]->InController(LocalX, LocalY))
             {
                 Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
                 ActiveSelection = i;

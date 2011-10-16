@@ -61,9 +61,6 @@ protected:
     // Render
     __g2EXPORT void Render(int pX, int pY);
     
-    // Handle user inputs
-    __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);
-    
 private:
     
     // Returns true if the given character is in the filter

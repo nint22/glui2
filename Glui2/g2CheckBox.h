@@ -47,6 +47,9 @@ protected:
     
 private:
     
+    // Check the user input
+    void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    
     // Text label
     g2Label* Label;
     

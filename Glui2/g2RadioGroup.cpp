@@ -14,15 +14,12 @@ g2RadioGroup::g2RadioGroup(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
     // Set the labels to null
+    OptionCount = 0;
     ActiveIndex = 0;
 	Labels = NULL;
     
     // Default to no live value
     LiveIndex = NULL;
-    
-    // Initialize the mouse position off-screen
-    MouseX = INT_MIN;
-    MouseY = INT_MIN;
 }
 
 g2RadioGroup::~g2RadioGroup()
@@ -76,23 +73,8 @@ void g2RadioGroup::SetLiveVariable(int* LiveIndex)
 void g2RadioGroup::Render(int pX, int pY)
 {
     // Get the size of a radio button
-    int RadioWidth, RadioHeight;
-    GetTheme()->GetComponentSize(g2Theme_RadioButton, &RadioWidth, &RadioHeight);
-    
-    // If we had a key-press event, change the active index as needed
-    if(GetControllerState() == g2ControllerState_Clicked)
-    {
-        for(int i = 0; i < OptionCount; i++)
-        {
-            // What is the y pos of this row?
-            int BottomRow = pY + i * (RadioHeight + 1) + RadioHeight;
-            if(MouseY < BottomRow)
-            {
-                ActiveIndex = i;
-                break;
-            }
-        }
-    }
+    int RadioHeight;
+    GetTheme()->GetComponentSize(g2Theme_RadioButton, NULL, &RadioHeight);
     
     // For each option; draw with a pixel buffer
     for(int i = 0; i < OptionCount; i++)
@@ -105,30 +87,49 @@ void g2RadioGroup::Render(int pX, int pY)
     }
     
     // Note that labels self-draw as they are registered as children
-    
-    // Update the live index
-    if(LiveIndex !=  NULL)
-        *LiveIndex = ActiveIndex;
 }
 
 void g2RadioGroup::GetCollisionRect(int* Width, int* Height)
 {
     // Get the size of a radio button
-    GetTheme()->GetComponentSize(g2Theme_RadioButton, Width, Height);
+    int RadioWidth;
+    GetTheme()->GetComponentSize(g2Theme_RadioButton, &RadioWidth, Height);
+    *Height = (*Height + 1) * OptionCount;
     
     // For each option, save the biggest text length
     for(int i = 0; i < OptionCount; i++)
     {
         // Get current labels length
-        int LabelWidth = Labels[i]->GetWidth();
+        int LabelWidth = Labels[i]->GetWidth() + RadioWidth + 1;
         if(LabelWidth > *Width)
             *Width = LabelWidth;
     }
 }
 
-void g2RadioGroup::MouseHover(int x, int y)
+void g2RadioGroup::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
 {
-    // Save the mouse location
-    MouseX = x;
-    MouseY = y;
+    // If we had a full key-press event within our collision box, change the active index as needed
+    if(InController(x, y) && GetControllerState() == g2ControllerState_Clicked)
+    {
+        // Get the size of a radio button
+        int RadioHeight;
+        GetTheme()->GetComponentSize(g2Theme_RadioButton, NULL, &RadioHeight);
+        
+        // For each radio button..
+        for(int i = 0; i < OptionCount; i++)
+        {
+            // What is the y pos of this row?
+            int BottomRow = i * (RadioHeight + 1) + RadioHeight;
+            if(y < BottomRow)
+            {
+                ActiveIndex = i;
+                break;
+            }
+        }
+        
+        // Update the live index
+        if(LiveIndex !=  NULL)
+            *LiveIndex = ActiveIndex;
+    }
+    
 }

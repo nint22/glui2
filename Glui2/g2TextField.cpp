@@ -20,13 +20,8 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
     CursorOffset = 0.0f;
     CursorIndex = 0;
     
-    // Default the width to the minimum width of the source image
-    GetTheme()->GetComponentSize(g2Theme_TextField, &Width);
-    
     // Compute the offsets so the text is correctly centered
-    int CharHeight;
-    GetTheme()->GetCharacterSize('X', NULL, &CharHeight);
-    
+    int CharHeight = GetTheme()->GetCharacterHeight();
     GetTheme()->GetComponentSize(g2Theme_TextField, &OffsetWidth, &OffsetHeight);
     OffsetWidth *= 0.2f;
     OffsetHeight = OffsetHeight / 2 - CharHeight / 2 + 1;
@@ -35,6 +30,9 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
     Label = new g2Label(this, MainTheme);
     Label->SetPos(OffsetWidth, OffsetHeight);
     Label->SetColor(0.0f, 0.0f, 0.0f);
+    
+    // Default width
+    SetWidth(0);
     
     // Default to no filter mechanism
     FilterBuffer = NULL;
@@ -151,115 +149,4 @@ void g2TextField::GetCollisionRect(int* Width, int* Height)
     // Current GUI position and size
     GetTheme()->GetComponentSize(g2Theme_TextField, NULL, Height);
     *Width = GetWidth();
-}
-
-void g2TextField::KeyEvent(unsigned char key, bool IsSpecial)
-{
-    // Ignore all inputs if disabled
-    if(GetDisabled())
-        return;
-    
-    // If system key (i.e. left/right)
-    if(IsSpecial)
-    {
-        // If left/right, move the cursor
-        if(key == GLUT_KEY_LEFT && CursorIndex > 0)
-            CursorIndex--;
-        else if(key == GLUT_KEY_RIGHT && CursorIndex < (int)strlen(TextBuffer))
-            CursorIndex++;
-    }
-    // Else, normal character
-    else
-    {
-        // In OSX the backspace maps to DEL while DEL maps to backspace, need to swap
-        #if __APPLE__
-            if(key == 127)
-                key = 8;
-            else if(key == 8)
-                key = 127;
-        #endif
-        
-        // Backspace
-        if(key == 8)
-        {
-            // Is there anything to delete?
-            if(strlen(TextBuffer) <= 0)
-                return;
-            // Ignore if we are at the 0 position
-            else if(CursorIndex <= 0)
-                return;
-            else
-            {
-                // Delete this character by shifting everything from right to left by 1
-                // Note that this copies the null terminator
-                for(size_t i = CursorIndex; i <= strlen(TextBuffer); i++)
-                    TextBuffer[i - 1] = TextBuffer[i];
-                
-                // Decrease the cursor position
-                CursorIndex--;
-            }
-        }
-        // Delete
-        else if(key == 127)
-        {
-            // Is there anything to delete?
-            if(CursorIndex >= (int)strlen(TextBuffer))
-                return;
-            else
-            {
-                // Delete this character by shifting everything from right to left by 1
-                // Note that this copies the null terminator
-                for(size_t i = CursorIndex; i < strlen(TextBuffer); i++)
-                    TextBuffer[i] = TextBuffer[i + 1];
-                
-                // Cursor does not move
-            }
-        }
-        // Standard keyboard input; add character
-        else if(strlen(TextBuffer) < TextBufferLength - 1 && !IsSpecial)
-        {
-            // Ignore if it isn't a valid character
-            if(!InFilter(key))
-                return;
-            
-            // If we are writing to the end, make sure to string-cap
-            if(CursorIndex == (int)strlen(TextBuffer))
-            {
-                // Write to the old string-end and move the terminator a little further
-                TextBuffer[CursorIndex + 0] = key;
-                TextBuffer[CursorIndex + 1] = '\0';
-            }
-            // Offset one char to the right, then set
-            else
-            {
-                // Null-terminate the end of the string
-                TextBuffer[strlen(TextBuffer) + 1] = '\0';
-                int Length = (int)strlen(TextBuffer);
-                for(int i = CursorIndex + 1; i <= Length; i++)
-                    TextBuffer[i] = TextBuffer[i - 1];
-                TextBuffer[CursorIndex] = key;
-            }
-            
-            // Grow cursor position to be after the current char
-            CursorIndex++;
-        }
-        
-        // Update the text buffer
-        Label->SetText(TextBuffer);
-    }
-}
-
-bool g2TextField::InFilter(char c)
-{
-    // No filter active, accept all characters
-    if(FilterBuffer == NULL)
-        return true;
-    
-    // Linear search, just keep comparing
-    for(size_t i = 0; i < strlen(FilterBuffer); i++)
-        if(FilterBuffer[i] == c)
-            return true;
-    
-    // Never found
-    return false;
 }

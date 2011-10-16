@@ -126,7 +126,6 @@ void g2Spinner::SetIncrement(int inc)
 
 void g2Spinner::IncrementUp()
 {
-    
     // Increase and bounds check float & int respectively
     if(Type == g2SpinnerType_Float)
         SetFloat(fmax(fmin(GetFloat() + FloatInc, FloatMax), FloatMin));
@@ -163,13 +162,14 @@ void g2Spinner::Render(int pX, int pY)
     
     // Is the user's mouse on the top or bottom of the button?
     // Note the ternary comparison operator to do the half-height offset
-    bool IsAbove = MouseY <= (pY + OffsetY + (OutHeight / 2));
+    bool IsAbove = MouseY <= (OffsetY + (OutHeight / 2));
     
     // Disabled
     if(GetDisabled())
         DrawComponent(g2Theme_Spinner_Disabled, pX + OffsetX, pY + OffsetY);
-    // Actively pressed, need to draw only the pressed button
-    else if(GetControllerState() == g2ControllerState_Pressed)
+    
+    // Actively pressed on the buttons, need to draw only the pressed button
+    else if(GetControllerState() == g2ControllerState_Pressed && MouseX > TextField->GetWidth())
     {
         // Draw background normally, then draw the pressed button
         DrawComponent(g2Theme_Spinner, pX + OffsetX, pY + OffsetY);
@@ -180,7 +180,7 @@ void g2Spinner::Render(int pX, int pY)
         DrawComponent(g2Theme_Spinner, pX + OffsetX, pY + OffsetY);
     
     // Increase or decrease the value based on timing
-    if((PressedTime > (UpdateRate + UpdateMin)) || GetControllerState() == g2ControllerState_Clicked)
+    if((PressedTime > (UpdateRate + UpdateMin)) || (GetControllerState() == g2ControllerState_Clicked && MouseX > TextField->GetWidth()))
     {
         if(IsAbove)
             IncrementUp();
@@ -217,9 +217,4 @@ void g2Spinner::MouseHover(int x, int y)
     // Save the mouse location
     MouseX = x;
     MouseY = y;
-}
-
-void g2Spinner::MouseDrag(int x, int y)
-{
-    printf("Dragging at the spinner!\n");
 }

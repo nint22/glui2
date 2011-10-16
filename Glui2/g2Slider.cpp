@@ -69,31 +69,34 @@ int g2Slider::GetWidth()
 
 void g2Slider::Render(int pX, int pY)
 {
-    // Render the background
-    DrawComponent(g2Theme_Slider, pX, pY, Width);
-    
     // Center on the vertical the user's slider controller
     int SliderWidth, SliderHeight;
     int ControllerHeight;
     GetTheme()->GetComponentSize(g2Theme_SliderButton, &SliderWidth, &SliderHeight);
     GetTheme()->GetComponentSize(g2Theme_Slider, NULL, &ControllerHeight);
     
-    // Computer offsets
-    float ProgressRatio = Progress / fabs(MaxBound - MinBound);
-    int OffsetX = int(float(Width - 2 * SidePixelBuffer) * ProgressRatio) - SliderWidth / 2 + SidePixelBuffer;
-    int OffsetY = ControllerHeight / 2 - SliderHeight / 2;
+    // Which is the total height? We may need to shift the slider's background
+    // since some slider buttons are taller than the bg
+    int TotalHeight = SliderHeight;
+    if(ControllerHeight > TotalHeight)
+        TotalHeight = ControllerHeight;
+    
+    // Render the centered background
+    DrawComponent(g2Theme_Slider, pX, pY + TotalHeight / 2 - ControllerHeight / 2, Width);
     
     // Draw slider button
+    g2ThemeElement ButtonStyle = g2Theme_SliderButton;
     if(GetDisabled())
-        DrawComponent(g2Theme_SliderButton_Disabled, pX + OffsetX, pY + OffsetY);
+        ButtonStyle = g2Theme_SliderButton_Disabled;
     else if(IsDragging || GetControllerState() == g2ControllerState_Pressed)
-        DrawComponent(g2Theme_SliderButton_Pressed, pX + OffsetX, pY + OffsetY);
-    else
-        DrawComponent(g2Theme_SliderButton, pX + OffsetX, pY + OffsetY);
+        ButtonStyle = g2Theme_SliderButton_Pressed;
     
-    // Update the live value as needed
-    if(LiveValue != NULL)
-        *LiveValue = Progress;
+    // Computer offsets
+    float ProgressRatio = Progress / fabs(MaxBound - MinBound);
+    int OffsetX = SidePixelBuffer + int(float(Width - 2 * SidePixelBuffer) * ProgressRatio) - SliderWidth / 2;
+    
+    // Draw the slider button itself
+    DrawComponent(ButtonStyle, pX + OffsetX, pY + TotalHeight / 2 - SliderHeight / 2);
 }
 
 void g2Slider::GetCollisionRect(int* Width, int* Height)
@@ -119,15 +122,15 @@ void g2Slider::MouseHover(int x, int y)
     // Are we dragging?
     if(IsDragging)
     {
-        // Get the GUI position
-        int gX, gY;
-        GetGlobalPos(&gX, &gY);
-        
         // Compute the progress
-        Progress = fabs(MaxBound - MinBound) * ((x - gX - SidePixelBuffer) / float(Width - 2 * SidePixelBuffer));
+        Progress = fabs(MaxBound - MinBound) * ((x - SidePixelBuffer) / float(Width - 2 * SidePixelBuffer));
         if(Progress < MinBound)
             Progress = MinBound;
         else if(Progress > MaxBound)
             Progress = MaxBound;
+        
+        // Update the live value as needed
+        if(LiveValue != NULL)
+            *LiveValue = Progress;
     }
 }

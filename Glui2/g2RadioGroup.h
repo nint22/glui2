@@ -45,8 +45,8 @@ protected:
     // Define controller geometry
     __g2EXPORT void GetCollisionRect(int* Width, int* Height);
     
-    // Get the mouse position; used to go either up or down on spinner
-    __g2EXPORT void MouseHover(int x, int y);
+    // Mouse has had a press event; update selected radio
+    __g2EXPORT void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
     
 private:
     
@@ -58,9 +58,6 @@ private:
     
     // Active index we have selected
     int ActiveIndex;
-    
-    // Internal mouse position; needed for constant increase / decrease
-    int MouseX, MouseY;
     
     // Live value
     int* LiveIndex;

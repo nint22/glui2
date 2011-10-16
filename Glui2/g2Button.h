@@ -44,7 +44,7 @@ public:
     
     // Set the text's alignment, accepts either none / left alignment (default), centered, or right alignment
     __g2EXPORT void SetAlignment(g2Anchor Alignment = g2Anchor_None);
-
+    
 protected:
     
     // Render

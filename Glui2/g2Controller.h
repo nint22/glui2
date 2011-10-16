@@ -76,6 +76,15 @@ public:
     // This is the offset from the screen's origin
     __g2EXPORT void GetGlobalPos(int* x = NULL, int* y = NULL);
     
+    // Accessor to the global theme
+    __g2EXPORT g2Theme* GetTheme();
+    
+    // Accessor to parent pointer
+    __g2EXPORT g2Controller* GetParent();
+    
+    // Get the controller state
+    __g2EXPORT g2ControllerState GetControllerState();
+    
     // Returns true if we are the active controller
     __g2EXPORT bool GetActive();
     
@@ -158,15 +167,6 @@ protected:
     
     // Draw a character with given scales and a 4-channel color (RGBA)
     __g2EXPORT void DrawCharacter(int DestX, int DestY, float ScaleW, float ScaleH, float R, float G, float B, float A, char Character);
-    
-    // Accessor to the global theme
-    __g2EXPORT g2Theme* GetTheme();
-    
-    // Accessor to parent pointer
-    __g2EXPORT g2Controller* GetParent();
-    
-    // Get the controller state
-    __g2EXPORT g2ControllerState GetControllerState();
     
 private:
     

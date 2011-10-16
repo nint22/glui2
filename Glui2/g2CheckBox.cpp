@@ -57,17 +57,6 @@ void g2CheckBox::SetLiveVariable(bool* LiveCheckState)
 
 void g2CheckBox::Render(int pX, int pY)
 {
-    // Draw based on the current state
-    if(GetControllerState() == g2ControllerState_Clicked)
-    {
-        // Flip state
-        Checked = !Checked;
-        
-        // Post if possible
-        if(LiveCheckState != NULL)
-            *LiveCheckState = Checked;
-    }
-    
     // Draw based on the current check state
     if(GetDisabled())
         DrawComponent(Checked ? g2Theme_CheckBox_Pressed_Disabled : g2Theme_CheckBox_Disabled, pX, pY);
@@ -82,4 +71,18 @@ void g2CheckBox::GetCollisionRect(int* Width, int* Height)
     // Post-back the size of this controller
     GetTheme()->GetComponentSize(g2Theme_Button, Width, Height);
     *Width += Label->GetWidth();
+}
+
+void g2CheckBox::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
+{
+    // Draw based on the current state
+    if(GetControllerState() == g2ControllerState_Clicked)
+    {
+        // Flip state
+        Checked = !Checked;
+        
+        // Post if possible
+        if(LiveCheckState != NULL)
+            *LiveCheckState = Checked;
+    }
 }

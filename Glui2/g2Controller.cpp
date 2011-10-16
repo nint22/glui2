@@ -150,6 +150,21 @@ void g2Controller::GetGlobalPos(int* x, int* y)
         *y = gY;
 }
 
+g2Theme* g2Controller::GetTheme()
+{
+    return ParentTheme;
+}
+
+g2Controller* g2Controller::GetParent()
+{
+    return ParentObject;
+}
+
+g2ControllerState g2Controller::GetControllerState()
+{
+    return ControllerState;
+}
+
 bool g2Controller::GetActive()
 {
     return IsActive;
@@ -157,16 +172,12 @@ bool g2Controller::GetActive()
 
 bool g2Controller::InController(int x, int y)
 {
-    // Get the global position of this controller
-    int gX, gY;
-    GetGlobalPos(&gX, &gY);
-    
     // Get this controller's collision rectangle
     int Width, Height;
     GetCollisionRect(&Width, &Height);
     
     // Simple rectangle collision check
-    if(x > gX && x <= gX + Width && y > gY && y <= gY + Height)
+    if(x > 0 && x <= Width && y > 0 && y <= Height)
         return true;
     else
         return false;
@@ -176,6 +187,10 @@ g2Controller* g2Controller::GetController(int x, int y)
 {
     // Assume nothing intersects
     g2Controller* ActiveController = NULL;
+    
+    // Update to a localized position
+    x -= pX;
+    y -= pY;
     
     // Check all children, do we interest?
     // We go through all of them as we don't want to change
@@ -269,21 +284,6 @@ void g2Controller::MouseDrag(int x, int y)
     x = y;
     
     // Allow the user to overload as needed...
-}
-
-g2Theme* g2Controller::GetTheme()
-{
-    return ParentTheme;
-}
-
-g2Controller* g2Controller::GetParent()
-{
-    return ParentObject;
-}
-
-g2ControllerState g2Controller::GetControllerState()
-{
-    return ControllerState;
 }
 
 void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int DestY)
@@ -512,6 +512,10 @@ void g2Controller::__Render(int x, int y)
     if(!GetVisibility())
         return;
     
+    // Update rendering position to localized positions
+    x += pX;
+    y += pY;
+    
     // Render self
     Render(x, y);
     
@@ -523,10 +527,8 @@ void g2Controller::__Render(int x, int y)
         g2Controller* Child = ChildObjects.front();
         ChildObjects.pop();
         
-        // Render (note the offset for the child)
-        int OffsetX, OffsetY;
-        Child->GetPos(&OffsetX, &OffsetY);
-        Child->__Render(x + OffsetX, y + OffsetY);
+        // Render children
+        Child->__Render(x, y);
         
         // Put back
         ChildObjects.push(Child);
@@ -590,14 +592,19 @@ void g2Controller::__MouseHover(int x, int y)
     if(!GetVisibility())
         return;
     
-    // Update mouse hovering
-    MouseHover(x, y);
+    // Update mouse to localized positions
+    x -= pX;
+    y -= pY;
     
-    // Maintain the pressed state
+    // If the user is moving and pressing, then do a drag event
     if(InController(x, y) && ControllerState == g2ControllerState_Pressed)
         __MouseDrag(x, y);
-    if(!InController(x, y))
+    // Else, if we are out of the controller, we are done dragging
+    if(!InController(x, y) && ControllerState == g2ControllerState_Pressed)
         ControllerState = g2ControllerState_None;
+    
+    // Update the hovering actions
+    MouseHover(x, y);
     
     // Update all children
     int QueueSize = (int)ChildObjects.size();
@@ -607,7 +614,7 @@ void g2Controller::__MouseHover(int x, int y)
         g2Controller* Child = ChildObjects.front();
         ChildObjects.pop();
         
-        // Update child window hover
+        // Update child with localized coordinates
         Child->__MouseHover(x, y);
         
         // Put back
@@ -621,8 +628,9 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
     if(!GetVisibility())
         return;
     
-    // Update mouse click
-    MouseClick(button, state, x, y);
+    // Update mouse to localized positions
+    x -= pX;
+    y -= pY;
     
     // Are we in this object's volume and do we have a full left-click?
     if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Down)
@@ -636,8 +644,12 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
     else if(InController(x, y))
         ControllerState = g2ControllerState_Hover;
     
+    // Else, no hovering, just nothing
     else
         ControllerState = g2ControllerState_None;
+    
+    // Update mouse click
+    MouseClick(button, state, x, y);
     
     // Update all children
     int QueueSize = (int)ChildObjects.size();
@@ -664,6 +676,9 @@ void g2Controller::__MouseDrag(int x, int y)
     // Ignore if not visible
     if(!GetVisibility())
         return;
+    
+    // No need to change coordinates; they
+    // are already localized by the calling parent
     
     // Update mouse drag
     MouseDrag(x, y);
