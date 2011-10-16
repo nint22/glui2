@@ -39,10 +39,7 @@ public:
 protected:
     
     // Render
-    void Render();
-    
-    // Define controller geometry
-    bool InController(int x, int y);
+    void Render(int x, int y);
     
 private:
     

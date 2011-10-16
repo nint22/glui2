@@ -26,24 +26,8 @@ g2Label* g2Bubble::GetLabel()
     return Label;
 }
 
-void g2Bubble::Render()
+void g2Bubble::Render(int x, int y)
 {
-    // Get origin and render
-    int pX, pY;
-    GetPos(&pX, &pY);
-    DrawComponent(pX, pY, "Bubble");
-}
-
-bool g2Bubble::InController(int x, int y)
-{
-    // Current GUI position and size
-    int pX, pY, width, height;
-    GetPos(&pX, &pY);
-    GetTheme()->GetComponentSize("Bubble", &width, &height);
-    
-    // Are we in it?
-    if(x >= pX && x <= pX + width && y >= pY && y <= pY + height)
-        return true;
-    else
-        return false;
+    // Render at position
+    DrawComponent("Bubble", x, y);
 }

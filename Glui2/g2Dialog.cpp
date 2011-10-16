@@ -14,7 +14,7 @@
     #include "g2AppKit.h"
 #endif
 
-g2Dialog::g2Dialog(g2DialogType Type, const char* Message)
+g2Dialog::g2Dialog(g2DialogType Type, const char* Message, const char* Extension)
 {
     // Suppress warning
     g2Assert(Message != NULL, "Given message buffer was null.");
@@ -25,6 +25,9 @@ g2Dialog::g2Dialog(g2DialogType Type, const char* Message)
     
     // Save the message
     strcpy(MessageBuffer, Message);
+
+	// Copy the extension if any; default to blank if none
+	strcpy(FileExtension, (Extension == NULL) ? "" : Extension);
 }
 
 g2Dialog::~g2Dialog()
@@ -46,18 +49,27 @@ void g2Dialog::Show()
             // Based on the MSDN article on open/saving dialogs
             // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646829(v=vs.85).aspx
             
-            char szFileName[MAX_PATH] = "";
-            
+			// Allocate the args list for opening file
             OPENFILENAME ofn;
             ZeroMemory(&ofn, sizeof(ofn));
+			char szFileName[MAX_PATH] = "";
+            
+			// Set default flags
             ofn.lStructSize = sizeof(ofn);
             ofn.hwndOwner = NULL;
-            ofn.lpstrFilter = "All Files (*.*)\0*.*\0";
             ofn.lpstrFile = szFileName;
             ofn.nMaxFile = MAX_PATH;
             ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-            ofn.lpstrDefExt = 0;
             
+			// Set a file filter
+            char szFileFilter[MAX_PATH];
+			if(strlen(FileExtension) > 0)
+				sprintf(szFileFilter, "(*.%s)\0*.%s\0", FileExtension, FileExtension);
+			else
+				strcpy(szFileFilter, "All Files (*.*)\0*.*\0");
+            ofn.lpstrFilter = szFileFilter;
+			ofn.lpstrDefExt = FileExtension;
+			
             // Open file
             if(GetOpenFileName(&ofn))
             {
@@ -75,29 +87,31 @@ void g2Dialog::Show()
             // Based on:
             // http://msdn.microsoft.com/en-us/library/windows/desktop/dd183519(v=VS.85).aspx
             
-            char szFileName[MAX_PATH] = "";
+			// Allocate the args list for opening file
+            OPENFILENAME ofn;
+            ZeroMemory(&ofn, sizeof(ofn));
+			char szFileName[MAX_PATH] = "";
             
-			OPENFILENAME Ofn;
-            Ofn.lStructSize = sizeof(OPENFILENAME); 
-            Ofn.hwndOwner = NULL; 
-            Ofn.lpstrFilter = "*.*"; 
-            Ofn.lpstrFile= szFileName; 
-            Ofn.nMaxFile = sizeof(szFileName)/ sizeof(*szFileName); 
-            Ofn.lpstrFileTitle = "FileTitle";
-            Ofn.nMaxFileTitle = sizeof("FileTitle"); 
-            Ofn.lpstrInitialDir = (LPSTR)NULL; 
-            Ofn.Flags = OFN_SHOWHELP | OFN_OVERWRITEPROMPT; 
-            Ofn.lpstrTitle = "Title!"; 
+			// Set default flags
+            ofn.lStructSize = sizeof(ofn);
+            ofn.hwndOwner = NULL;
+            ofn.lpstrFile = szFileName;
+            ofn.nMaxFile = MAX_PATH;
+            ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
             
-            // Display the Filename common dialog box. The  
-            // filename specified by the user is passed  
-            // to the CreateEnhMetaFile function and used to  
-            // store the metafile on disk.  
-            
+			// Set a file filter
+            char szFileFilter[MAX_PATH];
+			if(strlen(FileExtension) > 0)
+				sprintf(szFileFilter, "(*.%s)\0*.%s\0", FileExtension, FileExtension);
+			else
+				strcpy(szFileFilter, "All Files (*.*)\0*.*\0");
+            ofn.lpstrFilter = szFileFilter;
+			ofn.lpstrDefExt = FileExtension;
+			
             // Save file
-            if(GetSaveFileName(&Ofn))
+            if(GetSaveFileName(&ofn))
             {
-                strcpy(ResultBuffer, Ofn.lpstrFile);
+                strcpy(ResultBuffer, ofn.lpstrFile);
                 Selection = g2DialogResult_OK;
             }
             else

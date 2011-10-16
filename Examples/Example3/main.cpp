@@ -105,6 +105,7 @@ void DialogShow(g2Controller* Caller)
 
 void DialogOpen(g2Controller* Caller)
 {
+	// Open any file
     g2Dialog Dialog(g2DialogType_Open, "Open File...");
     Dialog.Show();
     
@@ -117,7 +118,8 @@ void DialogOpen(g2Controller* Caller)
 
 void DialogSave(g2Controller* Caller)
 {
-    g2Dialog Dialog(g2DialogType_Save, "Save File...");
+	// Save only text files (for the demo)
+    g2Dialog Dialog(g2DialogType_Save, "Save File...", "txt");
     Dialog.Show();
     
     // Get user's results

@@ -23,6 +23,12 @@
 
 #include "g2Utilities.h"
 
+// Maximum input/output/message length
+static const int MaxBufferLength = 1024;
+
+// The extension buffer length
+static const int MaxExtensionLength = 32;
+
 // The enumeration of dialog types
 enum g2DialogType
 {
@@ -43,7 +49,9 @@ class g2Dialog
 public:
     
     // Dialog constructor creates either an open or a save dialog
-    __g2EXPORT g2Dialog(g2DialogType Type, const char* Message);
+	// Extension argument is only a three-letter argument that should be the end of the file
+	// Note that this extension should not include and dot characters or asterisk
+    __g2EXPORT g2Dialog(g2DialogType Type, const char* Message, const char* Extension = NULL);
     
     // Destructor explicitly takes down any open modals
     __g2EXPORT ~g2Dialog();
@@ -65,14 +73,14 @@ private:
     // User's choice
     g2DialogResult Selection;
     
-    // Maximum input/output/message length
-    static const int MaxBufferLength = 1024;
-    
     // Message buffer
     char MessageBuffer[MaxBufferLength];
     
     // Result (user input) buffer
     char ResultBuffer[MaxBufferLength];
+
+	// File extension buffer
+	char FileExtension[MaxExtensionLength];
 };
 
 // End of inclusion guard

@@ -64,6 +64,12 @@
 #ifndef STBI_INCLUDE_STB_IMAGE_H
 #define STBI_INCLUDE_STB_IMAGE_H
 
+// Added by Jeremy Bridon to supress windows-specific compiler warnings
+// though these warnings can pose a security risk in the future
+#ifdef _WIN32
+    #pragma warning(disable:4996)
+#endif
+
 // To get a header file for this, either cut and paste the header,
 // or create stb_image.h, #define STBI_HEADER_FILE_ONLY, and
 // then include stb_image.c from it.
