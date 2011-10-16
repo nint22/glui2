@@ -35,6 +35,7 @@ Glui2/g2Theme.cpp \
 Glui2/g2Utilities.cpp \
 Glui2/g2Images.cpp \
 Glui2/glui2.cpp \
+Glui2/stb_image.c \
 
 # Define the output product
 product := libglui2.so
@@ -50,27 +51,26 @@ includes := -I/usr/include
 
 # Build the library itself
 all: $(objects)
-	@echo Building Glui2 lib...
-	g++ -Wall -Wextra $(libs) -shared -o $(product) Glui2/*.o SOIL/*.o
-	@echo Done!
+	@echo "Building Glui2 lib..."
+	g++ -Wall -Wextra $(libs) -shared -o $(product) Glui2/*.o
+	@echo "Done!"
 
 # Compile each individual object file
-%.o : %.c %.cpp %.h
-	@echo Creating object file \"$<\"
+%.o: %.cpp %.h
+	@echo "Creating object file for \"$<\""
 	g++ -Wall -Wextra $(libs) -fPIC -c $< -o $@ $(includes)
-	@echo Done with object file \"$<\"
+	@echo "Done with object file"
 
 # Install the lib
 install:
+	@echo Copying to lib...
 	cp $(product) /usr/lib/.
 	mkdir -p /usr/include/Glui2
 	cp Glui2/*.h /usr/include/Glui2/.
-	mkdir -p /usr/include/SOIL
-	cp SOIL/*.h /usr/include/SOIL/.
+	@echo Done with installing
 
 # Clean object files
 clean:
 	@echo Cleaning...
 	rm -rf Glui2/*.o $(product)
-	rm -rf SOIL/*.o $(product)
 	@echo Done with cleaning

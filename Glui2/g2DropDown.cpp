@@ -64,9 +64,7 @@ void g2DropDown::SetOptions(const char** OptionLabels, int OptionCount)
     Buttons = new g2Button*[OptionCount];
     
     // Get the vertical size of characters
-    int CharHeight;
-    GetTheme()->GetCharacterSize(NULL, &CharHeight);
-    CharHeight += 2;
+    int CharHeight = GetTheme()->GetCharacterHeight() + 2;
     
     // Get the button height to offset
     int ButtonHeight;

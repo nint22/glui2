@@ -132,11 +132,11 @@ void g2Dialog::Show()
         strcpy(ResultBuffer, "");
         
         if(Type == g2DialogType_Notification)
-            printf("Message: \"%s\"", MessageBuffer);
+            printf("Message: \"%s\"\n", MessageBuffer);
         else if(Type == g2DialogType_Open)
-            printf("\"%s\"\n> ", MessageBuffer);
+            printf("\"%s\"> ", MessageBuffer);
         else if(Type == g2DialogType_Save)
-            printf("\"%s\"\n> ", MessageBuffer);
+            printf("\"%s\"> ", MessageBuffer);
         
         char* TempBuffer = NULL;
         if(scanf("%s", TempBuffer) > 0)
