@@ -24,10 +24,10 @@
 #include "g2Utilities.h"
 
 // Maximum input/output/message length
-static const int MaxBufferLength = 1024;
+static const int g2Dialog_MaxBufferLength = 1024;
 
 // The extension buffer length
-static const int MaxExtensionLength = 32;
+static const int g2Dialog_MaxExtensionLength = 32;
 
 // The enumeration of dialog types
 enum g2DialogType
@@ -74,13 +74,13 @@ private:
     g2DialogResult Selection;
     
     // Message buffer
-    char MessageBuffer[MaxBufferLength];
+    char MessageBuffer[g2Dialog_MaxBufferLength];
     
     // Result (user input) buffer
-    char ResultBuffer[MaxBufferLength];
+    char ResultBuffer[g2Dialog_MaxBufferLength];
 
 	// File extension buffer
-	char FileExtension[MaxExtensionLength];
+	char FileExtension[g2Dialog_MaxExtensionLength];
 };
 
 // End of inclusion guard

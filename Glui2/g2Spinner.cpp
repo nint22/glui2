@@ -41,12 +41,12 @@ g2Spinner::g2Spinner(g2Controller* Parent, g2Theme* MainTheme, g2SpinnerType Typ
     // Default the float / int values
     if(Type == g2SpinnerType_Float)
     {
-        TextField->SetFilter("1234567890.");
+        TextField->GetLabelEdit()->SetFilter("1234567890.");
         SetFloat(0.0f);
     }
     else if(Type == g2SpinnerType_Int)
     {
-        TextField->SetFilter("1234567890");
+        TextField->GetLabelEdit()->SetFilter("1234567890");
         SetInt(0);
     }
 }
@@ -180,14 +180,14 @@ void g2Spinner::Render(int pX, int pY)
         DrawComponent(g2Theme_Spinner, pX + OffsetX, pY + OffsetY);
     
     // Increase or decrease the value based on timing
-    if((PressedTime > (UpdateRate + UpdateMin)) || (GetControllerState() == g2ControllerState_Clicked && MouseX > TextField->GetWidth()))
+    if((PressedTime > (g2Spinner_UpdateRate + g2Spinner_UpdateMin)) || (GetControllerState() == g2ControllerState_Clicked && MouseX > TextField->GetWidth()))
     {
         if(IsAbove)
             IncrementUp();
         else
             IncrementDown();
         
-        PressedTime -= UpdateRate;
+        PressedTime -= g2Spinner_UpdateRate;
     }
     
     // Set the live value based on what the field currently has

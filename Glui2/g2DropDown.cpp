@@ -80,7 +80,7 @@ void g2DropDown::SetOptions(const char** OptionLabels, int OptionCount)
         Buttons[i]->SetText(OptionLabels[i]);
         Buttons[i]->SetDisabled(true);
         Buttons[i]->SetWidth(ButtonField->GetWidth());
-        Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, DeselectedAlpha);
+        Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, g2DropDown_DeselectedAlpha);
         
         // Default invisible and disabled
         Buttons[i]->SetVisibility(false);
@@ -163,7 +163,7 @@ void g2DropDown::MouseClick(g2MouseButton button, g2MouseClick state, int x, int
         
         // Reset alpha color and hide
         for(int i = 0; i < OptionCount; i++)
-            Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, DeselectedAlpha);
+            Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, g2DropDown_DeselectedAlpha);
     }
 }
 
@@ -191,7 +191,7 @@ void g2DropDown::MouseHover(int x, int y)
                 ActiveSelection = i;
             }
             else
-                Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, DeselectedAlpha);
+                Buttons[i]->SetColor(1.0f, 1.0f, 1.0f, g2DropDown_DeselectedAlpha);
         }
     }
 }

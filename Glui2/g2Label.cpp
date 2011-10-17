@@ -41,7 +41,7 @@ void g2Label::SetText(const char* Text)
     }
 }
 
-const char* g2Label::GetText()
+const char* const g2Label::GetText()
 {
     return TextBuffer;
 }
@@ -62,7 +62,7 @@ int g2Label::GetWidth()
     for(size_t i = 0; i < strlen(TextBuffer); i++)
     {
         GetTheme()->GetCharacterSize(TextBuffer[i], &CharWidth);
-        Sum += CharWidth + CharacterSpacing;
+        Sum += CharWidth + g2Label_CharacterSpacing;
     }
     return Sum;
 }
@@ -123,7 +123,7 @@ void g2Label::Render(int pX, int pY)
             // Get this character's width and offset
             int width;
             GetTheme()->GetCharacterSize(c, &width, NULL);
-            offset += width + CharacterSpacing;
+            offset += width + g2Label_CharacterSpacing;
         }
     }
 }

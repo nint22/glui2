@@ -11,7 +11,7 @@
 #include "g2Console.h"
 
 // The start message of the input buffer
-static const char* InputBufferStart = "g2Console:>";
+static const char* g2Console_InputBufferStart = "g2Console:>";
 
 // Only one console should be created at a time
 static int g2Console_RefCount = 0;
@@ -24,7 +24,7 @@ g2Console::g2Console(g2Controller* Parent, g2Theme* MainTheme)
     g2Console_RefCount++;
     
     // Initialize nothing in the input buffer
-    strcpy(InputBuffer, InputBufferStart);
+    strcpy(InputBuffer, g2Console_InputBufferStart);
     CursorTime = 0.0f;
     CursorState = true;
     
@@ -194,7 +194,7 @@ void g2Console::Render(int x, int y)
     cY = WindowHeight / 2 - CharHeight;
     
     // Print the buffer with the flickering cursor
-    char InputBuffer_Cursor[MaxInputLength];
+    char InputBuffer_Cursor[g2Console_MaxInputLength];
     sprintf(InputBuffer_Cursor, "%s%c", InputBuffer, CursorState ? '_' : ' ' );
     
     // Draw the input buffer
@@ -229,8 +229,8 @@ void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
     if(key == '\r')
     {
         // Move buffer to heap
-        char* buffer = new char[strlen(InputBuffer) - strlen(InputBufferStart) + 1];
-        strcpy(buffer, InputBuffer + strlen(InputBufferStart));
+        char* buffer = new char[strlen(InputBuffer) - strlen(g2Console_InputBufferStart) + 1];
+        strcpy(buffer, InputBuffer + strlen(g2Console_InputBufferStart));
         
         // Are we closing the console?
         if(strcmp(buffer, "close") == 0 || strcmp(buffer, "quit") == 0 || strcmp(buffer, "exit") == 0)
@@ -245,14 +245,14 @@ void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
         this->printf("%s", buffer);
         
         // Reset the input buffer
-        strcpy(InputBuffer, InputBufferStart);
+        //strcpy(InputBuffer, "Derp");
         
     }
     // Backspace (8 on windows, 127 on OSX)
     else if(key == 8 || key == 127)
     {
         // Move back the buffer if there is space
-        if(strlen(InputBuffer) > strlen(InputBufferStart))
+        if(strlen(InputBuffer) > strlen(g2Console_InputBufferStart))
             InputBuffer[strlen(InputBuffer) - 1] = '\0';
     }
     // Standard keyboard input
@@ -260,7 +260,7 @@ void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
     {
         // Accepts all characters (ignore if not enough memory)
         int length = (int)strlen(InputBuffer);
-        if(length + 1 >= MaxInputLength)
+        if(length + 1 >= g2Console_MaxInputLength)
             return;
         
         // Write to the old string-end and move the terminator a little further

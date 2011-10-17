@@ -173,9 +173,9 @@ void g2Dialog::Show()
         if(Type == g2DialogType_Notification)
             result = __g2ShowDialog(MessageBuffer);
         else if(Type == g2DialogType_Open)
-            result = __g2ShowOpenDialog(MessageBuffer, FileExtension, ResultBuffer, MaxBufferLength);
+            result = __g2ShowOpenDialog(MessageBuffer, FileExtension, ResultBuffer, g2Dialog_MaxBufferLength);
         else if(Type == g2DialogType_Save)
-            result = __g2ShowSaveDialog(MessageBuffer, FileExtension, ResultBuffer, MaxBufferLength);
+            result = __g2ShowSaveDialog(MessageBuffer, FileExtension, ResultBuffer, g2Dialog_MaxBufferLength);
         
         // Based on the result (i.e. button index) save
         // the correct enumeration type

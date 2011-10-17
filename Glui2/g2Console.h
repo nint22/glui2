@@ -45,6 +45,9 @@
 
 #include "g2Controller.h"
 
+// Maximum input length
+static const int g2Console_MaxInputLength = 1024;
+
 class g2Console : public g2Controller
 {
 public:
@@ -103,9 +106,6 @@ private:
     
     // The current cursor state (on is '_', off is ' ')
     bool CursorState;
-    
-    // Maximum input length
-    static const int MaxInputLength = 1024;
 };
 
 // End of inclusion guard

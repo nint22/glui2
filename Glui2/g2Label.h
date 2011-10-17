@@ -23,7 +23,7 @@
 #include "g2Controller.h"
 
 // Number if pixels between characters draw on-screen
-static const int CharacterSpacing = 2;
+static const int g2Label_CharacterSpacing = 2;
 
 class g2Label : public g2Controller
 {
@@ -41,7 +41,7 @@ public:
     // Return a constant buffer to the given string; should never be modified
     // The returned buffer may or may not exist soon after the direct call; you should
     // copy the buffer as soon as possible if it is to not be immediately used
-    __g2EXPORT const char* GetText();
+    __g2EXPORT const char* const GetText();
     
     // Set the size of the output (as a ratio)
     __g2EXPORT void SetSize(float Scale);

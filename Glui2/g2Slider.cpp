@@ -93,7 +93,7 @@ void g2Slider::Render(int pX, int pY)
     
     // Computer offsets
     float ProgressRatio = Progress / fabs(MaxBound - MinBound);
-    int OffsetX = SidePixelBuffer + int(float(Width - 2 * SidePixelBuffer) * ProgressRatio) - SliderWidth / 2;
+    int OffsetX = g2Slider_SidePixelBuffer + int(float(Width - 2 * g2Slider_SidePixelBuffer) * ProgressRatio) - SliderWidth / 2;
     
     // Draw the slider button itself
     DrawComponent(ButtonStyle, pX + OffsetX, pY + TotalHeight / 2 - SliderHeight / 2);
@@ -123,7 +123,7 @@ void g2Slider::MouseHover(int x, int y)
     if(IsDragging)
     {
         // Compute the progress
-        Progress = fabs(MaxBound - MinBound) * ((x - SidePixelBuffer) / float(Width - 2 * SidePixelBuffer));
+        Progress = fabs(MaxBound - MinBound) * ((x - g2Slider_SidePixelBuffer) / float(Width - 2 * g2Slider_SidePixelBuffer));
         if(Progress < MinBound)
             Progress = MinBound;
         else if(Progress > MaxBound)

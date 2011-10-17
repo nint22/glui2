@@ -9,21 +9,25 @@
  File: g2LabelEdit.cpp/h
  Desc: An interactive text field; based on source originally
  written for the console and g2TextField, but then coalescted
- together. You can enable / disabled text highlighting, text
- filtering (i.e. only allow numerical-input_, copy / pasting
- too and back from the host OS (Win and OSX feature only), and
- on-screen clipping based on offset.
+ together. You can enable / disabled text filtering (i.e. only
+ allow numerical-input_, copy / pasting to and back from the host
+ OS (Win and OSX feature only), and on-screen clipping based on
+ a target width and user's cursor position. Shadow is off by
+ default but can be turned on. Default width is 0.
  
 ***************************************************************/
 
 // Inclusion guard
-#ifndef __G2LABEL_H__
-#define __G2LABEL_H__
+#ifndef __G2LABELEDIT_H__
+#define __G2LABELEDIT_H__
 
 #include "g2Controller.h"
 
 // Number if pixels between characters draw on-screen
-static const int CharacterSpacing = 2;
+static const int g2LabelEdit_CharacterSpacing = 2;
+
+// User input's text buffer
+static const int g2LabelEdit_TextBufferLength = 1024;
 
 class g2LabelEdit : public g2Controller
 {
@@ -31,20 +35,26 @@ public:
     
     // Label constructor and destructor
     __g2EXPORT g2LabelEdit(g2Controller* Parent, g2Theme* MainTheme);
-    __g2EXPORT ~g2LabelEdit();
     
-    // Set the text string; new lines WILL be printed on following lines
+    // Set the text string; the user's cursor will be given back
     __g2EXPORT void SetText(const char* Text = NULL);
     
     // Return a constant buffer to the given string; should never be modified
     // The returned buffer may or may not exist soon after the direct call; you should
     // copy the buffer as soon as possible if it is to not be immediately used
-    __g2EXPORT const char* GetText();
+    __g2EXPORT const char* const GetText();
     
-    // Set the size of the output (as a ratio)
-    __g2EXPORT void SetSize(float Scale);
+    // Set the cursor's position; it will be placed after the target index
+    // and before the following letter
+    __g2EXPORT void SetCursorPos(int Index);
     
-    // Get the width of the text label in pixels
+    // Return the current cursor position
+    __g2EXPORT int GetCursorPos();
+    
+    // Set the target width of the text input
+    __g2EXPORT void SetWidth(int Width);
+    
+    // Get the width of the text input
     __g2EXPORT int GetWidth();
     
     // Set a shadow (true to render a shadow with text)
@@ -52,6 +62,17 @@ public:
     
     // Get the shadow state (true if shadow is visible)
     __g2EXPORT bool GetShadow();
+    
+    // Set a filter; an array of characters that are the only allowed input
+    // characters. Pass null to remove the filter
+    __g2EXPORT void SetFilter(const char* Filter = NULL);
+    
+    // Copy into the host operating system's copy-buffer
+    __g2EXPORT void CopyBuffer();
+    
+    // Paste (by appending) from the host's operating system's
+    // copy-buffer into this text buffer
+    __g2EXPORT void PasteBuffer();
     
 protected:
     
@@ -61,6 +82,9 @@ protected:
     // Render
     __g2EXPORT void Render(int pX, int pY);
     
+    // Standard collision body
+    __g2EXPORT void GetCollisionRect(int* Width, int* Height);
+    
     // Handle all key events the user executes
     __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);
     
@@ -69,18 +93,14 @@ private:
     // Set a filter for this text
     bool InFilter(char c);
     
-    // The internal text buffer
-    char* TextBuffer;
-    
-    // Internal size scale
-    float Scale;
+    // Internal width
+    int Width;
     
     // Shadow state
     bool Shadow;
     
-    // Text buffer and max size
-    static const int TextBufferLength = 1024;
-    char TextBuffer[TextBufferLength];
+    // Current text buffer
+    char TextBuffer[g2LabelEdit_TextBufferLength];
     
     // Filter buffer
     char* FilterBuffer;

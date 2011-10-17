@@ -22,7 +22,7 @@
 #include "g2Label.h"
 
 // The pixel buffer from the left side and right side
-static const int SidePixelBuffer = 10;
+static const int g2Slider_SidePixelBuffer = 10;
 
 class g2Slider : public g2Controller
 {

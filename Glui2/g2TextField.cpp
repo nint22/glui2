@@ -13,52 +13,35 @@
 g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(Parent, MainTheme)
 {
-    // Initialize nothing in the input buffer
-    strcpy(TextBuffer, "");
-    CursorTime = 0.0f;
-    CursorState = true;
-    CursorOffset = 0.0f;
-    CursorIndex = 0;
+    // Allocate the editable label and center
+    TextEdit = new g2LabelEdit(this, MainTheme);
     
-    // Compute the offsets so the text is correctly centered
+    // Center
     int CharHeight = GetTheme()->GetCharacterHeight();
-    GetTheme()->GetComponentSize(g2Theme_TextField, &OffsetWidth, &OffsetHeight);
-    OffsetWidth *= 0.2f;
-    OffsetHeight = OffsetHeight / 2 - CharHeight / 2 + 1;
+    int ControllerHeight;
+    GetTheme()->GetComponentSize(g2Theme_TextField, NULL, &ControllerHeight);
+    TextEdit->SetPos(5, ControllerHeight / 2 - CharHeight / 2);
     
-    // Allocate the text label
-    Label = new g2Label(this, MainTheme);
-    Label->SetPos(OffsetWidth, OffsetHeight);
-    Label->SetColor(0.0f, 0.0f, 0.0f);
+    // Default to black
+    TextEdit->SetColor(0.0f, 0.0f, 0.0f);
     
     // Default width
     SetWidth(0);
-    
-    // Default to no filter mechanism
-    FilterBuffer = NULL;
 }
 
 void g2TextField::SetText(const char* Text)
 {
-    // Default to empty buffer
-    if(Text == NULL)
-    {
-        strcpy(TextBuffer, "");
-        Label->SetText(TextBuffer);
-        CursorIndex = 0;
-    }
-    // Only set if we can keep it in our internal buffer
-    else if(strlen(Text) < TextBufferLength - 1)
-    {
-        strcpy(TextBuffer, Text);
-        Label->SetText(TextBuffer);
-        CursorIndex = (int)strlen(TextBuffer);
-    }
+    TextEdit->SetText(Text);
 }
 
-const char* g2TextField::GetText()
+const char* const g2TextField::GetText()
 {
-    return TextBuffer;
+    return TextEdit->GetText();
+}
+
+g2LabelEdit* g2TextField::GetLabelEdit()
+{
+    return TextEdit;
 }
 
 void g2TextField::SetWidth(int Width)
@@ -71,45 +54,14 @@ void g2TextField::SetWidth(int Width)
         this->Width = Width;
     else
         this->Width = MinWidth;
+    
+    // Update the text field's width
+    TextEdit->SetWidth(this->Width);
 }
 
 int g2TextField::GetWidth()
 {
     return Width;
-}
-
-g2Label* g2TextField::GetLabel()
-{
-    return Label;
-}
-
-void g2TextField::SetFilter(const char* Filter)
-{
-    // Release the previous filter (if it exists)
-    if(FilterBuffer != NULL)
-        delete[] FilterBuffer;
-    
-    // Are we no longer having a filter?
-    if(Filter == NULL)
-        FilterBuffer = NULL;
-    
-    // Allocate and copy
-    else
-    {
-        FilterBuffer = new char[strlen(Filter) + 1];
-        strcpy(FilterBuffer, Filter);
-    }
-}
-
-void g2TextField::Update(float dT)
-{
-    // Update the timer and flip the state if needed
-    CursorTime += dT;
-    if(CursorTime > 0.5f)
-    {
-        CursorTime -= 0.5f;
-        CursorState = !CursorState;
-    }
 }
 
 void g2TextField::Render(int pX, int pY)
@@ -124,24 +76,7 @@ void g2TextField::Render(int pX, int pY)
     // Render the background
     DrawComponent(TextFieldState, pX, pY, Width);
     
-    /*** Draw Cursor (Only if active) ***/
-    
-    // Is this controller active? (i.e. selected?) and not disabled?
-    if(GetActive() && !GetDisabled())
-    {
-        // What is the pixel offset?
-        int CursorPos = 0;
-        for(int i = 0; i < CursorIndex; i++)
-        {
-            int CharWidth;
-            GetTheme()->GetCharacterSize(Label->GetText()[i], &CharWidth);
-            CursorPos += CharWidth + 2;
-        }
-        
-        float tR, tG, tB, tA;
-        Label->GetColor(&tR, &tG, &tB, &tA);
-        DrawCharacter(pX + OffsetWidth + CursorPos, pY + OffsetHeight, 1.0f, 1.0f, tR, tG, tB, tA, CursorState ? '|' : ' ');
-    }
+    // The editable text field will draw itself
 }
 
 void g2TextField::GetCollisionRect(int* Width, int* Height)

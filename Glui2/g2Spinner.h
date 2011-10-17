@@ -22,11 +22,11 @@
 
 // How much time it takes before we update the
 // spinner based on the user holding down
-static const float UpdateRate = 0.05f;
+static const float g2Spinner_UpdateRate = 0.05f;
 
 // Number of seconds user needs to wait before
 // auto-update occurs 
-static const float UpdateMin = 0.4f;
+static const float g2Spinner_UpdateMin = 0.4f;
 
 // Define the two spinner types: int or float
 enum g2SpinnerType
