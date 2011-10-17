@@ -318,7 +318,7 @@ void InitGlui2()
     SamplePanel->SetSize(64, 64);
     
     /*** Quit Button ***/
-    g2Button* ExitButton = GluiHandle->AddButton(WindowWidth / 2 - 50, WindowHeight - 40, "Quit Demo", Quit);
+    g2Button* ExitButton = GluiHandle->AddButton(WindowWidth / 2 - 50, WindowHeight - 40, "   Quit Demo", Quit);
     ExitButton->SetWidth(100);
     ExitButton->SetIcon("icon_quit");
 }

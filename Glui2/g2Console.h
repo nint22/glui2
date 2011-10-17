@@ -44,9 +44,11 @@
 #define __G2CONSOLE_H__
 
 #include "g2Controller.h"
+#include "g2LabelEdit.h"
+#include "g2Label.h"
 
 // Maximum input length
-static const int g2Console_MaxInputLength = 1024;
+static const int g2Console_MaxInputSize = 64;
 
 class g2Console : public g2Controller
 {
@@ -62,14 +64,12 @@ public:
     __g2EXPORT void printf(const char* format, ...);
     
     // Read off the latest string command the user as typed in; based on FIFO order
-    // May return null if there is nothing in the buffer
-    // Note that the returned buffer MUST be released when you are done with it
-    __g2EXPORT char* gets();
+    // May return null if there is nothing in the buffer; will copy over 'length'
+    // chars into the given buffer; maximum input is g2Console_MaxInputLength, if
+    // there is no imput, length will be 0
+    __g2EXPORT void gets(char* OutBuffer, int* Length);
     
 protected:
-    
-    // Update
-    __g2EXPORT void Update(float dT);
     
     // Render
     __g2EXPORT void Render(int pX, int pY);
@@ -80,9 +80,6 @@ protected:
     // Gets the screen width and heigh
     __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);
     
-    // Handle user inputs
-    __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);
-    
 private:
     
     // Get a color from the internal 4-bit template
@@ -91,8 +88,11 @@ private:
     // Active width and height
     int WindowWidth, WindowHeight;
     
-    // Current input buffer (on-screen)
-    char InputBuffer[1024];
+    // User input handler
+    g2LabelEdit* LabelEdit;
+    
+    // The label infront of the edit
+    g2Label* Label;
     
     // Input and output queues
     // Note that the out console might also retain
@@ -100,12 +100,6 @@ private:
     // see what they write
     std::queue<char*> ConsoleIn;
     std::queue<char*> ConsoleOut;
-    
-    // The total time the cursor has been in the current cursor style
-    float CursorTime;
-    
-    // The current cursor state (on is '_', off is ' ')
-    bool CursorState;
 };
 
 // End of inclusion guard

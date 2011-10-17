@@ -69,8 +69,9 @@ void g2CheckBox::Render(int pX, int pY)
 void g2CheckBox::GetCollisionRect(int* Width, int* Height)
 {
     // Post-back the size of this controller
-    GetTheme()->GetComponentSize(g2Theme_Button, Width, Height);
-    *Width += Label->GetWidth();
+    // Note that there is character height spacing between checkbox and text
+    GetTheme()->GetComponentSize(g2Theme_CheckBox, Width, Height);
+    *Width += GetTheme()->GetCharacterHeight() + Label->GetWidth();
 }
 
 void g2CheckBox::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)

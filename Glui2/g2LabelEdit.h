@@ -51,6 +51,16 @@ public:
     // Return the current cursor position
     __g2EXPORT int GetCursorPos();
     
+    // Force-set the cursor to visible or not; if set to true, the cursor
+    // is visible regardless of the active state
+    // Default to false, so the state is based on active selection
+    __g2EXPORT void SetCursorAlwaysVisible(bool State);
+    
+    // Get the current cursor state; regardless of the flashing pattern, this
+    // function will return true if the controller is explicitly showing the cursor
+    // Default to false, so the state is based on active selection
+    __g2EXPORT bool GetCursorAlwaysVisible();
+    
     // Set the target width of the text input
     __g2EXPORT void SetWidth(int Width);
     
@@ -74,6 +84,10 @@ public:
     // copy-buffer into this text buffer
     __g2EXPORT void PasteBuffer();
     
+    // User has pressed enter; once this function returns true, the
+    // return state is reset back to false
+    __g2EXPORT bool UserReturned();
+    
 protected:
     
     // Update
@@ -88,10 +102,21 @@ protected:
     // Handle all key events the user executes
     __g2EXPORT void KeyEvent(unsigned char key, bool IsSpecial);
     
+    // When the user clicks, center the cursor as best as possible
+    __g2EXPORT void MouseClick(g2MouseButton button, g2MouseClick state, int x, int y);
+    
 private:
     
     // Set a filter for this text
     bool InFilter(char c);
+    
+    // Returns the number of characters that can be rendered
+    // on-screen to the left given the coordinate
+    int RenderableLeftChars(int Index);
+    
+    // Number of pixels between the cursor and the start of
+    // the rendered offset
+    int LengthToCursor();
     
     // Internal width
     int Width;
@@ -105,17 +130,25 @@ private:
     // Filter buffer
     char* FilterBuffer;
     
+    /** Cursor States **/
+    
     // The total time the cursor has been in the current cursor style
     float CursorTime;
     
-    // The current cursor state (on is '_', off is ' ')
+    // The current cursor state (on is '|', off is ' ')
     bool CursorState;
-    
-    // Location of the cursor
-    float CursorOffset;
     
     // Index position of the cursor
     int CursorIndex;
+    
+    // View offset
+    int ViewIndex;
+    
+    // Force flashing on regarldess of active state
+    bool CursorAlwaysVisible;
+    
+    // Has the user commited the change (i.e. pressed the 'Enter' key?)
+    bool DidUserReturn;
 };
 
 // End of inclusion guard

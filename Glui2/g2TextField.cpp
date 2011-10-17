@@ -20,7 +20,7 @@ g2TextField::g2TextField(g2Controller* Parent, g2Theme* MainTheme)
     int CharHeight = GetTheme()->GetCharacterHeight();
     int ControllerHeight;
     GetTheme()->GetComponentSize(g2Theme_TextField, NULL, &ControllerHeight);
-    TextEdit->SetPos(5, ControllerHeight / 2 - CharHeight / 2);
+    TextEdit->SetPos(g2TextField_LabelEditOffset, ControllerHeight / 2 - CharHeight / 2);
     
     // Default to black
     TextEdit->SetColor(0.0f, 0.0f, 0.0f);
@@ -56,7 +56,7 @@ void g2TextField::SetWidth(int Width)
         this->Width = MinWidth;
     
     // Update the text field's width
-    TextEdit->SetWidth(this->Width);
+    TextEdit->SetWidth(this->Width - 2 * g2TextField_LabelEditOffset);
 }
 
 int g2TextField::GetWidth()

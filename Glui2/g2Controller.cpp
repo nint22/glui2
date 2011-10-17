@@ -32,9 +32,12 @@ g2Controller::g2Controller(g2Controller* Parent, g2Theme* MainTheme)
     // Nothing is active by default
     IsActive = false;
     
-    // Add self to parent
+    // Add self to parent and force window size update
     if(Parent != NULL)
+    {
         Parent->ChildObjects.push(this);
+        this->__WindowResizeEvent(Parent->WindowWidth, WindowHeight);
+    }
 }
 
 g2Controller::~g2Controller()
@@ -73,6 +76,21 @@ g2Controller::~g2Controller()
 void g2Controller::SetVisibility(bool Visible)
 {
     IsVisible = Visible;
+    
+    // Apply to all children
+    int QueueSize = (int)ChildObjects.size();
+    for(int i = 0; i < QueueSize; i++)
+    {
+        // Get child
+        g2Controller* Child = ChildObjects.front();
+        ChildObjects.pop();
+        
+        // Update
+        Child->SetVisibility(IsVisible);
+        
+        // Put back
+        ChildObjects.push(Child);
+    }
 }
 
 bool g2Controller::GetVisibility()
@@ -104,6 +122,21 @@ void g2Controller::GetColor(float* r, float* g, float* b, float* a)
 void g2Controller::SetDisabled(bool Disabled)
 {
     IsDisabled = Disabled;
+    
+    // Apply to all children
+    int QueueSize = (int)ChildObjects.size();
+    for(int i = 0; i < QueueSize; i++)
+    {
+        // Get child
+        g2Controller* Child = ChildObjects.front();
+        ChildObjects.pop();
+        
+        // Update
+        Child->SetDisabled(IsDisabled);
+        
+        // Put back
+        ChildObjects.push(Child);
+    }
 }
 
 bool g2Controller::GetDisabled()

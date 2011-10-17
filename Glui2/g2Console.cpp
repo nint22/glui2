@@ -11,7 +11,7 @@
 #include "g2Console.h"
 
 // The start message of the input buffer
-static const char* g2Console_InputBufferStart = "g2Console:>";
+static const char* g2Console_InputBufferStart = "g2Console:> ";
 
 // Only one console should be created at a time
 static int g2Console_RefCount = 0;
@@ -19,19 +19,25 @@ static int g2Console_RefCount = 0;
 g2Console::g2Console(g2Controller* Parent, g2Theme* MainTheme)
 : g2Controller(NULL, MainTheme)
 {
-    // We should only create one console at a time!
+    // We should only create one console at a time
     g2Assert(g2Console_RefCount <= 0, "Only one g2Console can be allocated at a time!");
     g2Console_RefCount++;
     
-    // Initialize nothing in the input buffer
-    strcpy(InputBuffer, g2Console_InputBufferStart);
-    CursorTime = 0.0f;
-    CursorState = true;
+    // Initialize the editable label
+    LabelEdit = new g2LabelEdit(this, MainTheme);
+    LabelEdit->SetCursorAlwaysVisible(true);
+    LabelEdit->SetShadow(false);
+    
+    // Initialize the label itself
+    Label = new g2Label(this, MainTheme);
+    Label->SetText(g2Console_InputBufferStart);
+    Label->SetColor(0.9f, 0.9f, 0.9f);
+    Label->SetShadow(false);
     
     // Default initial message (has to be on the heap, can't be on the stack)
-    char* FirstMessage = new char[128];
-    strcpy(FirstMessage, "Welcome to g2Console; write any commands and press [Enter] to execute");
-    ConsoleOut.push(FirstMessage);
+    char* Header = new char[128];
+    strcpy(Header, "Welcome to g2Console; write any commands and press [Enter] to execute");
+    ConsoleOut.push(Header);
 }
 
 g2Console::~g2Console()
@@ -86,31 +92,68 @@ void g2Console::printf(const char* format, ...)
     va_end(args);
 }
 
-char* g2Console::gets()
+void g2Console::gets(char* OutBuffer, int* Length)
 {
     if(ConsoleIn.empty())
-        return NULL;
+    {
+        *Length = 0;
+        OutBuffer[0] = '\0';
+    }
     else
     {
+        // Get from stack
         char* out = ConsoleIn.front();
         ConsoleIn.pop();
-        return out;
-    }
-}
-
-void g2Console::Update(float dT)
-{
-    // Update the timer and flip the state if needed
-    CursorTime += dT;
-    if(CursorTime > 0.5f)
-    {
-        CursorTime -= 0.5f;
-        CursorState = !CursorState;
+        
+        // Copy to given buffer
+        strcpy(OutBuffer, out);
+        *Length = (int)strlen(OutBuffer);
+        
+        // Release internal buffer
+        delete[] out;
     }
 }
 
 void g2Console::Render(int x, int y)
 {
+    /*** Check for new input ***/
+    
+    if(LabelEdit->UserReturned())
+    {
+        // Copy the buffer
+        char* input = new char[strlen(LabelEdit->GetText()) + 1];
+        strcpy(input, LabelEdit->GetText());
+        
+        // Clear out user input
+        LabelEdit->SetText();
+        
+        // Check for quit, close, exit
+        if(strcmp(input, "quit") == 0 || strcmp(input, "close") == 0 || strcmp(input, "exit") == 0)
+        {
+            this->SetVisibility(false);
+            delete[] input;
+            return;
+        }
+        
+        // Push into our input stack
+        ConsoleIn.push(input);
+        
+        // Create an extra buffer for drawing back to the user
+        char* output = new char[strlen(":> ") + strlen(input) + 1];
+        sprintf(output, "%s%s", ":>", input);
+        
+        // Push into our output stack
+        ConsoleOut.push(output);
+        
+        // Check if either of the queues are too big
+        while(ConsoleIn.size() > g2Console_MaxInputSize)
+            ConsoleIn.pop();
+        while(ConsoleOut.size() > g2Console_MaxInputSize)
+            ConsoleOut.pop();
+    }
+    
+    /*** Rendering ***/
+    
     // Set the current color and alpha
     glColor4f(0, 0, 0, 0.5f);
     
@@ -134,9 +177,8 @@ void g2Console::Render(int x, int y)
     glColor3f(1.0f, 1.0f, 1.0f);
     
     // Cursor position (Pixel offsets to look better)
-    int CharHeight;
-    GetTheme()->GetCharacterSize('X', &CharHeight);
-    CharHeight += 1;
+    int CharHeight = GetTheme()->GetCharacterHeight();
+    CharHeight += 2;
     
     // 2 Pixel offset from the left, start two rows up so
     // we can have it on the gray console background AND
@@ -188,23 +230,6 @@ void g2Console::Render(int x, int y)
         // Put back in
         ConsoleOut.push(Text);
     }
-    
-    // Reset cursor to bottom left
-    cX = 2;
-    cY = WindowHeight / 2 - CharHeight;
-    
-    // Print the buffer with the flickering cursor
-    char InputBuffer_Cursor[g2Console_MaxInputLength];
-    sprintf(InputBuffer_Cursor, "%s%c", InputBuffer, CursorState ? '_' : ' ' );
-    
-    // Draw the input buffer
-    for(size_t i = 0; i < strlen(InputBuffer_Cursor); i++)
-    {
-        DrawCharacter(cX, cY, InputBuffer_Cursor[i]);
-        int CharWidth;
-        GetTheme()->GetCharacterSize(InputBuffer_Cursor[i], &CharWidth);
-        cX += CharWidth + 2;
-    }
 }
 
 void g2Console::GetCollisionRect(int* Width, int* Height)
@@ -216,57 +241,16 @@ void g2Console::GetCollisionRect(int* Width, int* Height)
 
 void g2Console::WindowResizeEvent(int NewWidth, int NewHeight)
 {
+    // Save
     WindowWidth = NewWidth;
     WindowHeight = NewHeight;
-}
-
-void g2Console::KeyEvent(unsigned char key, bool IsSpecial)
-{
-    // TODO: COALESCE THIS CODE WITH NEW INPUT METHODS
-    IsSpecial = IsSpecial;
     
-    // Are we executing our command?
-    if(key == '\r')
-    {
-        // Move buffer to heap
-        char* buffer = new char[strlen(InputBuffer) - strlen(g2Console_InputBufferStart) + 1];
-        strcpy(buffer, InputBuffer + strlen(g2Console_InputBufferStart));
-        
-        // Are we closing the console?
-        if(strcmp(buffer, "close") == 0 || strcmp(buffer, "quit") == 0 || strcmp(buffer, "exit") == 0)
-        {
-            // No need to keep the buffer, just clear
-            delete[] buffer;
-            SetVisibility(false);
-        }
-        
-        // Save to the input buffer and push to the standard printf
-        ConsoleIn.push(buffer);
-        this->printf("%s", buffer);
-        
-        // Reset the input buffer
-        //strcpy(InputBuffer, "Derp");
-        
-    }
-    // Backspace (8 on windows, 127 on OSX)
-    else if(key == 8 || key == 127)
-    {
-        // Move back the buffer if there is space
-        if(strlen(InputBuffer) > strlen(g2Console_InputBufferStart))
-            InputBuffer[strlen(InputBuffer) - 1] = '\0';
-    }
-    // Standard keyboard input
-    else
-    {
-        // Accepts all characters (ignore if not enough memory)
-        int length = (int)strlen(InputBuffer);
-        if(length + 1 >= g2Console_MaxInputLength)
-            return;
-        
-        // Write to the old string-end and move the terminator a little further
-        InputBuffer[length + 0] = key;
-        InputBuffer[length + 1] = '\0';
-    }
+    // Update label positon
+    // 5 pixel buffer on each side
+    int HeightOffset = WindowHeight / 2 - GetTheme()->GetCharacterHeight() - 2;
+    LabelEdit->SetPos(5 + Label->GetWidth(), HeightOffset);
+    LabelEdit->SetWidth(WindowWidth - 10 - Label->GetWidth());
+    Label->SetPos(5, HeightOffset);
 }
 
 void g2Console::GetTemplateColor(int Index, float* r, float* g, float* b)

@@ -22,6 +22,9 @@
 #include "g2Controller.h"
 #include "g2LabelEdit.h"
 
+// Number of pixels to offset the editable text
+static const int g2TextField_LabelEditOffset = 5;
+
 class g2TextField : public g2Controller
 {
 public:

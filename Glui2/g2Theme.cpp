@@ -79,8 +79,8 @@ void g2Theme::Load(const char* ThemeFile)
     // Done working on the character map, release the data
     g2UnloadImageBuffer(CharacterImageBuffer);
     
-    // One special exception: The ' ' (space) character should be about 60% of the character width
-    CharacterWidths[4][0] = int(0.5f * float(CharacterWidth));
+    // One special exception: The ' ' (space) character should be about 25% of the max character width
+    CharacterWidths[2][0] = int(float(CharacterWidth) * 0.25f);
 }
 
 bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
