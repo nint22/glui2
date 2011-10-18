@@ -47,7 +47,7 @@ the root directory 3. Build and install by simply building the project
 1. You will need to have x11 / Xorg, g++, and make installed 2. cd into
 the root directory 3. Run "make" to build the library (sans examples) 4.
 Run "make install" to install the library (WARNING: This is a very
-simplified make file, the default install path is /user/local/lib" 5.
+simplified make file, the default install path is "/user/local/lib") 5.
 Done!
 
 == Usage / Examples ===
