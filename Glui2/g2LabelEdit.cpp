@@ -140,9 +140,9 @@ void g2LabelEdit::CopyBuffer()
         if(!OpenClipboard(GetForegroundWindow()))
             return;
         
-		// Empty current clipboard
-		EmptyClipboard();
-
+        // Empty current clipboard
+        EmptyClipboard();
+        
         // Allocate a system resource (a memory buffer for the text)
         HGLOBAL TextHandle = GlobalAlloc(GMEM_MOVEABLE, (strlen(TextBuffer) + 1) * sizeof(char));
         if(TextHandle == NULL)
@@ -203,7 +203,7 @@ void g2LabelEdit::PasteBuffer()
             // Actually copy the text
             LPTSTR StringLock = (LPTSTR)GlobalLock(ClipboardHandle); 
             if (StringLock != NULL) 
-            { 
+            {
                 // Copy as much as we can
                 char TempClipBuffer[g2LabelEdit_TextBufferLength];
                 strncpy(TempClipBuffer, StringLock, g2LabelEdit_TextBufferLength - strlen(TextBuffer) - strlen(StringLock) - 1);
