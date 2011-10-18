@@ -44,14 +44,14 @@ void g2LabelEdit::SetText(const char* Text)
         ViewIndex = 0;
     }
     // Only set if we can keep it in our internal buffer
-    else if(strlen(Text) < g2LabelEdit_TextBufferLength - 1)
+    else if((int)strlen(Text) < g2LabelEdit_TextBufferLength - 1)
     {
         // Copy and move the view over
         strcpy(TextBuffer, Text);
         ViewIndex = 0;
         
         // Clamp down
-        if(CursorIndex > strlen(TextBuffer))
+        if(CursorIndex > (int)strlen(TextBuffer))
             CursorIndex = (int)strlen(TextBuffer);
     }
 }
@@ -372,7 +372,7 @@ void g2LabelEdit::Render(int pX, int pY)
         for(size_t i = ViewIndex; i <= strlen(TextBuffer); i++)
         {
             // Draw and stop at the cursor index
-            if(i == CursorIndex)
+            if((int)i == CursorIndex)
             {
                 DrawCharacter(pX + OffsetX - 1, pY, '|');
                 break;

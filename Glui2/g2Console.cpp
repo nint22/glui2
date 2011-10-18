@@ -146,9 +146,9 @@ void g2Console::Render(int x, int y)
         ConsoleOut.push(output);
         
         // Check if either of the queues are too big
-        while(ConsoleIn.size() > g2Console_MaxInputSize)
+        while((int)ConsoleIn.size() > g2Console_MaxInputSize)
             ConsoleIn.pop();
-        while(ConsoleOut.size() > g2Console_MaxInputSize)
+        while((int)ConsoleOut.size() > g2Console_MaxInputSize)
             ConsoleOut.pop();
     }
     

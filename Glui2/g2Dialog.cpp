@@ -132,7 +132,12 @@ void g2Dialog::Show()
         strcpy(ResultBuffer, "");
         
         if(Type == g2DialogType_Notification)
+        {
             printf("Message: \"%s\"\n", MessageBuffer);
+            Selection = g2DialogResult_OK;
+            strcpy(ResultBuffer, "");
+            return;
+        }
         else if(Type == g2DialogType_Open)
             printf("\"%s\"> ", MessageBuffer);
         else if(Type == g2DialogType_Save)
