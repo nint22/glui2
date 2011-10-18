@@ -85,7 +85,7 @@ void g2ProgressBar::Render(int pX, int pY)
         ProgressState = g2Theme_ProgressBar_Disabled;
     
     // Render the background using a target width
-    DrawComponent(ProgressState, pX, pY, Width);
+    DrawComponentStretch(ProgressState, pX, pY, Width);
     
     // Get the height of both the background and foreground (for centering)
     int BackHeight, FrontHeight;
@@ -97,5 +97,5 @@ void g2ProgressBar::Render(int pX, int pY)
     int FillWidth = int(float(Width) * FillRatio);
     
     // Render the filler graphic
-    DrawComponent(g2Theme_ProgressBar_Fill, pX, pY + BackHeight / 2 - FrontHeight / 2, FillWidth);
+    DrawComponentStretch(g2Theme_ProgressBar_Fill, pX, pY + BackHeight / 2 - FrontHeight / 2, FillWidth);
 }

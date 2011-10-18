@@ -121,9 +121,9 @@ g2Dialog* Glui2::AddDialog(g2DialogType Type, const char* Message)
     return NewDialog;
 }
 
-g2Panel* Glui2::AddPanel(g2Anchor AnchorFlags)
+g2Panel* Glui2::AddPanel(g2Anchor AnchorFlags, const char* Title)
 {
-    g2Panel* NewPanel = new g2Panel(RootController, &MainTheme, AnchorFlags);
+    g2Panel* NewPanel = new g2Panel(RootController, &MainTheme, AnchorFlags, Title);
     NewPanel->__WindowResizeEvent(WindowWidth, WindowHeight);
     return NewPanel;
 }

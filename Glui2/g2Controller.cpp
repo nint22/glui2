@@ -419,7 +419,7 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, flo
     glDisable(GL_TEXTURE_2D);
 }
 
-void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int DestY, int Width)
+void g2Controller::DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width)
 {
     // Get the source texture coordinates of the element
     float SourceX, SourceY, SourceWidth, SourceHeight;
@@ -456,9 +456,89 @@ void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int Dest
     DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth - SourceWidthLeft, SourceY, SourceWidthLeft, SourceHeight);
 }
 
-void g2Controller::DrawComponent(const char* ElementName, int DestX, int DestY, int Width)
+void g2Controller::DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width)
 {
-    // ...
+    // Get the source texture coordinates of the element
+    float SourceX, SourceY, SourceWidth, SourceHeight;
+    int OutWidth, OutHeight;
+    GetTheme()->GetComponent(ElementName, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
+    
+    // Compute the three-component's placement and width
+    // Left, middle, right
+    int X1 = DestX;
+    int W1 = OutWidth / 3;
+    float SourceWidthLeft = SourceWidth / 3.0f;
+    if(Width < W1 * 2)
+    {
+        W1 = Width / 2;
+        SourceWidthLeft *= float(W1) / float(float(OutWidth) / 3.0f);
+    }
+    
+    int X2 = X1 + W1;
+    int W2 = fmax(0, Width - 2 * W1);
+    float SourceWidthMiddle = SourceWidth / 100.0f;
+    
+    int X3 = X2 + W2;
+    int W3 = Width - W1 - W2;
+    float SourceWidthRight = SourceWidth / 3.0f;
+    if(Width < W3 * 2)
+    {
+        W3 = Width / 2;
+        SourceWidthRight *= float(W3) / float(float(OutWidth) / 3.0f);
+    }
+    
+    // Draw the left, middle, right
+    DrawComponent(X1, DestY, W1, OutHeight, SourceX, SourceY, SourceWidthLeft, SourceHeight);
+    DrawComponent(X2, DestY, W2, OutHeight, SourceX + SourceWidthLeft, SourceY, SourceWidthMiddle, SourceHeight);
+    DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth - SourceWidthLeft, SourceY, SourceWidthLeft, SourceHeight);
+}
+
+void g2Controller::DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width, int StartHeight, int EndHeight)
+{
+    // Save as a reulgar draw-stretch, but only render the top to bottom
+    
+    // Get the source texture coordinates of the element
+    float SourceX, SourceY, SourceWidth, SourceHeight;
+    int OutWidth, OutHeight;
+    GetTheme()->GetComponent(ElementType, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
+    
+    // Compute the three-component's placement and width
+    // Left, middle, right
+    int X1 = DestX;
+    int W1 = OutWidth / 3;
+    float SourceWidthLeft = SourceWidth / 3.0f;
+    if(Width < W1 * 2)
+    {
+        W1 = Width / 2;
+        SourceWidthLeft *= float(W1) / float(float(OutWidth) / 3.0f);
+    }
+    
+    int X2 = X1 + W1;
+    int W2 = fmax(0, Width - 2 * W1);
+    float SourceWidthMiddle = SourceWidth / 100.0f;
+    
+    int X3 = X2 + W2;
+    int W3 = Width - W1 - W2;
+    float SourceWidthRight = SourceWidth / 3.0f;
+    if(Width < W3 * 2)
+    {
+        W3 = Width / 2;
+        SourceWidthRight *= float(W3) / float(float(OutWidth) / 3.0f);
+    }
+    
+    // Get the source texture size for help in offset computation
+    int TextureHeight;
+    GetTheme()->GetTextureSize(NULL, &TextureHeight);
+    
+    // Compute the starting and ending texture sources
+    SourceY += float(StartHeight) / float(TextureHeight);
+    SourceHeight *= float(EndHeight - StartHeight + 1) / float(OutHeight);
+    OutHeight = EndHeight - StartHeight + 1;
+    
+    // Draw the left, middle, right
+    DrawComponent(X1, DestY, W1, OutHeight, SourceX, SourceY, SourceWidthLeft, SourceHeight);
+    DrawComponent(X2, DestY, W2, OutHeight, SourceX + SourceWidthLeft, SourceY, SourceWidthMiddle, SourceHeight);
+    DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth - SourceWidthLeft, SourceY, SourceWidthLeft, SourceHeight);
 }
 
 void g2Controller::DrawCharacter(int DestX, int DestY, char Character)

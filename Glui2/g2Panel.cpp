@@ -10,118 +10,230 @@
 
 #include "g2Panel.h"
 
-g2Panel::g2Panel(g2Controller* Parent, g2Theme* MainTheme, g2Anchor Anchors)
+g2Panel::g2Panel(g2Controller* Parent, g2Theme* MainTheme, g2Anchor Anchors, const char* Title)
 : g2Controller(Parent, MainTheme)
 {
     // Save the given anchor points
     this->Anchors = Anchors;
-    Width = Height = 128;
+    Width = Height = 256;
     
-    // Default ratio to 20%
-    Ratio = 0.2f;
+    Label = new g2Label(this, MainTheme);
+    Label->SetColor(0, 0, 0);
+    SetTitle(Title);
 }
 
-void g2Panel::AddController(g2Controller* Child)
-{
-    // Todo...
-}
-
-void g2Panel::SetAnchors(g2Anchor Anchors)
+void g2Panel::SetAlignment(g2Anchor Anchors)
 {
     this->Anchors = Anchors;
+    WindowResizeEvent(WindowWidth, WindowHeight);
 }
 
-void g2Panel::SetSize(float Ratio)
+g2Anchor g2Panel::GetAlignment()
 {
-    // Min/max bounds to [0.0, 1.0]
-    Ratio = fmax(fmin(Ratio, 1.0f), 0.0f);
+    return Anchors;
+}
+
+void g2Panel::SetTitle(const char* Title)
+{
+    // Set title
+    Label->SetText(Title);
     
-    // Set the ratio of the overlap
-    this->Ratio = Ratio;
+    // Center the title text
+    int x, y;
+    GetTheme()->GetComponentSize(g2Theme_Panel, NULL, &y);
+    x = (Width / 2) - Label->GetWidth() / 2;
+    y = (y / 3) / 2 - GetTheme()->GetCharacterHeight() / 2;
+    Label->SetPos(x, y);
+}
+
+g2Label* g2Panel::GetTitle()
+{
+    return Label;
 }
 
 void g2Panel::SetSize(int NewWidth, int NewHeight)
 {
-    // Default to no anchors when explicitly setting the width / height
-    Anchors = g2Anchor_None;
-    Width = NewWidth;
-    Height = NewHeight;
+    // If we are keeping taking the height
+    if((Anchors & g2Anchor_None) == g2Anchor_None)
+    {
+        Height = NewHeight;
+        Width = NewWidth;
+    }
+    if((Anchors & g2Anchor_Top) == g2Anchor_Top)
+        Height = NewHeight;
+    if((Anchors & g2Anchor_Bottom) == g2Anchor_Top)
+        Height = NewHeight;
+    if((Anchors & g2Anchor_Left) == g2Anchor_Top)
+        Height = NewWidth;
+    if((Anchors & g2Anchor_Right) == g2Anchor_Top)
+        Height = NewWidth;
+    
+    // Center the title text
+    SetTitle(Label->GetText());
+}
+
+g2Button* g2Panel::AddButton(int x, int y, const char* Label, __g2CallBack(callback))
+{
+    g2Button* NewButton = new g2Button(this, GetTheme());
+    NewButton->SetPos(x, y);
+    NewButton->SetText(Label);
+    NewButton->SetCallback(callback);
+    return NewButton;
+}
+
+g2Label* g2Panel::AddLabel(int x, int y, const char* Text)
+{
+    g2Label* NewLabel = new g2Label(this, GetTheme());
+    NewLabel->SetPos(x, y);
+    NewLabel->SetText(Text);
+    return NewLabel;
+}
+
+g2CheckBox* g2Panel::AddCheckBox(int x, int y, const char* Text, __g2CallBack(callback), bool* LiveCheckState)
+{
+    g2CheckBox* NewCheckBox = new g2CheckBox(this, GetTheme());
+    NewCheckBox->SetPos(x, y);
+    NewCheckBox->GetLabel()->SetText(Text);
+    NewCheckBox->SetCallback(callback);
+    NewCheckBox->SetLiveVariable(LiveCheckState);
+    return NewCheckBox;
+}
+
+g2TextField* g2Panel::AddTextField(int x, int y, const char* Text)
+{
+    g2TextField* NewTextField = new g2TextField(this, GetTheme());
+    NewTextField->SetPos(x, y);
+    NewTextField->SetText(Text);
+    return NewTextField;
+}
+
+g2RadioGroup* g2Panel::AddRadioGroup(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback), int* LiveIndex)
+{
+    g2RadioGroup* NewRadioGroup = new g2RadioGroup(this, GetTheme());
+    NewRadioGroup->SetOptions(Options, OptionCount);
+    NewRadioGroup->SetPos(x, y);
+    NewRadioGroup->SetCallback(callback);
+    NewRadioGroup->SetLiveVariable(LiveIndex);
+    return NewRadioGroup;
+}
+
+g2DropDown* g2Panel::AddDropDown(int x, int y, const char** Options, int OptionCount, __g2CallBack(callback), int* LiveIndex)
+{
+    g2DropDown* NewDropDown = new g2DropDown(this, GetTheme());
+    NewDropDown->SetPos(x, y);
+    NewDropDown->SetOptions(Options, OptionCount);
+    NewDropDown->SetCallback(callback);
+    NewDropDown->SetLiveVariable(LiveIndex);
+    return NewDropDown;
+}
+
+g2Dialog* g2Panel::AddDialog(g2DialogType Type, const char* Message)
+{
+    g2Dialog* NewDialog = new g2Dialog(Type, Message);
+    return NewDialog;
+}
+
+g2Slider* g2Panel::AddSlider(int x, int y, __g2CallBack(callback), float* LiveValue)
+{
+    g2Slider* NewSlider = new g2Slider(this, GetTheme());
+    NewSlider->SetPos(x, y);
+    NewSlider->SetCallback(callback);
+    NewSlider->SetLiveVariable(LiveValue);
+    return NewSlider;
+}
+
+g2ProgressBar* g2Panel::AddProgressBar(int x, int y)
+{
+    g2ProgressBar* NewProgress = new g2ProgressBar(this, GetTheme());
+    NewProgress->SetPos(x, y);
+    return NewProgress;
+}
+
+g2Spinner* g2Panel::AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(callback), float* LiveValue)
+{
+    g2Spinner* NewSpinner = new g2Spinner(this, GetTheme(), Type);
+    NewSpinner->SetPos(x, y);
+    NewSpinner->SetCallback(callback);
+    NewSpinner->SetLiveVariable(LiveValue);
+    return NewSpinner;
 }
 
 void g2Panel::Render(int pX, int pY)
 {
-    // Get the size of the original tile
-    int tWidth, tHeight;
-    GetTheme()->GetComponentSize(g2Theme_Panel, &tWidth, &tHeight);
-    /*
-    // Draw all major tiles we can in a grid
-    for(int y = 0; y < int(float(Height) / float(tHeight)); y++)
-    for(int x = 0; x < int(float(Width) / float(tWidth)); x++)
-        DrawComponent(pX + x * tWidth, pY + y * tHeight, g2Theme_Panel);
+    // Get the size of the source image
+    int ImageWidth, ImageHeight;
+    GetTheme()->GetComponentSize(g2Theme_Panel, &ImageWidth, &ImageHeight);
     
-    // For all the partial right-components
-    if(Width % tWidth != 0)
-    {
-        float overlap = float(tWidth) / float(Width - tWidth * (Width % tWidth));
-        for(int y = 0; y < int(float(Height) / float(tHeight)); y++)
-            DrawComponent(pX, pY + y * tHeight, int(float(tWidth) * overlap), tHeight, g2Theme_Panel);
-    }
+    // Precompute the offsets and subset sizes
+    int Y1 = pY;
+    int H1 = ImageHeight / 3;
     
-    // For all the partial bottom-components
-    if(Height % tHeight != 0)
-    {
-        float overlap = float(tHeight) / float(Height - tHeight * (Height % tHeight));
-        for(int x = 0; x < int(float(Width) / float(tWidth)); x++)
-            DrawComponent(pX + x * tWidth, pY, tWidth, int(float(tHeight) * overlap), g2Theme_Panel);
-    }
+    int Y3 = pY + Height - H1;
+    int H3 = H1;
     
-    // For the bottom right component
-    if((Width % tWidth != 0) && (Height % tHeight != 0))
+    int Y2 = pY + H1;
+    int H2 = H1;
+    
+    /*** Draw ***/
+    
+    // Draw the top
+    DrawComponentStretch(g2Theme_Panel, pX, Y1, Width, 0, ImageHeight / 3);
+    
+    // Draw the bottom
+    DrawComponentStretch(g2Theme_Panel, pX, Y3, Width, 2 * (ImageHeight / 3), ImageHeight);
+    
+    // Fill each row as best as possible
+    for(int i = 0; i <= (Height - H1 - H3) / H2; i++)
     {
-        // Calculate the width and height overlaps
-        float wOverlap = float(tWidth) / float(Width - tWidth * (Width % tWidth));
-        float hOverlap = float(tHeight) / float(Height - tHeight * (Height % tHeight));
-        
-        // Draw the bottom right corner
-        DrawComponent(pX, pY, int(float(tWidth) * wOverlap), int(float(tHeight) * hOverlap), g2Theme_Panel);
+        if(i < (Height - H1 - H3) / H2)
+            DrawComponentStretch(g2Theme_Panel, pX, Y2 + i * H2, Width, ImageHeight / 3 + 1, 2 * (ImageHeight / 3) + 1);
+        else
+            DrawComponentStretch(g2Theme_Panel, pX, Y2 + i * H2, Width, ImageHeight / 3 + 1, ImageHeight / 3 + Height % H2);
     }
-     */
 }
 
 void g2Panel::GetCollisionRect(int* Width, int* Height)
 {
     // Post width and height
-    GetTheme()->GetComponentSize(g2Theme_Button, Width, Height);
+    *Width = this->Width;
+    *Height = this->Height;
 }
 
 void g2Panel::WindowResizeEvent(int NewWidth, int NewHeight)
 {
+    // Save the given width x height
+    WindowWidth = NewWidth;
+    WindowHeight = NewHeight;
+    
     // If on top, copy width, keep 20% visible
     if((Anchors & g2Anchor_Top) == g2Anchor_Top)
     {
         Width = NewWidth;
-        Height = int(Ratio * float(NewHeight));
+        Height = NewHeight / 5;
         SetPos(0, 0);
     }
     // If on bottom, copy width, keep 20% visible from bottom
-    else if((Anchors & g2Anchor_Bottom) == g2Anchor_Bottom)
+    if((Anchors & g2Anchor_Bottom) == g2Anchor_Bottom)
     {
         Width = NewWidth;
-        Height = int(Ratio * float(NewHeight));
+        Height = NewHeight / 5;
         SetPos(0, NewHeight - Height);
     }
     // If we are on the left, copy height, keep 20% visible from left
-    else if((Anchors & g2Anchor_Left) == g2Anchor_Left)
+    if((Anchors & g2Anchor_Left) == g2Anchor_Left)
     {
-        Width = int(Ratio * float(NewWidth));
         Height = NewHeight;
+        Width = NewWidth / 5;
         SetPos(0, 0);
     }
     // If we are on the right, copy height, keep 20% visible from right
-    else if((Anchors & g2Anchor_Left) == g2Anchor_Left)
+    if((Anchors & g2Anchor_Right) == g2Anchor_Right)
     {
-        Width = int(Ratio * float(NewWidth));
         Height = NewHeight;
+        Width = NewWidth / 5;
         SetPos(NewWidth - Width, 0);
-    }    
+    }
+    
+    // Center the title text
+    SetTitle(Label->GetText());
 }

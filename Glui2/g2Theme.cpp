@@ -216,9 +216,25 @@ int g2Theme::GetCharacterHeight()
     return CharacterMapHeight / 16;
 }
 
+void g2Theme::GetTextureSize(int* Width, int* Height)
+{
+    if(Width != NULL)
+        *Width = TextureWidth;
+    if(Height != NULL)
+        *Height = TextureHeight;
+}
+
 GLuint g2Theme::GetTextureID()
 {
     return TextureID;
+}
+
+void g2Theme::GetCharacterMapSize(int* Width, int* Height)
+{
+    if(Width != NULL)
+        *Width = CharacterMapWidth;
+    if(Height != NULL)
+        *Height = CharacterMapHeight;
 }
 
 GLuint g2Theme::GetCharacterMapID()

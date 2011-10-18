@@ -154,10 +154,14 @@ protected:
     __g2EXPORT void DrawComponent(int DestX, int DestY, int DestW, int DestH, float SrcX, float SrcY, float SrcW, float SrcH, int TextID = -1);
     
     // Draw a given source location into a spcific width, like a three-part button
-    __g2EXPORT void DrawComponent(g2ThemeElement ElementType, int DestX, int DestY, int Width);
+    __g2EXPORT void DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width);
     
     // Draw a given source location into a spcific width, like a three-part button
-    __g2EXPORT void DrawComponent(const char* ElementName, int DestX, int DestY, int Width);
+    __g2EXPORT void DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width);
+    
+    // Draw a given source location into a specific width (stretched), and a limited height (cut)
+    // The start and end height are y-pixel values and are defined as 0 at the top and [Element height - 1] bottom
+    __g2EXPORT void DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width, int StartHeight, int EndHeight);
     
     // Draw a character with 1-1 scale
     __g2EXPORT void DrawCharacter(int DestX, int DestY, char Character);

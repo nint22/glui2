@@ -201,8 +201,14 @@ public:
     // Get a all character's height
     __g2EXPORT int GetCharacterHeight();
     
-    // Get the them texture ID
+    // Get the texture map's size in pixels
+    __g2EXPORT void GetTextureSize(int* Width = NULL, int* Height = NULL);
+    
+    // Get the theme texture ID
     __g2EXPORT GLuint GetTextureID();
+    
+    // Get the character map's size in pixels
+    __g2EXPORT void GetCharacterMapSize(int* Width = NULL, int* Height = NULL);
     
     // Get the character maps texture ID
     __g2EXPORT GLuint GetCharacterMapID();

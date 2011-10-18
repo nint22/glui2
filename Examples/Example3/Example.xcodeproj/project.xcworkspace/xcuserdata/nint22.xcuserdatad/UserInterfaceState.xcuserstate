@@ -6779,9 +6779,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>340580996.10689902</real>
-		<string>{0, 1719}</string>
-		<string>{1168, 0}</string>
+		<real>340581223.64542401</real>
+		<string>{0, 1405}</string>
+		<string>{629, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -9307,9 +9307,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>340581192.81938601</real>
+		<real>340581223.66887099</real>
 		<string>{0, 1405}</string>
-		<string>{1168, 0}</string>
+		<string>{629, 0}</string>
 		<string>g2Console::g2Console(g2Controller* Parent, g2Theme* MainTheme)</string>
 		<string>g2Console.cpp</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
@@ -10651,7 +10651,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>841</integer>
+					<integer>840</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>

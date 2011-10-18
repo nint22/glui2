@@ -93,7 +93,7 @@ public:
     
     __g2EXPORT g2Dialog* AddDialog(g2DialogType Type, const char* Message = NULL);
     
-    __g2EXPORT g2Panel* AddPanel(g2Anchor AnchorFlags);
+    __g2EXPORT g2Panel* AddPanel(g2Anchor AnchorFlags, const char* Title = NULL);
     
     __g2EXPORT g2Slider* AddSlider(int x, int y, __g2CallBack(callback) = 0, float* LiveValue = NULL);
     

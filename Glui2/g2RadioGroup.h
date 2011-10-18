@@ -31,6 +31,9 @@ public:
     // Set the options via an array of strings
     __g2EXPORT void SetOptions(const char** OptionLabels, int OptionCount);
     
+    // Set the current selection; bound check to the current limits
+    __g2EXPORT void SetSelectionIndex(int Index);
+    
     // Get the current selection; defaults to 0
     __g2EXPORT int GetSelectionIndex();
     

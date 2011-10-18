@@ -74,7 +74,7 @@ void g2TextField::Render(int pX, int pY)
         TextFieldState = g2Theme_TextField_Disabled;
     
     // Render the background
-    DrawComponent(TextFieldState, pX, pY, Width);
+    DrawComponentStretch(TextFieldState, pX, pY, Width);
     
     // The editable text field will draw itself
 }

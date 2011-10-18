@@ -112,7 +112,7 @@ void g2Button::Render(int pX, int pY)
     GetTheme()->GetComponentSize(g2Theme_Button, &MinWidth, &ButtonHeight);
     
     // Render using a target width
-    DrawComponent(ButtonState, pX, pY, Width);
+    DrawComponentStretch(ButtonState, pX, pY, Width);
     
     // Draw the icon if we have one
     if(strlen(UsingIcon) > 0)

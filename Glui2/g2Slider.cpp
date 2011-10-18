@@ -82,7 +82,7 @@ void g2Slider::Render(int pX, int pY)
         TotalHeight = ControllerHeight;
     
     // Render the centered background
-    DrawComponent(g2Theme_Slider, pX, pY + TotalHeight / 2 - ControllerHeight / 2, Width);
+    DrawComponentStretch(g2Theme_Slider, pX, pY + TotalHeight / 2 - ControllerHeight / 2, Width);
     
     // Draw slider button
     g2ThemeElement ButtonStyle = g2Theme_SliderButton;

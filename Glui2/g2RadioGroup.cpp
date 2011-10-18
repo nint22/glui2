@@ -60,6 +60,16 @@ void g2RadioGroup::SetOptions(const char** OptionLabels, int OptionCount)
     }
 }
 
+void g2RadioGroup::SetSelectionIndex(int Index)
+{
+    if(Index < 0)
+        ActiveIndex = 0;
+    else if(Index > OptionCount)
+        ActiveIndex = OptionCount - 1;
+    else
+        ActiveIndex = Index;
+}
+
 int g2RadioGroup::GetSelectionIndex()
 {
     return ActiveIndex;
