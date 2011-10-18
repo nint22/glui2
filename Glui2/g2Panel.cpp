@@ -38,12 +38,8 @@ void g2Panel::SetTitle(const char* Title)
     // Set title
     Label->SetText(Title);
     
-    // Center the title text
-    int x, y;
-    GetTheme()->GetComponentSize(g2Theme_Panel, NULL, &y);
-    x = (Width / 2) - Label->GetWidth() / 2;
-    y = (y / 3) / 2 - GetTheme()->GetCharacterHeight() / 2;
-    Label->SetPos(x, y);
+	// Center the text
+	CenterTitle();
 }
 
 g2Label* g2Panel::GetTitle()
@@ -69,7 +65,7 @@ void g2Panel::SetSize(int NewWidth, int NewHeight)
         Height = NewWidth;
     
     // Center the title text
-    SetTitle(Label->GetText());
+    CenterTitle();
 }
 
 g2Button* g2Panel::AddButton(int x, int y, const char* Label, __g2CallBack(callback))
@@ -235,5 +231,15 @@ void g2Panel::WindowResizeEvent(int NewWidth, int NewHeight)
     }
     
     // Center the title text
-    SetTitle(Label->GetText());
+    CenterTitle();
+}
+
+void g2Panel::CenterTitle()
+{
+    // Center the title text
+    int x, y;
+    GetTheme()->GetComponentSize(g2Theme_Panel, NULL, &y);
+    x = (Width / 2) - Label->GetWidth() / 2;
+    y = (y / 3) / 2 - GetTheme()->GetCharacterHeight() / 2;
+    Label->SetPos(x, y);
 }

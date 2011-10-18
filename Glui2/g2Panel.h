@@ -93,6 +93,9 @@ protected:
     
 private:
     
+	// Center the title
+	void CenterTitle();
+
     // Alognment flag for placement
     g2Anchor Anchors;
     

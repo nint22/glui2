@@ -66,7 +66,7 @@ void g2LabelEdit::SetCursorPos(int Index)
     // Bounds check
     if(Index < 0)
         CursorIndex = 0;
-    else if(Index > strlen(TextBuffer))
+    else if(Index > (int)strlen(TextBuffer))
         CursorIndex = (int)strlen(TextBuffer);
     else
         CursorIndex = Index;
@@ -137,29 +137,28 @@ void g2LabelEdit::CopyBuffer()
     #ifdef _WIN32
     
         // Attempt to open clipboard
-        if(!OpenClipboard())
+        if(!OpenClipboard(GetForegroundWindow()))
             return;
         
+		// Empty current clipboard
+		EmptyClipboard();
+
         // Allocate a system resource (a memory buffer for the text)
         HGLOBAL TextHandle = GlobalAlloc(GMEM_MOVEABLE, (strlen(TextBuffer) + 1) * sizeof(char));
         if(TextHandle == NULL)
             return;
         
-        LPTSTR StringLock = GlobalLock(TextHandle);
+        LPTSTR StringLock = (LPTSTR)GlobalLock(TextHandle);
         if(StringLock == NULL)
             return;
         strcpy(StringLock, TextBuffer);
         GlobalUnlock(TextHandle);
         
-        // Open clipboard to write to
-        if(OpenClipboard())
-        {
-            // Copy to the clipboard
-            SetClipboardData(CF_TEXT, StringLock);
-            
-            // Close clipboard
-            CloseClipboard();
-        }
+        // Copy to the clipboard
+        SetClipboardData(CF_TEXT, TextHandle);
+        
+        // Close clipboard
+        CloseClipboard();
     
     // OSX implementation
     #elif __APPLE__
@@ -194,7 +193,7 @@ void g2LabelEdit::PasteBuffer()
     #ifdef _WIN32
     
         // Attempt to open clipboard
-        if(!OpenClipboard())
+        if(!OpenClipboard(GetForegroundWindow()))
             return;
         
         // Get the windows clipboard text buffer
@@ -202,7 +201,7 @@ void g2LabelEdit::PasteBuffer()
         if(ClipboardHandle != NULL)
         {
             // Actually copy the text
-            LPTSTR StringLock = GlobalLock(ClipboardHandle); 
+            LPTSTR StringLock = (LPTSTR)GlobalLock(ClipboardHandle); 
             if (StringLock != NULL) 
             { 
                 // Copy as much as we can
