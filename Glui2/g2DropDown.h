@@ -50,6 +50,13 @@ public:
     // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(int* LiveIndex = NULL);
     
+    // Explicitly set the title; no longer will the active selection be rendered as
+    // the selected text. Pass an empty or NULL string to reset to the default behavior.
+    __g2EXPORT void SetTitle(const char* Title = NULL);
+    
+    // Returns the explicitly set the title; not the active selection's label.
+    __g2EXPORT const char* const GetTitle();
+    
 protected:
     
     // Render
@@ -70,6 +77,9 @@ private:
     
     // Button label array, one for each option
     g2Button** Buttons;
+    
+    // If true, never change the main button's text; we are keeping to to a static entry
+    bool StaticTitle;
     
     // Active selection text field
     g2Button* ButtonField;

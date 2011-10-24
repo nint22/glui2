@@ -32,6 +32,9 @@ g2DropDown::g2DropDown(g2Controller* Parent, g2Theme* MainTheme)
     
     // Default to no live value
     LiveIndex = NULL;
+    
+    // Default static text to none
+    StaticTitle = 0;
 }
 
 void g2DropDown::SetWidth(int Width)
@@ -104,7 +107,8 @@ void g2DropDown::SetSelectionIndex(int Index)
         ActiveIndex = Index;
     
     // Update top-level string / button
-    ButtonField->SetText(Buttons[ActiveIndex]->GetLabel()->GetText());
+    if(!StaticTitle)
+        ButtonField->SetText(Buttons[ActiveIndex]->GetLabel()->GetText());
 }
 
 int g2DropDown::GetSelectionIndex()
@@ -115,6 +119,27 @@ int g2DropDown::GetSelectionIndex()
 void g2DropDown::SetLiveVariable(int* LiveIndex)
 {
     this->LiveIndex = LiveIndex;
+}
+
+void g2DropDown::SetTitle(const char* Title)
+{
+    // Are we removing a title?
+    if(Title == NULL || strlen(Title) <= 0)
+    {
+        StaticTitle = false;
+        ButtonField->SetText(Buttons[GetSelectionIndex()]->GetLabel()->GetText());
+    }
+    // Else, set and save the title text
+    else
+    {
+        StaticTitle = true;
+        ButtonField->SetText(Title);
+    }
+}
+
+const char* const g2DropDown::GetTitle()
+{
+    return ButtonField->GetLabel()->GetText();
 }
 
 void g2DropDown::Render(int pX, int pY)

@@ -55,14 +55,7 @@ float g2Slider::GetProgress()
 
 void g2Slider::SetWidth(int Width)
 {
-    // What is the button's minimum size?
-    int MinWidth = 0;
-    GetTheme()->GetComponentSize(g2Theme_Slider, &MinWidth);
-    
-    if(Width > MinWidth)
-        this->Width = Width;
-    else
-        this->Width = MinWidth;
+    this->Width = Width;
 }
 
 int g2Slider::GetWidth()
@@ -130,14 +123,14 @@ void g2Slider::Render(int pX, int pY)
         
         // Render the background image
         // Note that we are converting our width to height
-        DrawComponentRect(g2Theme_VSlider, pX + TotalWidth / 2 - ControllerWidth / 2, pY, SliderWidth, Width);
+        DrawComponentRect(g2Theme_VSlider, pX + TotalWidth / 2 - ControllerWidth / 2, pY, ControllerWidth, Width);
         
         // Computer offsets
         float ProgressRatio = Progress / fabs(MaxBound - MinBound);
         int OffsetY = g2Slider_SidePixelBuffer + int(float(Width - 2 * g2Slider_SidePixelBuffer) * ProgressRatio) - SliderHeight / 2;
         
         // Draw the slider button itself
-        DrawComponent(ButtonStyle, pX + TotalWidth / 2 - SliderHeight / 2, pY + OffsetY);
+        DrawComponent(ButtonStyle, pX + TotalWidth / 2 - SliderWidth / 2, pY + OffsetY);
     }
 }
 
@@ -152,7 +145,7 @@ void g2Slider::GetCollisionRect(int* Width, int* Height)
     // Else, is vertical
     else
     {
-        GetTheme()->GetComponentSize(g2Theme_SliderButton, Width);
+        GetTheme()->GetComponentSize(g2Theme_VSliderButton, Width);
         *Height = GetWidth();
     }
 }

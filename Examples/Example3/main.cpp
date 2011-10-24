@@ -310,8 +310,8 @@ void InitGlui2()
     SliderValue->SetColor(0, 0, 0);
     
     // Same, but make vertical
-    SampleSlider = GluiHandle->AddSlider(370, 445);
-    SampleSlider->SetWidth(100);
+    SampleSlider = GluiHandle->AddSlider(370, 455);
+    SampleSlider->SetWidth(80);
     SampleSlider->SetVertical(true);
     
     /*** g2Panel ***/
