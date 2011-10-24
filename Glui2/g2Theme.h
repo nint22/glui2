@@ -70,7 +70,7 @@
 #include "g2Images.h"
 
 // Total number of element types
-static const unsigned int g2ThemeElement_Count = 27;
+static const unsigned int g2ThemeElement_Count = 31;
 
 // Enumerate all theme options
 enum g2ThemeElement
@@ -119,6 +119,12 @@ enum g2ThemeElement
     g2Theme_SliderButton,
     g2Theme_SliderButton_Pressed,
     g2Theme_SliderButton_Disabled,
+    
+    // Slider (vertical)
+    g2Theme_VSlider,
+    g2Theme_VSliderButton,
+    g2Theme_VSliderButton_Pressed,
+    g2Theme_VSliderButton_Disabled,
 };
 
 // Look-up table between the theme enumeration and
@@ -152,6 +158,10 @@ static const char g2ThemeElement_Names[g2ThemeElement_Count][g2Config_KeySize] =
     "SliderButton",
     "SliderButton_Pressed",
     "SliderButton_Disabled",
+    "VSlider",
+    "VSliderButton",
+    "VSliderButton_Pressed",
+    "VSliderButton_Disabled",
 };
 
 // Define an anchor style, or how controller are added
@@ -176,6 +186,10 @@ public:
     
     // Attempts to load a configuration file
     __g2EXPORT void Load(const char* ThemeFile);
+    
+    // Return the theme name based on the element type; may return null of the index is not
+    // in the element-name set
+    __g2EXPORT const char* const GetElementName(g2ThemeElement ElementType);
     
     // Access a given UI component's bitmap data based on an enumeration
     // which in turn looks it up in the "g2ThemeElement_Names" string-table

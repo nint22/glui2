@@ -163,6 +163,16 @@ protected:
     // The start and end height are y-pixel values and are defined as 0 at the top and [Element height - 1] bottom
     __g2EXPORT void DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width, int StartHeight, int EndHeight);
     
+    // Draw a given source location into a specific width (stretched), and a limited height (cut)
+    // The start and end height are y-pixel values and are defined as 0 at the top and [Element height - 1] bottom
+    __g2EXPORT void DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width, int StartHeight, int EndHeight);
+    
+    // Draw the object into a square-like output
+    __g2EXPORT void DrawComponentRect(g2ThemeElement ElementType, int DestX, int DestY, int Width, int Height);
+    
+    // Draw the object into a square-like output
+    __g2EXPORT void DrawComponentRect(const char* ElementName, int DestX, int DestY, int Width, int Height);
+    
     // Draw a character with 1-1 scale
     __g2EXPORT void DrawCharacter(int DestX, int DestY, char Character);
     

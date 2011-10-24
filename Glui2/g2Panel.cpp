@@ -156,36 +156,7 @@ g2Spinner* g2Panel::AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(ca
 
 void g2Panel::Render(int pX, int pY)
 {
-    // Get the size of the source image
-    int ImageWidth, ImageHeight;
-    GetTheme()->GetComponentSize(g2Theme_Panel, &ImageWidth, &ImageHeight);
-    
-    // Precompute the offsets and subset sizes
-    int Y1 = pY;
-    int H1 = ImageHeight / 3;
-    
-    int Y3 = pY + Height - H1;
-    int H3 = H1;
-    
-    int Y2 = pY + H1;
-    int H2 = H1;
-    
-    /*** Draw ***/
-    
-    // Draw the top
-    DrawComponentStretch(g2Theme_Panel, pX, Y1, Width, 0, ImageHeight / 3);
-    
-    // Draw the bottom
-    DrawComponentStretch(g2Theme_Panel, pX, Y3, Width, 2 * (ImageHeight / 3), ImageHeight);
-    
-    // Fill each row as best as possible
-    for(int i = 0; i <= (Height - H1 - H3) / H2; i++)
-    {
-        if(i < (Height - H1 - H3) / H2)
-            DrawComponentStretch(g2Theme_Panel, pX, Y2 + i * H2, Width, ImageHeight / 3 + 1, 2 * (ImageHeight / 3) + 1);
-        else
-            DrawComponentStretch(g2Theme_Panel, pX, Y2 + i * H2, Width, ImageHeight / 3 + 1, ImageHeight / 3 + Height % H2);
-    }
+    DrawComponentRect(g2Theme_Panel, pX, pY, Width, Height);
 }
 
 void g2Panel::GetCollisionRect(int* Width, int* Height)

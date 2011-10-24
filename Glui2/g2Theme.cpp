@@ -83,14 +83,20 @@ void g2Theme::Load(const char* ThemeFile)
     CharacterWidths[2][0] = int(float(CharacterWidth) * 0.25f);
 }
 
-bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
+const char* const g2Theme::GetElementName(g2ThemeElement ElementType)
 {
     // Does the component exist in the dictionary?
-    if(Element < 0 || Element >= g2ThemeElement_Count)
-        return false;
+    if(ElementType < 0 || ElementType >= g2ThemeElement_Count)
+        return NULL;
     
+    // Else, just return the string / name
+    return g2ThemeElement_Names[(int)ElementType];
+}
+
+bool g2Theme::GetComponent(g2ThemeElement Element, float* tSrcX, float* tSrcY, float* tSrcWidth, float* tSrcHeight, int* width, int* height, GLuint* textID)
+{
     // Does the config file have this content?
-    const char* ElementName = g2ThemeElement_Names[(int)Element];
+    const char* ElementName = GetElementName(Element);
     if(!GetComponent(ElementName, tSrcX, tSrcY, tSrcWidth, tSrcHeight, width, height, textID))
         return false;
     
@@ -144,12 +150,8 @@ bool g2Theme::GetComponent(const char* ElementName, float* tSrcX, float* tSrcY, 
 
 bool g2Theme::GetComponentSize(g2ThemeElement Element, int* width, int* height)
 {
-    // Is this index in the list of valid
-    if(Element < 0 || Element >= g2ThemeElement_Count)
-        return false;
-    
     // Does the config file have this content?
-    const char* ElementName = g2ThemeElement_Names[(int)Element];
+    const char* ElementName = GetElementName(Element);
     return GetComponentSize(ElementName, width, height);
 }
 

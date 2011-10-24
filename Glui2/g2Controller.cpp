@@ -321,35 +321,12 @@ void g2Controller::MouseDrag(int x, int y)
 
 void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int DestY)
 {
-    // Are we allowed to draw?
-    if(!IsVisible)
-        return;
-    
-    // Get the texture points and default component size
-    float tx, ty, tw, th;
-    int width, height;
-    GLuint textID;
-    bool IsFound = GetTheme()->GetComponent(ElementType, &tx, &ty, &tw, &th, &width, &height, &textID);
-    g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", (int)ElementType);
-    
-    // Draw
-    DrawComponent(DestX, DestY, width, height, tx, ty, tw, th, textID);
+    DrawComponent(GetTheme()->GetElementName(ElementType), DestX, DestY);
 }
 
 void g2Controller::DrawComponent(g2ThemeElement ElementType, int DestX, int DestY, int DestW, int DestH)
 {
-    // Are we allowed to draw?
-    if(!IsVisible)
-        return;
-    
-    // Get the texture points and default component size
-    float tx, ty, tw, th;
-    GLuint textID;
-    bool IsFound = GetTheme()->GetComponent(ElementType, &tx, &ty, &tw, &th, NULL, NULL, &textID);
-    g2Assert(IsFound, "Unable to retrieve a component's (ID: %d) texture information", (int)ElementType);
-    
-    // Draw
-    DrawComponent(DestX, DestY, DestW, DestH, tx, ty, tw, th, textID);
+    DrawComponent(GetTheme()->GetElementName(ElementType), DestX, DestY, DestW, DestH);
 }
 
 void g2Controller::DrawComponent(const char* ElementName, int DestX, int DestY)
@@ -421,39 +398,7 @@ void g2Controller::DrawComponent(int DestX, int DestY, int DestW, int DestH, flo
 
 void g2Controller::DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width)
 {
-    // Get the source texture coordinates of the element
-    float SourceX, SourceY, SourceWidth, SourceHeight;
-    int OutWidth, OutHeight;
-    GetTheme()->GetComponent(ElementType, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
-    
-    // Compute the three-component's placement and width
-    // Left, middle, right
-    int X1 = DestX;
-    int W1 = OutWidth / 3;
-    float SourceWidthLeft = SourceWidth / 3.0f;
-    if(Width < W1 * 2)
-    {
-        W1 = Width / 2;
-        SourceWidthLeft *= float(W1) / float(float(OutWidth) / 3.0f);
-    }
-    
-    int X2 = X1 + W1;
-    int W2 = fmax(0, Width - 2 * W1);
-    float SourceWidthMiddle = SourceWidth / 100.0f;
-    
-    int X3 = X2 + W2;
-    int W3 = Width - W1 - W2;
-    float SourceWidthRight = SourceWidth / 3.0f;
-    if(Width < W3 * 2)
-    {
-        W3 = Width / 2;
-        SourceWidthRight *= float(W3) / float(float(OutWidth) / 3.0f);
-    }
-    
-    // Draw the left, middle, right
-    DrawComponent(X1, DestY, W1, OutHeight, SourceX, SourceY, SourceWidthLeft, SourceHeight);
-    DrawComponent(X2, DestY, W2, OutHeight, SourceX + SourceWidthLeft, SourceY, SourceWidthMiddle, SourceHeight);
-    DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth - SourceWidthLeft, SourceY, SourceWidthLeft, SourceHeight);
+    DrawComponentStretch(GetTheme()->GetElementName(ElementType), DestX, DestY, Width);
 }
 
 void g2Controller::DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width)
@@ -495,12 +440,16 @@ void g2Controller::DrawComponentStretch(const char* ElementName, int DestX, int 
 
 void g2Controller::DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width, int StartHeight, int EndHeight)
 {
-    // Save as a reulgar draw-stretch, but only render the top to bottom
-    
+    // Pass with name
+    DrawComponentStretch(GetTheme()->GetElementName(ElementType), DestX, DestY, Width, StartHeight, EndHeight);
+}
+
+void g2Controller::DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width, int StartHeight, int EndHeight)
+{
     // Get the source texture coordinates of the element
     float SourceX, SourceY, SourceWidth, SourceHeight;
     int OutWidth, OutHeight;
-    GetTheme()->GetComponent(ElementType, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
+    GetTheme()->GetComponent(ElementName, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
     
     // Compute the three-component's placement and width
     // Left, middle, right
@@ -592,6 +541,45 @@ void g2Controller::DrawCharacter(int DestX, int DestY, float ScaleW, float Scale
     
     // Release texture
     glDisable(GL_TEXTURE_2D);
+}
+
+void g2Controller::DrawComponentRect(g2ThemeElement ElementType, int DestX, int DestY, int Width, int Height)
+{
+    DrawComponentRect(GetTheme()->GetElementName(ElementType), DestX, DestY, Width, Height);
+}
+
+void g2Controller::DrawComponentRect(const char* ElementName, int DestX, int DestY, int Width, int Height)
+{
+    // Get the size of the source image
+    int ImageWidth, ImageHeight;
+    GetTheme()->GetComponentSize(ElementName, &ImageWidth, &ImageHeight);
+    
+    // Precompute the offsets and subset sizes
+    int Y1 = pY;
+    int H1 = ImageHeight / 3;
+    
+    int Y3 = pY + Height - H1;
+    int H3 = H1;
+    
+    int Y2 = pY + H1;
+    int H2 = H1;
+    
+    /*** Draw ***/
+    
+    // Draw the top
+    DrawComponentStretch(ElementName, pX, Y1, Width, 0, ImageHeight / 3);
+    
+    // Draw the bottom
+    DrawComponentStretch(ElementName, pX, Y3, Width, 2 * (ImageHeight / 3), ImageHeight);
+    
+    // Fill each row as best as possible
+    for(int i = 0; i <= (Height - H1 - H3) / H2; i++)
+    {
+        if(i < (Height - H1 - H3) / H2)
+            DrawComponentStretch(ElementName, pX, Y2 + i * H2, Width, ImageHeight / 3 + 1, 2 * (ImageHeight / 3) + 1);
+        else
+            DrawComponentStretch(ElementName, pX, Y2 + i * H2, Width, ImageHeight / 3 + 1, ImageHeight / 3 + Height % H2);
+    }
 }
 
 void g2Controller::__Update(float dT)

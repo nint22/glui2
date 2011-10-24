@@ -10,7 +10,8 @@
  Desc: Slider bar implementation. Note that the user must
  explicitly drag the button, and thus the "InController(...)"
  function only checks the drag button (which is internally
- rendered here, and not a derivative of g2Button).
+ rendered here, and not a derivative of g2Button). Can be either
+ horizontal or vertical; if vertical
  
 ***************************************************************/
 
@@ -50,6 +51,12 @@ public:
     // Get the current width of the slider in pixels
     __g2EXPORT int GetWidth();
     
+    // Set vertical (or false to horizontal)
+    __g2EXPORT void SetVertical(bool Vertical);
+    
+    // get vertical state
+    __g2EXPORT bool GetVertical();
+    
 protected:
     
     // Render
@@ -80,6 +87,9 @@ private:
     
     // Width of the controller
     int Width;
+    
+    // Is vertical
+    bool IsVertical;
     
     // Live value
     float* LiveValue;

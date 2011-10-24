@@ -107,7 +107,6 @@
 		4872FE96142D406300D74141 /* glui2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glui2.h; sourceTree = "<group>"; };
 		4872FE99142D406300D74141 /* GWEN.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GWEN.cfg; sourceTree = "<group>"; };
 		4872FE9A142D406300D74141 /* GWEN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GWEN.png; sourceTree = "<group>"; };
-		4872FE9B142D406300D74141 /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		4872FEE2142D422D00D74141 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		4872FEE4142D423300D74141 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		48E527F4142D803000775F4D /* g2AppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g2AppKit.h; sourceTree = "<group>"; };
@@ -161,7 +160,6 @@
 		4872FDE1142D3FAB00D74141 /* Glui2 */ = {
 			isa = PBXGroup;
 			children = (
-				4872FE9B142D406300D74141 /* License.txt */,
 				4872FDEF142D3FEF00D74141 /* Resources */,
 				4872FDE2142D3FAB00D74141 /* Shared */,
 				4872FDEE142D3FEB00D74141 /* Controllers */,
@@ -297,6 +295,7 @@
 		4872FDCE142D3FAB00D74141 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "Core S2 Software Solutions";
 			};
 			buildConfigurationList = 4872FDD1142D3FAB00D74141 /* Build configuration list for PBXProject "Glui2" */;

@@ -128,6 +128,7 @@
 		4838846914340594009A5F90 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "Core S2 Software Solutions";
 			};
 			buildConfigurationList = 4838846C14340594009A5F90 /* Build configuration list for PBXProject "Example" */;
