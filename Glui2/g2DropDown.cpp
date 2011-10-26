@@ -171,8 +171,16 @@ void g2DropDown::Render(int pX, int pY)
 
 void g2DropDown::GetCollisionRect(int* Width, int* Height)
 {
-    // Get the width and offsets
-    GetTheme()->GetComponentSize(g2Theme_DropDown, Width, Height);
+    // If not dragging, usual geometry
+    if(!IsDragging)
+        GetTheme()->GetComponentSize(g2Theme_DropDown, Width, Height);
+    else
+    {
+        GetTheme()->GetComponentSize(g2Theme_DropDown, Width, Height);
+        *Height *= OptionCount;
+    }
+    
+    // Width is always constant
     *Width += ButtonField->GetWidth();
 }
 
