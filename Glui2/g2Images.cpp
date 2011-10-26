@@ -12,7 +12,7 @@ std::map<std::string, __g2Image> __g2ImageList;
 typedef std::map<std::string, __g2Image>::iterator __g2ImagesListIt;
 
 // Load any given image
-GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels, bool Wrap)
+GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels, bool Wrap, bool GenerateMips)
 {
     // Does the image already exist in the dictionary?
     __g2ImagesListIt Result = __g2ImageList.find(std::string(ImagePath));
@@ -34,12 +34,19 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
         glBindTexture(GL_TEXTURE_2D, Image.GlTextureID);
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, Image.Width, Image.Height, Image.Channels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
         
-        // Release internal buffer
-        stbi_image_free(DataBuffer);
-        
-        // Set certain properties of texture
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        // Generate mipmaps if desired
+        if(GenerateMips)
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        }
+        // Else, make very accurate sans blending
+        else
+        {
+            //glTexImage2D(GL_TEXTURE_2D, GL_RGBA, Image.Width, Image.Height, Image.Channels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
         
         // Wrap texture around
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Wrap ? GL_REPEAT : GL_CLAMP);
@@ -47,6 +54,9 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
         
         // Done setting image parameters
         glDisable(GL_TEXTURE_2D);
+        
+        // Release internal buffer
+        stbi_image_free(DataBuffer);
         
         // Place in post-back as desired
         if(Width != NULL)

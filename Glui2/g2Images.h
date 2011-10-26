@@ -56,7 +56,7 @@ struct __g2Image
 // if the image has not yet been opened before, then a unique reference
 // is made, otherwise a copy isn't made but the same reference is returned
 // Return a negative value if unable to open file / image
-__g2EXPORT GLuint g2LoadImage(const char* ImagePath, int* Width = NULL, int* Height = NULL, int* Channels = NULL, bool Wrap = false);
+__g2EXPORT GLuint g2LoadImage(const char* ImagePath, int* Width = NULL, int* Height = NULL, int* Channels = NULL, bool Wrap = false, bool GenerateMips = true);
 
 // Open a given image and provide directly memory access to it; must
 // be released using the "g2UnloadImageBuffer" function when done with
