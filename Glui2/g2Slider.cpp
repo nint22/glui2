@@ -79,7 +79,7 @@ void g2Slider::Render(int pX, int pY)
     g2ThemeElement ButtonStyle = IsVertical ? g2Theme_VSliderButton : g2Theme_SliderButton;
     if(GetDisabled())
         ButtonStyle = IsVertical ? g2Theme_VSliderButton_Disabled : g2Theme_SliderButton_Disabled;
-    else if(IsDragging || GetControllerState() == g2ControllerState_Pressed)
+    else if(IsDragging || ((GetControllerState() & g2ControllerState_Pressed) == g2ControllerState_Pressed))
         ButtonStyle = IsVertical ? g2Theme_VSliderButton_Pressed : g2Theme_SliderButton_Pressed;
     
     // If horizontal style
@@ -157,7 +157,17 @@ void g2Slider::MouseDrag(int x, int y)
 
 void g2Slider::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
 {
-    if(button == g2MouseButton_Left && state == g2MouseClick_Up)
+    // User attempts to focus on a specific position
+    if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Down)
+    {
+        // Move to target position
+        bool WasDragging = IsDragging;
+        IsDragging = true;
+        MouseHover(x, y);
+        IsDragging = WasDragging;
+    }
+    // User is done dragging
+    else if(button == g2MouseButton_Left && state == g2MouseClick_Up)
         IsDragging = false;
 }
 

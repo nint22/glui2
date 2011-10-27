@@ -77,7 +77,7 @@ void g2CheckBox::GetCollisionRect(int* Width, int* Height)
 void g2CheckBox::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
 {
     // Draw based on the current state
-    if(GetControllerState() == g2ControllerState_Clicked)
+    if((GetControllerState() & g2ControllerState_Clicked) == g2ControllerState_Clicked)
     {
         // Flip state
         Checked = !Checked;

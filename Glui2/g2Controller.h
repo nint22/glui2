@@ -24,13 +24,11 @@
 #include <queue>
 
 // Enumerate all button states
-enum g2ControllerState
-{
-    g2ControllerState_None = 0, // No state
-    g2ControllerState_Hover,    // User has the cursor hovering over object
-    g2ControllerState_Pressed,  // User has the controller actively pressed on
-    g2ControllerState_Clicked,  // User has had a full click through (pressed and released in the same area)
-};
+typedef unsigned int g2ControllerState;
+static const g2ControllerState g2ControllerState_None =    0x01; // No state
+static const g2ControllerState g2ControllerState_Hover =   0x02; // User has the cursor hovering over object
+static const g2ControllerState g2ControllerState_Pressed = 0x04; // User has the controller actively pressed on
+static const g2ControllerState g2ControllerState_Clicked = 0x08; // User has had a full click through (pressed and released in the same area)
 
 class g2Controller
 {
@@ -82,7 +80,7 @@ public:
     // Accessor to parent pointer
     __g2EXPORT g2Controller* GetParent();
     
-    // Get the controller state
+    // Get the controller state (this is a bit-blit'ed multi-state variable)
     __g2EXPORT g2ControllerState GetControllerState();
     
     // Returns true if we are the active controller

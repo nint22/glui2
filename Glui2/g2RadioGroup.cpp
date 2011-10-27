@@ -105,6 +105,7 @@ void g2RadioGroup::GetCollisionRect(int* Width, int* Height)
     int RadioWidth;
     GetTheme()->GetComponentSize(g2Theme_RadioButton, &RadioWidth, Height);
     *Height = (*Height + 1) * OptionCount;
+    *Width = 0;
     
     // For each option, save the biggest text length
     for(int i = 0; i < OptionCount; i++)
@@ -119,7 +120,7 @@ void g2RadioGroup::GetCollisionRect(int* Width, int* Height)
 void g2RadioGroup::MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
 {
     // If we had a full key-press event within our collision box, change the active index as needed
-    if(InController(x, y) && GetControllerState() == g2ControllerState_Clicked)
+    if(InController(x, y) && ((GetControllerState() & g2ControllerState_Clicked) == g2ControllerState_Clicked))
     {
         // Get the size of a radio button
         int RadioHeight;

@@ -88,7 +88,7 @@ void g2Button::Render(int pX, int pY)
     // Draw based on the current state
     if(GetDisabled())
         ButtonState = g2Theme_Button_Disabled;
-    else if(GetControllerState() == g2ControllerState_Pressed)
+    else if((GetControllerState() & g2ControllerState_Pressed) == g2ControllerState_Pressed)
         ButtonState = g2Theme_Button_Pressed;
     
     // Compute the label anchor offset

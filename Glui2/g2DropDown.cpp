@@ -152,7 +152,7 @@ void g2DropDown::Render(int pX, int pY)
     // Draw based on the current state
     if(GetDisabled())
         DrawComponent(g2Theme_DropDown_Disabled, pX + DropdownOffset, pY);
-    else if(GetControllerState() == g2ControllerState_Pressed)
+    else if((GetControllerState() & g2ControllerState_Pressed) == g2ControllerState_Pressed)
     {
         IsDragging = true;
         DrawComponent(g2Theme_DropDown_Pressed, pX + DropdownOffset, pY);

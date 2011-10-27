@@ -169,7 +169,7 @@ void g2Spinner::Render(int pX, int pY)
         DrawComponent(g2Theme_Spinner_Disabled, pX + OffsetX, pY + OffsetY);
     
     // Actively pressed on the buttons, need to draw only the pressed button
-    else if(GetControllerState() == g2ControllerState_Pressed && MouseX > TextField->GetWidth())
+    else if( ((GetControllerState() & g2ControllerState_Pressed) == g2ControllerState_Pressed) && MouseX > TextField->GetWidth())
     {
         // Draw background normally, then draw the pressed button
         DrawComponent(g2Theme_Spinner, pX + OffsetX, pY + OffsetY);
@@ -180,7 +180,7 @@ void g2Spinner::Render(int pX, int pY)
         DrawComponent(g2Theme_Spinner, pX + OffsetX, pY + OffsetY);
     
     // Increase or decrease the value based on timing
-    if((PressedTime > (g2Spinner_UpdateRate + g2Spinner_UpdateMin)) || (GetControllerState() == g2ControllerState_Clicked && MouseX > TextField->GetWidth()))
+    if((PressedTime > (g2Spinner_UpdateRate + g2Spinner_UpdateMin)) || (((GetControllerState() & g2ControllerState_Clicked) == g2ControllerState_Clicked) && MouseX > TextField->GetWidth()))
     {
         if(IsAbove)
             IncrementUp();
@@ -205,7 +205,7 @@ void g2Spinner::GetCollisionRect(int* Width, int* Height)
 void g2Spinner::Update(float dT)
 {
     // If we are being pressed, update the timer
-    if(GetControllerState() == g2ControllerState_Pressed)
+    if((GetControllerState() & g2ControllerState_Pressed) == g2ControllerState_Pressed)
         PressedTime += dT;
     // Else, we aren't pressing, so ignore
     else

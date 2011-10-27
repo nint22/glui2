@@ -195,7 +195,15 @@ g2Controller* g2Controller::GetParent()
 
 g2ControllerState g2Controller::GetControllerState()
 {
-    return ControllerState;
+    // Take copy to modify post-update
+    g2ControllerState Copy = ControllerState;
+    
+    // Remove full click-through event so we don't think the user is constantly slamming the device
+    if((ControllerState & g2ControllerState_Clicked) != 0)
+        ControllerState ^= g2ControllerState_Clicked;
+    
+    // Return the original states
+    return Copy;
 }
 
 bool g2Controller::GetActive()
@@ -446,6 +454,10 @@ void g2Controller::DrawComponentStretch(g2ThemeElement ElementType, int DestX, i
 
 void g2Controller::DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width, int StartHeight, int EndHeight)
 {
+    // Ignore if drawing nothing
+    if(EndHeight - StartHeight == 0)
+        return;
+    
     // Get the source texture coordinates of the element
     float SourceX, SourceY, SourceWidth, SourceHeight;
     int OutWidth, OutHeight;
@@ -562,24 +574,21 @@ void g2Controller::DrawComponentRect(const char* ElementName, int DestX, int Des
     int H3 = H1;
     
     int Y2 = DestY + H1;
-    int H2 = H1;
+    int H2 = ImageHeight - H1 - H3;
     
     /*** Draw ***/
     
     // Draw the top
-    DrawComponentStretch(ElementName, DestX, Y1, Width, 0, ImageHeight / 3);
+    DrawComponentStretch(ElementName, DestX, Y1, Width, 0, H1 - 1);
     
     // Draw the bottom
-    DrawComponentStretch(ElementName, DestX, Y3, Width, 2 * (ImageHeight / 3), ImageHeight);
+    DrawComponentStretch(ElementName, DestX, Y3, Width, ImageHeight - H3, ImageHeight - 1);
     
     // Fill each row as best as possible
-    for(int i = 0; i <= (Height - H1 - H3) / H2; i++)
-    {
-        if(i < (Height - H1 - H3) / H2)
-            DrawComponentStretch(ElementName, DestX, Y2 + i * H2, Width, ImageHeight / 3 + 1, 2 * (ImageHeight / 3) + 1);
-        else
-            DrawComponentStretch(ElementName, DestX, Y2 + i * H2, Width, ImageHeight / 3 + 1, ImageHeight / 3 + Height % H2);
-    }
+    int i;
+    for(i = 0; i < (Height - H1 - H2) / H2; i++)
+        DrawComponentStretch(ElementName, DestX, Y2 + i * H2, Width, H1, H1 + H2 - 1);
+    DrawComponentStretch(ElementName, DestX, Y2 + H2 * i, Width, H1, H1 + Height - H1 - H2 * i - H3 - 1);
 }
 
 void g2Controller::__Update(float dT)
@@ -634,11 +643,6 @@ void g2Controller::__Render(int x, int y)
         // Put back
         ChildObjects.push(Child);
     }
-    
-    // After a full render cycle, reset the mouse state so we
-    // don't keep full-clicking
-    if(ControllerState == g2ControllerState_Clicked)
-        ControllerState = g2ControllerState_None;
 }
 
 void g2Controller::__WindowResizeEvent(int NewWidth, int NewHeight)
@@ -698,11 +702,15 @@ void g2Controller::__MouseHover(int x, int y)
     y -= pY;
     
     // If the user is moving and pressing, then do a drag event
-    if(InController(x, y) && ControllerState == g2ControllerState_Pressed)
+    if(InController(x, y) && ((ControllerState & g2ControllerState_Pressed) != 0) )
         __MouseDrag(x, y);
-    // Else, if we are out of the controller, we are done dragging
-    if(!InController(x, y) && ControllerState == g2ControllerState_Pressed)
-        ControllerState = g2ControllerState_None;
+    
+    // Update the hovering state
+    if(InController(x, y))
+        ControllerState |= g2ControllerState_Hover;
+    // Remove if needed
+    else if((ControllerState & g2ControllerState_Hover) != 0)
+        ControllerState ^= g2ControllerState_Hover;
     
     // Update the hovering actions
     MouseHover(x, y);
@@ -735,19 +743,15 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
     
     // Are we in this object's volume and do we have a full left-click?
     if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Down)
-        ControllerState = g2ControllerState_Pressed;
+        ControllerState |= g2ControllerState_Pressed;
     
-    // Else, if there is a mouse release AND we are coming from a pressed state....
-    else if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Up && ControllerState == g2ControllerState_Pressed)
-        ControllerState = g2ControllerState_Clicked;
+    // Check for full click, if there is a mouse release AND we are coming from a pressed state....
+    if(InController(x, y) && button == g2MouseButton_Left && state == g2MouseClick_Up && ((ControllerState & g2ControllerState_Pressed) == g2ControllerState_Pressed))
+        ControllerState |= g2ControllerState_Clicked;
     
-    // Else, reset to either hover or none...
-    else if(InController(x, y))
-        ControllerState = g2ControllerState_Hover;
-    
-    // Else, no hovering, just nothing
-    else
-        ControllerState = g2ControllerState_None;
+    // Are we no longer holding the mouse button down anymore?
+    if((button == g2MouseButton_Left && state == g2MouseClick_Up) && ((ControllerState & g2ControllerState_Pressed) == g2ControllerState_Pressed))
+        ControllerState ^= g2ControllerState_Pressed;
     
     // Update mouse click
     MouseClick(button, state, x, y);
@@ -768,7 +772,7 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
     }
     
     // Execute callback
-    if(!GetDisabled() && GetControllerState() == g2ControllerState_Clicked && PressedCallback != 0)
+    if(!GetDisabled() && ((ControllerState & g2ControllerState_Clicked) == g2ControllerState_Clicked) && PressedCallback != 0)
         PressedCallback(this);
 }
 
