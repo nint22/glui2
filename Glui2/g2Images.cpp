@@ -70,9 +70,18 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
         __g2ImageList.insert(std::pair<std::string, __g2Image>(std::string(Image.FileName), Image));
         return Image.GlTextureID;
     }
-    
-    // Return what was already known
-    return Result->second.GlTextureID;
+    // Image around found, return that result
+    else
+    {
+        // Post and return what was already known
+        if(Width != NULL)
+            *Width = Result->second.Width;
+        if(Height != NULL)
+            *Height = Result->second.Height;
+        if(Channels != NULL)
+            *Channels = Result->second.Channels;
+        return Result->second.GlTextureID;
+    }
 }
 
 void g2LoadImageBuffer(const char* ImagePath, unsigned char** OutBuffer, int* Width, int* Height, int* Channels)
