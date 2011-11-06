@@ -771,9 +771,13 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
         ChildObjects.push(Child);
     }
     
-    // Execute callback
+    // Execute callback (releases button-click flag)
     if(!GetDisabled() && ((ControllerState & g2ControllerState_Clicked) == g2ControllerState_Clicked) && PressedCallback != 0)
+    {
+        // Callback and xor the controller state's click-event out
         PressedCallback(this);
+        ControllerState ^= g2ControllerState_Clicked;
+    }
 }
 
 void g2Controller::__MouseDrag(int x, int y)

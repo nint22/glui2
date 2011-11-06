@@ -79,7 +79,7 @@ void g2DropDown::SetOptions(const char** OptionLabels, int OptionCount)
         
         // Create a new label with these properties (move down for each option)
         Buttons[i] = new g2Button(this, GetTheme());
-        Buttons[i]->SetPos(0, i * ButtonHeight + ButtonHeight);
+        Buttons[i]->SetPos(0, (i + 1) * ButtonHeight);
         Buttons[i]->SetText(OptionLabels[i]);
         Buttons[i]->SetDisabled(true);
         Buttons[i]->SetWidth(ButtonField->GetWidth());
@@ -171,13 +171,15 @@ void g2DropDown::Render(int pX, int pY)
 
 void g2DropDown::GetCollisionRect(int* Width, int* Height)
 {
-    // If not dragging, usual geometry
-    if(!IsDragging)
-        GetTheme()->GetComponentSize(g2Theme_DropDown, Width, Height);
-    else
+    // Top height
+    GetTheme()->GetComponentSize(g2Theme_DropDown, Width, Height);
+    
+    // If dragging, add button geometry
+    if(IsDragging)
     {
-        GetTheme()->GetComponentSize(g2Theme_DropDown, Width, Height);
-        *Height *= OptionCount;
+        int ButtonHeight;
+        GetTheme()->GetComponentSize(g2Theme_Button, NULL, &ButtonHeight);
+        *Height += OptionCount * ButtonHeight;
     }
     
     // Width is always constant
