@@ -24,7 +24,7 @@
     #include <windows.h>
     #include <gl/glut.h>
     #include <gl/glext.h>
-    
+	
     // Windows doesn't implement fmin/fmax, so instead
     // we do a macro-replacement
     #define fmax max
