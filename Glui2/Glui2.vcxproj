@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7498C3E3-A2A8-433F-8B8B-B7CF3FA0472F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Example1</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Glui2\Glui2.vcxproj">
+      <Project>{7498c3e3-a2a8-433f-8b8b-b7cf3fa0472f}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="g2Button.cpp" />
+    <ClCompile Include="g2CheckBox.cpp" />
+    <ClCompile Include="g2Config.cpp" />
+    <ClCompile Include="g2Console.cpp" />
+    <ClCompile Include="g2Controller.cpp" />
+    <ClCompile Include="g2Dialog.cpp" />
+    <ClCompile Include="g2DropDown.cpp" />
+    <ClCompile Include="g2Images.cpp" />
+    <ClCompile Include="g2Label.cpp" />
+    <ClCompile Include="g2LabelEdit.cpp" />
+    <ClCompile Include="g2Panel.cpp" />
+    <ClCompile Include="g2ProgressBar.cpp" />
+    <ClCompile Include="g2RadioGroup.cpp" />
+    <ClCompile Include="g2Slider.cpp" />
+    <ClCompile Include="g2Spinner.cpp" />
+    <ClCompile Include="g2TextField.cpp" />
+    <ClCompile Include="g2Theme.cpp" />
+    <ClCompile Include="g2Utilities.cpp" />
+    <ClCompile Include="glui2.cpp" />
+    <ClCompile Include="stb_image.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="g2AppKit.h" />
+    <ClInclude Include="g2Button.h" />
+    <ClInclude Include="g2CheckBox.h" />
+    <ClInclude Include="g2Config.h" />
+    <ClInclude Include="g2Console.h" />
+    <ClInclude Include="g2Controller.h" />
+    <ClInclude Include="g2Dialog.h" />
+    <ClInclude Include="g2DropDown.h" />
+    <ClInclude Include="g2Images.h" />
+    <ClInclude Include="g2Label.h" />
+    <ClInclude Include="g2LabelEdit.h" />
+    <ClInclude Include="g2Panel.h" />
+    <ClInclude Include="g2ProgressBar.h" />
+    <ClInclude Include="g2RadioGroup.h" />
+    <ClInclude Include="g2Slider.h" />
+    <ClInclude Include="g2Spinner.h" />
+    <ClInclude Include="g2TextField.h" />
+    <ClInclude Include="g2Theme.h" />
+    <ClInclude Include="g2Utilities.h" />
+    <ClInclude Include="glui2.h" />
+    <ClInclude Include="stb_image.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
