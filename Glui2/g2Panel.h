@@ -58,6 +58,9 @@ public:
     // is set in g2Anchor_none, all new widths or heights may be ignored except for the appropriate handler..
     __g2EXPORT void SetSize(int NewWidth, int NewHeight);
     
+    // Get the current size of the panel
+    __g2EXPORT void GetSize(int* Width = NULL, int* Height = NULL);
+    
     /*** Factory Methods ***/
     
     __g2EXPORT g2Button* AddButton(int x, int y, const char* Label = NULL, __g2CallBack(callback) = 0);

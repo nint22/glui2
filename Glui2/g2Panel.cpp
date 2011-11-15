@@ -68,6 +68,15 @@ void g2Panel::SetSize(int NewWidth, int NewHeight)
     CenterTitle();
 }
 
+void g2Panel::GetSize(int* Width, int* Height)
+{
+    // Post width / height if possible
+    if(Width != NULL)
+        *Width = this->Width;
+    if(Height != NULL)
+        *Height = this->Height;
+}
+
 g2Button* g2Panel::AddButton(int x, int y, const char* Label, __g2CallBack(callback))
 {
     g2Button* NewButton = new g2Button(this, GetTheme());
@@ -207,10 +216,10 @@ void g2Panel::WindowResizeEvent(int NewWidth, int NewHeight)
 
 void g2Panel::CenterTitle()
 {
+    // Title height is 1/3 of the textures total height
+    int Height;
+    GetTheme()->GetComponentSize(g2Theme_Panel, NULL, &Height);
+    
     // Center the title text
-    int x, y;
-    GetTheme()->GetComponentSize(g2Theme_Panel, NULL, &y);
-    x = (Width / 2) - Label->GetWidth() / 2;
-    y = (y / 3) / 2 - GetTheme()->GetCharacterHeight() / 2;
-    Label->SetPos(x, y);
+    Label->SetPos((Width / 2) - (Label->GetWidth() / 2), (Height / 3) / 2 - GetTheme()->GetCharacterHeight() / 2);
 }

@@ -32,13 +32,13 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
         // Allocate an OpenGL texture
         glGenTextures(1, &Image.GlTextureID);
         glBindTexture(GL_TEXTURE_2D, Image.GlTextureID);
-        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, Image.Width, Image.Height, Image.Channels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image.Width, Image.Height, Image.Channels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
         
         // Generate mipmaps if desired
         if(GenerateMips)
         {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         }
         // Else, make very accurate sans blending
         else

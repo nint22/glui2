@@ -57,6 +57,13 @@
 #include "g2ProgressBar.h"
 #include "g2Spinner.h"
 
+// Define the version string, major number, and minor number
+#ifndef __G2VERSION_STR__
+    #define __G2VERSION_STR__ "1.1"
+    #define __G2VERSION_MAJOR__ 1
+    #define __G2VERSION_MINOR__ 1
+#endif
+
 // Define the default theme file name
 static const char* __G2_DEFAULT_THEME__ = "g2Default.cfg";
 

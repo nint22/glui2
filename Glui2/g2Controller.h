@@ -21,7 +21,7 @@
 #include "g2Theme.h"
 
 // Necessary STL for the child list; should consider replacing
-#include <queue>
+#include <list>
 
 // Enumerate all button states
 typedef unsigned int g2ControllerState;
@@ -239,7 +239,9 @@ private:
     g2ControllerState ControllerState;
     
     // Child objects list
-    std::queue< g2Controller* > ChildObjects;
+    std::list< g2Controller* > ChildObjects;
+    typedef std::list< g2Controller* >::iterator ChildObjectsIt;
+    typedef std::list< g2Controller* >::reverse_iterator ChildObjectsRevIt;
     
     // Parent object pointer
     g2Controller* ParentObject;

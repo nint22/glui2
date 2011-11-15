@@ -291,6 +291,11 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
     // If nothing is focused, mouse glut
     else if(__G2_HANDLE__->GlutMouseFunc != NULL)
         __G2_HANDLE__->GlutMouseFunc(button, state, x, y);
+    
+    // Always explicitly do a callback if the mouse is released; this helps
+    // the root application handle with users moving across and releasing on a UI controller
+    if(state == GLUT_UP && __G2_HANDLE__->GlutMouseFunc != NULL)
+        __G2_HANDLE__->GlutMouseFunc(button, state, x, y);
 }
 
 void Glui2::__HoverFunc(int x, int y)

@@ -55,6 +55,9 @@ public:
     // Get the shadow state (true if shadow is visible)
     __g2EXPORT bool GetShadow();
     
+    // Get a color from the internal 4-bit template
+    __g2EXPORT static void GetTemplateColor(int Index, float* r, float* g, float* b);
+    
 protected:
     
     // Render

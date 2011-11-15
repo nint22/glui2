@@ -77,6 +77,31 @@ bool g2Label::GetShadow()
     return Shadow;
 }
 
+void g2Label::GetTemplateColor(int Index, float* r, float* g, float* b)
+{
+    // Simple look-up table
+    switch(Index)
+    {
+        case 0:  *r = 0.0f; *g = 0.0f; *b = 0.0f; break;
+        case 1:  *r = 0.0f; *g = 0.0f; *b = 0.5f; break;
+        case 2:  *r = 0.0f; *g = 0.5f; *b = 0.0f; break;
+        case 3:  *r = 0.0f; *g = 0.5f; *b = 0.5f; break;
+        case 4:  *r = 0.5f; *g = 0.0f; *b = 0.0f; break;
+        case 5:  *r = 0.5f; *g = 0.0f; *b = 0.5f; break;
+        case 6:  *r = 0.5f; *g = 0.3f; *b = 0.0f; break;
+        case 7:  *r = 0.5f; *g = 0.5f; *b = 0.5f; break;
+        case 8:  *r = 0.3f; *g = 0.3f; *b = 0.3f; break;
+        case 9:  *r = 0.3f; *g = 0.3f; *b = 1.0f; break;
+        case 10: *r = 3.0f; *g = 1.0f; *b = 0.3f; break;
+        case 11: *r = 3.0f; *g = 1.0f; *b = 1.0f; break;
+        case 12: *r = 1.0f; *g = 0.3f; *b = 0.3f; break;
+        case 13: *r = 1.0f; *g = 0.3f; *b = 1.0f; break;
+        case 14: *r = 1.0f; *g = 1.0f; *b = 0.3f; break;
+        case 15: *r = 1.0f; *g = 1.0f; *b = 1.0f; break;
+    }
+}
+
+
 void g2Label::Render(int pX, int pY)
 {
     // Ignore if not null
@@ -98,32 +123,55 @@ void g2Label::Render(int pX, int pY)
     float Sr, Sg, Sb;
     GetColor(&Sr, &Sg, &Sb);
     
+    // Get regular text color
+    float Tr, Tg, Tb, Alpha;
+    GetColor(&Tr, &Tg, &Tb, &Alpha);
+    
     // For each character...
     for(size_t i = 0; i < strlen(TextBuffer); i++)
     {
-        // Get char and character information
-        char c = TextBuffer[i];
-        
         // Reset for the next line
-        if(c == '\n')
+        if(TextBuffer[i] == '\n')
         {
+            // Move to next line, reset cursor location, and reset color
             level++;
             offset = 0;
+            GetColor(&Tr, &Tg, &Tb);
         }
         // Draw normally
         else
         {
-            // Draw shadow if on
-            if(Shadow)
-                DrawCharacter(pX + offset + 1, pY + level * height + 1, Scale, Scale, Sr, Sg, Sb, 0.2f, c);
+            // Is this character a backslash?
+            if(TextBuffer[i] == '\\')
+            {
+                // Attempt to read an integer
+                int ColorID = -1;
+                sscanf(TextBuffer + i + 1, "%d", &ColorID);
+                if(ColorID >= 0 && ColorID < 16)
+                {
+                    // Change color and move ahead until non-numeric
+                    do {
+                        i++;
+                    } while(TextBuffer[i] >= '0' && TextBuffer[i] <= '9');
+                    g2Label::GetTemplateColor(ColorID, &Tr, &Tg, &Tb);
+                }
+            }
             
-            // Render text normally
-            DrawCharacter(pX + offset, pY + level * height, Scale, Scale, c);
-            
-            // Get this character's width and offset
-            int width;
-            GetTheme()->GetCharacterSize(c, &width, NULL);
-            offset += width + g2Label_CharacterSpacing;
+            // Render text normally if not null
+            if(TextBuffer[i] != '\0')
+            {
+                // Draw shadow if on
+                if(Shadow)
+                    DrawCharacter(pX + offset + 1, pY + level * height + 1, Scale, Scale, Sr, Sg, Sb, 0.2f, TextBuffer[i]);
+                
+                // Draw regular text
+                DrawCharacter(pX + offset, pY + level * height, Scale, Scale, Tr, Tg, Tb, Alpha, TextBuffer[i]);
+                
+                // Get this character's width and offset
+                int width;
+                GetTheme()->GetCharacterSize(TextBuffer[i], &width, NULL);
+                offset += width + g2Label_CharacterSpacing;
+            }
         }
     }
 }

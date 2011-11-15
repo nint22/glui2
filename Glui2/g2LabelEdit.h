@@ -29,6 +29,11 @@ static const int g2LabelEdit_CharacterSpacing = 2;
 // User input's text buffer
 static const int g2LabelEdit_TextBufferLength = 1024;
 
+// Internal buffer for linux users
+#ifdef __linux__
+    static char __LinuxClipboard[g2LabelEdit_TextBufferLength] = "";
+#endif
+
 class g2LabelEdit : public g2Controller
 {
 public:

@@ -183,7 +183,13 @@ void g2LabelEdit::CopyBuffer()
         // Paste into clipboard
         PasteboardPutItemFlavor(ClipboardHandle, (PasteboardItemID)1, CFSTR("public.utf8-plain-text"), DataBuffer, kPasteboardFlavorNoFlags);
     
-    // Not a feature in Linux...
+    // Linux clipboard implementation
+    #elif __linux__
+    
+        // Paste into UI from linux buffer
+        strcpy(__LinuxClipboard, TextBuffer);
+        SetCursorPos((int)strlen(__LinuxClipboard));
+    
     #endif
 }
 
@@ -299,7 +305,13 @@ void g2LabelEdit::PasteBuffer()
             }
         }
     
-    // Not a feature in Linux...
+    // Linux clipboard implementation
+    #elif __linux__
+    
+        // Paste into UI from linux buffer
+        SetText(__LinuxClipboard);
+        SetCursorPos((int)strlen(__LinuxClipboard));
+    
     #endif
 }
 

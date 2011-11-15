@@ -97,6 +97,9 @@ private:
     // The spinner type (usually int or float)
     g2SpinnerType Type;
     
+    // Current controller state
+    g2ControllerState ControllerState;
+    
     // Internal float or int values
     float FloatVal;
     int IntVal;

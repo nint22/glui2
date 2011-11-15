@@ -46,6 +46,7 @@
 #include "g2Controller.h"
 #include "g2LabelEdit.h"
 #include "g2Label.h"
+#include <queue>
 
 // Maximum input length
 static const int g2Console_MaxInputSize = 64;
@@ -81,9 +82,6 @@ protected:
     __g2EXPORT void WindowResizeEvent(int NewWidth, int NewHeight);
     
 private:
-    
-    // Get a color from the internal 4-bit template
-    void GetTemplateColor(int Index, float* r, float* g, float* b);
     
     // Active width and height
     int WindowWidth, WindowHeight;

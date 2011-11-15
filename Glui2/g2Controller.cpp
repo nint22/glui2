@@ -33,41 +33,36 @@ g2Controller::g2Controller(g2Controller* Parent, g2Theme* MainTheme)
     IsActive = false;
     
     // Add self to parent and force window size update
+    // Note we add to the end, so things declared first and rendered first (back-facing)
+    // and things that are added to the end are rendered last (front-facing)
     if(Parent != NULL)
     {
-        Parent->ChildObjects.push(this);
-        this->__WindowResizeEvent(Parent->WindowWidth, WindowHeight);
+        ChildObjectsIt Back = Parent->ChildObjects.end();
+        Parent->ChildObjects.insert(Back, this);
+        this->__WindowResizeEvent(Parent->WindowWidth, Parent->WindowHeight);
     }
 }
 
 g2Controller::~g2Controller()
 {
-    // Release each child
-    while(!ChildObjects.empty())
-    {
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        delete Child;
-    }
+    // Release each child this owns
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        delete *Child;
     
     // No need to release self if we are the root
     if(ParentObject == NULL)
         return;
     
-    // Release self from parent
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
+    // Find self in parent
+    for(ChildObjectsIt Index = ParentObject->ChildObjects.begin(); Index != ParentObject->ChildObjects.end(); Index++)
     {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Is this its own class, if so leave it popped and stop
-        if(Child == this)
+        // Found self
+        if(*Index == this)
+        {
+            // Remove and break
+            ParentObject->ChildObjects.erase(Index);
             break;
-        
-        // Put back
-        ChildObjects.push(Child);
+        }
     }
     
     // All done with releasing self from parent
@@ -78,19 +73,8 @@ void g2Controller::SetVisibility(bool Visible)
     IsVisible = Visible;
     
     // Apply to all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update
-        Child->SetVisibility(IsVisible);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->SetVisibility(Visible);
 }
 
 bool g2Controller::GetVisibility()
@@ -124,19 +108,8 @@ void g2Controller::SetDisabled(bool Disabled)
     IsDisabled = Disabled;
     
     // Apply to all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update
-        Child->SetDisabled(IsDisabled);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->SetDisabled(Disabled);
 }
 
 bool g2Controller::GetDisabled()
@@ -236,19 +209,13 @@ g2Controller* g2Controller::GetController(int x, int y)
     // Check all children, do we interest?
     // We go through all of them as we don't want to change
     // the ordering which is important to rendering
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
+    // Ordering: [Back to Front]
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
     {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Check but stop once at least one is found
-        if(ActiveController == NULL)
-            ActiveController = Child->GetController(x, y);
-        
-        // Put back
-        ChildObjects.push(Child);
+        // Save found object if not null
+        g2Controller* Found = (*Child)->GetController(x, y);
+        if(Found != NULL)
+            ActiveController = Found;
     }
     
     // No children have an intersection, as the parent do we intersect?
@@ -601,19 +568,8 @@ void g2Controller::__Update(float dT)
     Update(dT);
     
     // Update all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update
-        Child->__Update(dT);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->__Update(dT);
 }
 
 void g2Controller::__Render(int x, int y)
@@ -629,20 +585,9 @@ void g2Controller::__Render(int x, int y)
     // Render self
     Render(x, y);
     
-    // Update all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Render children
-        Child->__Render(x, y);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    // Render all children
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->__Render(x, y);
 }
 
 void g2Controller::__WindowResizeEvent(int NewWidth, int NewHeight)
@@ -651,19 +596,8 @@ void g2Controller::__WindowResizeEvent(int NewWidth, int NewHeight)
     WindowResizeEvent(NewWidth, NewHeight);
     
     // Update all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update child window event
-        Child->__WindowResizeEvent(NewWidth, NewHeight);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->__WindowResizeEvent(NewWidth, NewHeight);
 }
 
 void g2Controller::__KeyEvent(unsigned char key, bool IsSpecial)
@@ -676,19 +610,8 @@ void g2Controller::__KeyEvent(unsigned char key, bool IsSpecial)
     KeyEvent(key, IsSpecial);
     
     // Update all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update child key event
-        Child->__KeyEvent(key, IsSpecial);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->__KeyEvent(key, IsSpecial);
 }
 
 void g2Controller::__MouseHover(int x, int y)
@@ -716,19 +639,8 @@ void g2Controller::__MouseHover(int x, int y)
     MouseHover(x, y);
     
     // Update all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update child with localized coordinates
-        Child->__MouseHover(x, y);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->__MouseHover(x, y);
 }
 
 void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x, int y)
@@ -753,30 +665,46 @@ void g2Controller::__MouseClick(g2MouseButton button, g2MouseClick state, int x,
     if((button == g2MouseButton_Left && state == g2MouseClick_Up) && ((ControllerState & g2ControllerState_Pressed) == g2ControllerState_Pressed))
         ControllerState ^= g2ControllerState_Pressed;
     
-    // Update mouse click
+    // Update mouse click; save an older version of the controller state,
+    // in case the user destroys the clicked flag by calling GetControllerState()
+    g2ControllerState OldControllerState = ControllerState;
     MouseClick(button, state, x, y);
     
-    // Update all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
+    // If it's anything non-key-release
+    if(state != g2MouseClick_Up)
     {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update child window event
-        Child->__MouseClick(button, state, x, y);
-        
-        // Put back
-        ChildObjects.push(Child);
+        // Apply update to all non-blocked objects
+        // We must go from front-to-back ordering (which is the reverse
+        // of what the rendering ordering is)
+        for(ChildObjectsRevIt Child = ChildObjects.rbegin(); Child != ChildObjects.rend(); Child++)
+        {
+            // Child position
+            int cx, cy;
+            (*Child)->GetPos(&cx, &cy);
+            
+            // Stop applying on our first collision if we are in that controller
+            // and it's on-screen (regardless of it being enabled or not)
+            // Note that we must localize the coordinate for each controller
+            if((*Child)->GetVisibility() && (*Child)->InController(x -cx , y - cy))
+            {
+                (*Child)->__MouseClick(button, state, x, y);
+                break;
+            }
+        }
+    }
+    // Else, apply release to everyone
+    else
+    {
+        // Allow the recieving function to figure it's own event
+        for(ChildObjectsRevIt Child = ChildObjects.rbegin(); Child != ChildObjects.rend(); Child++)
+            (*Child)->__MouseClick(button, state, x, y);
     }
     
     // Execute callback (releases button-click flag)
-    if(!GetDisabled() && ((ControllerState & g2ControllerState_Clicked) == g2ControllerState_Clicked) && PressedCallback != 0)
+    if(!GetDisabled() && ((OldControllerState & g2ControllerState_Clicked) == g2ControllerState_Clicked) && PressedCallback != 0)
     {
         // Callback and xor the controller state's click-event out
         PressedCallback(this);
-        ControllerState ^= g2ControllerState_Clicked;
     }
 }
 
@@ -793,17 +721,6 @@ void g2Controller::__MouseDrag(int x, int y)
     MouseDrag(x, y);
     
     // Update all children
-    int QueueSize = (int)ChildObjects.size();
-    for(int i = 0; i < QueueSize; i++)
-    {
-        // Get child
-        g2Controller* Child = ChildObjects.front();
-        ChildObjects.pop();
-        
-        // Update child mouse drags
-        Child->__MouseDrag(x, y);
-        
-        // Put back
-        ChildObjects.push(Child);
-    }
+    for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
+        (*Child)->__MouseDrag(x, y);
 }

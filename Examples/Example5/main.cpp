@@ -264,7 +264,9 @@ void InitGlui2()
     }
     
     /*** Quit Button ***/
-    GluiHandle->AddButton(WindowWidth / 2 - 50, WindowHeight - 100, "   Quit Demo   ", Quit);
+    g2Button* QuitButton = GluiHandle->AddButton(WindowWidth / 2 - 50, WindowHeight - 100, "Quit Demo", Quit);
+    QuitButton->SetWidth(125);
+    QuitButton->SetAlignment(g2Anchor_Center);
 }
 
 /*** Main Application Entry Point ***/

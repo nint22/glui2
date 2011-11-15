@@ -213,7 +213,7 @@ void g2Console::Render(int x, int y)
                     do {
                         j++;
                     } while(Text[j] >= '0' && Text[j] <= '9');
-                    GetTemplateColor(ColorID, &TempR, &TempG, &TempB);
+                    g2Label::GetTemplateColor(ColorID, &TempR, &TempG, &TempB);
                 }
             }
             
@@ -251,28 +251,4 @@ void g2Console::WindowResizeEvent(int NewWidth, int NewHeight)
     LabelEdit->SetPos(5 + Label->GetWidth(), HeightOffset);
     LabelEdit->SetWidth(WindowWidth - 10 - Label->GetWidth());
     Label->SetPos(5, HeightOffset);
-}
-
-void g2Console::GetTemplateColor(int Index, float* r, float* g, float* b)
-{
-    // Simple look-up table
-    switch(Index)
-    {
-        case 0:  *r = 0.0f; *g = 0.0f; *b = 0.0f; break;
-        case 1:  *r = 0.0f; *g = 0.0f; *b = 0.5f; break;
-        case 2:  *r = 0.0f; *g = 0.5f; *b = 0.0f; break;
-        case 3:  *r = 0.0f; *g = 0.5f; *b = 0.5f; break;
-        case 4:  *r = 0.5f; *g = 0.0f; *b = 0.0f; break;
-        case 5:  *r = 0.5f; *g = 0.0f; *b = 0.5f; break;
-        case 6:  *r = 0.5f; *g = 0.3f; *b = 0.0f; break;
-        case 7:  *r = 0.5f; *g = 0.5f; *b = 0.5f; break;
-        case 8:  *r = 0.3f; *g = 0.3f; *b = 0.3f; break;
-        case 9:  *r = 0.3f; *g = 0.3f; *b = 1.0f; break;
-        case 10: *r = 3.0f; *g = 1.0f; *b = 0.3f; break;
-        case 11: *r = 3.0f; *g = 1.0f; *b = 1.0f; break;
-        case 12: *r = 1.0f; *g = 0.3f; *b = 0.3f; break;
-        case 13: *r = 1.0f; *g = 0.3f; *b = 1.0f; break;
-        case 14: *r = 1.0f; *g = 1.0f; *b = 0.3f; break;
-        case 15: *r = 1.0f; *g = 1.0f; *b = 1.0f; break;
-    }
 }
