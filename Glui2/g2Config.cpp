@@ -45,8 +45,17 @@ void g2Config::LoadFile(const char* FileName)
     char TokenBuffer[256];
     while(fscanf(FileHandle, "%s", TokenBuffer) == 1)
     {
-        // Is this a comment? Ignore
-        if(strlen(TokenBuffer) <= 2 || TokenBuffer[0] == '#')
+        // Remove any trailing non-visible characters
+        for(int i = (int)strlen(TokenBuffer) - 1; i >= 0; i--)
+        {
+            if(isgraph(TokenBuffer[i]))
+                break;
+            else
+                TokenBuffer[i] = '\0';
+        }
+        
+        // Is this a comment or empty line? Ignore
+        if(strlen(TokenBuffer) <= 0 || TokenBuffer[0] == '#')
         {
             // Keep reading to newline or end of file
             while(true)
@@ -76,8 +85,8 @@ void g2Config::LoadFile(const char* FileName)
             KeyName[strlen(TokenBuffer)-1] = '\0';
             
             // Create data buffer
-            char* DataBuffer = new char[8];
-            int DataBufferSize = 8;
+            char* DataBuffer = new char[32];
+            int DataBufferSize = 32;
             int DataLength = 0;
             
             // Read off any white-spaces
@@ -148,6 +157,15 @@ void g2Config::LoadFile(const char* FileName)
             
             // Cap buffer
             DataBuffer[DataLength] = '\0';
+            
+            // Clean data buffer
+            for(int i = (int)strlen(DataBuffer) - 1; i >= 0; i--)
+            {
+                if(isgraph(DataBuffer[i]))
+                    break;
+                else
+                    DataBuffer[i] = '\0';
+            }
             
             // Do we have both a key and a group name?
             if(strlen(GroupName) <= 0 || strlen(KeyName) <= 0)

@@ -101,7 +101,6 @@ void g2Label::GetTemplateColor(int Index, float* r, float* g, float* b)
     }
 }
 
-
 void g2Label::Render(int pX, int pY)
 {
     // Ignore if not null
