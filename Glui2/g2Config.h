@@ -88,6 +88,10 @@ public:
     __g2EXPORT bool GetValue(const char* Group, const char* Key, float* OutValue);
     __g2EXPORT bool GetValue(const char* Group, const char* Key, char** OutValue);
     
+    // Save as above; but accesses a tuple-pair of either integers or floats
+    __g2EXPORT bool GetValue(const char* Group, const char* Key, int* OutValue1, int* OutValue2);
+    __g2EXPORT bool GetValue(const char* Group, const char* Key, float* OutValue1, float* OutValue2);
+    
 private:
     
     // Add a new key (does collision detection, fails if it already exists)

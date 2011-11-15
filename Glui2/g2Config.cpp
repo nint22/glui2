@@ -247,6 +247,30 @@ bool g2Config::GetValue(const char* Group, const char* Key, char** OutValue)
     }
 }
 
+bool g2Config::GetValue(const char* Group, const char* Key, int* OutValue1, int* OutValue2)
+{
+    char* Data;
+    if(!GetValue(Group, Key, &Data))
+        return false;
+    if(sscanf(Data, "%d %d", OutValue1, OutValue2) != 2)
+        return false;
+    
+    // Done
+    return true;
+}
+
+bool g2Config::GetValue(const char* Group, const char* Key, float* OutValue1, float* OutValue2)
+{
+    char* Data;
+    if(!GetValue(Group, Key, &Data))
+        return false;
+    if(sscanf(Data, "%f %f", OutValue1, OutValue2) != 2)
+        return false;
+    
+    // Done
+    return true;
+}
+
 void g2Config::AddKey(const char* Group, const char* Key, const char* Data)
 {
     // Validate the input
