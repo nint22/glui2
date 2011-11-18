@@ -37,8 +37,7 @@ g2Controller::g2Controller(g2Controller* Parent, g2Theme* MainTheme)
     // and things that are added to the end are rendered last (front-facing)
     if(Parent != NULL)
     {
-        ChildObjectsIt Back = Parent->ChildObjects.end();
-        Parent->ChildObjects.insert(Back, this);
+        Parent->ChildObjects.push_back(this);
         this->__WindowResizeEvent(Parent->WindowWidth, Parent->WindowHeight);
     }
 }
