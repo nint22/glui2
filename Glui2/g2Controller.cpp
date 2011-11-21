@@ -211,9 +211,9 @@ g2Controller* g2Controller::GetController(int x, int y)
     // Ordering: [Back to Front]
     for(ChildObjectsIt Child = ChildObjects.begin(); Child != ChildObjects.end(); Child++)
     {
-        // Save found object if not null
+        // Save found object if not null (ignore completely if invisible)
         g2Controller* Found = (*Child)->GetController(x, y);
-        if(Found != NULL)
+        if(Found != NULL && Found->GetVisibility())
             ActiveController = Found;
     }
     
