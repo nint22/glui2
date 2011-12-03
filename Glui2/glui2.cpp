@@ -40,6 +40,9 @@ Glui2::Glui2(const char* ThemeFile, void (*GlutIdleFunc)(void), void (*GlutResha
     RootController = new g2Controller(NULL, &MainTheme);
     ActiveController = NULL;
     ActiveConsole = NULL;
+    
+    // Default to enabled state
+    SetEnabled(true);
 }
 
 Glui2::~Glui2()
@@ -193,6 +196,16 @@ void Glui2::Render()
     glPopMatrix();
 }
 
+void Glui2::SetEnabled(bool Enable)
+{
+    IsEnabled = Enable;
+}
+
+bool Glui2::GetEnabled()
+{
+    return IsEnabled;
+}
+
 void Glui2::Update()
 {
     // Start highres clock and default initial time
@@ -242,6 +255,10 @@ void Glui2::__ReshapeFunc(int width, int height)
 
 void Glui2::__KeyboardFunc(unsigned char key, int x, int y)
 {
+    // Ignore if not enabled
+    if(!__G2_HANDLE__->GetEnabled())
+        return;
+    
     // Update console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
         __G2_HANDLE__->ActiveConsole->__KeyEvent(key);
@@ -257,6 +274,10 @@ void Glui2::__KeyboardFunc(unsigned char key, int x, int y)
 
 void Glui2::__SpecialFunc(int key, int x, int y)
 {
+    // Ignore if not enabled
+    if(!__G2_HANDLE__->GetEnabled())
+        return;
+    
     // Update console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
         __G2_HANDLE__->ActiveConsole->__KeyEvent(key, true);
@@ -272,6 +293,10 @@ void Glui2::__SpecialFunc(int key, int x, int y)
 
 void Glui2::__MouseFunc(int button, int state, int x, int y)
 {
+    // Ignore if not enabled
+    if(!__G2_HANDLE__->GetEnabled())
+        return;
+    
     // Ignore if  console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
         return;
@@ -300,6 +325,10 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
 
 void Glui2::__HoverFunc(int x, int y)
 {
+    // Ignore if not enabled
+    if(!__G2_HANDLE__->GetEnabled())
+        return;
+    
     // Ignore if  console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
         return;

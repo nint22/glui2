@@ -122,6 +122,12 @@ public:
     // Draw all glui2 elements on-screen
     __g2EXPORT void Render();
     
+    // If set to false, stops all key and mouse event processing (freezing the UI globally)
+    __g2EXPORT void SetEnabled(bool Enable);
+    
+    // Returns the current enabled state (Defaults to true)
+    __g2EXPORT bool GetEnabled();
+    
 private:
     
     // Update glui2 event
@@ -135,6 +141,9 @@ private:
     
     // The theme object; used to retrieve bitmap data
     g2Theme MainTheme;
+    
+    // Is enabled (allow user interaction); defaults to true
+    bool IsEnabled;
     
     /*** User-Overloaded Glut Callbacks ***/
     
