@@ -257,7 +257,11 @@ void Glui2::__KeyboardFunc(unsigned char key, int x, int y)
 {
     // Ignore if not enabled
     if(!__G2_HANDLE__->GetEnabled())
+    {
+        if(__G2_HANDLE__->GlutKeyboardFunc != NULL)
+            __G2_HANDLE__->GlutKeyboardFunc(key, x, y);
         return;
+    }
     
     // Update console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
@@ -276,7 +280,11 @@ void Glui2::__SpecialFunc(int key, int x, int y)
 {
     // Ignore if not enabled
     if(!__G2_HANDLE__->GetEnabled())
+    {
+        if(__G2_HANDLE__->GlutSpecialFunc != NULL)
+            __G2_HANDLE__->GlutSpecialFunc(key, x, y);
         return;
+    }
     
     // Update console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
@@ -295,7 +303,11 @@ void Glui2::__MouseFunc(int button, int state, int x, int y)
 {
     // Ignore if not enabled
     if(!__G2_HANDLE__->GetEnabled())
+    {
+        if(__G2_HANDLE__->GlutMouseFunc != NULL)
+            __G2_HANDLE__->GlutMouseFunc(button, state, x, y);
         return;
+    }
     
     // Ignore if  console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
@@ -327,7 +339,11 @@ void Glui2::__HoverFunc(int x, int y)
 {
     // Ignore if not enabled
     if(!__G2_HANDLE__->GetEnabled())
+    {
+        if(__G2_HANDLE__->GlutHoverFunc != NULL)
+            __G2_HANDLE__->GlutHoverFunc(x, y);
         return;
+    }
     
     // Ignore if  console if allocated and not disabled
     if(__G2_HANDLE__->ActiveConsole != NULL && __G2_HANDLE__->ActiveConsole->GetVisibility())
