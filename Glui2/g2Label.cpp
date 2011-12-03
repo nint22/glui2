@@ -61,6 +61,22 @@ int g2Label::GetWidth()
     int CharWidth, Sum = 0;
     for(size_t i = 0; i < strlen(TextBuffer); i++)
     {
+        // Ignore if it is a color code (of form "\<int>")
+        if(TextBuffer[i] == '\\')
+        {
+            // Attempt to read an integer
+            int ColorID = -1;
+            sscanf(TextBuffer + i + 1, "%2d", &ColorID);
+            
+            // Ignores up to 2 digits (So when the user gives \1234, we set it to color \12, and leave 34 alone)
+            if(ColorID >= 0 && ColorID < 16)
+            {
+                i++; // Ignores the first slash
+                for(int j = 0; j < 2 && TextBuffer[i] >= '0' && TextBuffer[i] <= '9'; j++)
+                    i++;
+            }
+        }
+        
         GetTheme()->GetCharacterSize(TextBuffer[i], &CharWidth);
         Sum += CharWidth + g2Label_CharacterSpacing;
     }
@@ -145,13 +161,14 @@ void g2Label::Render(int pX, int pY)
             {
                 // Attempt to read an integer
                 int ColorID = -1;
-                sscanf(TextBuffer + i + 1, "%d", &ColorID);
+                sscanf(TextBuffer + i + 1, "%2d", &ColorID);
+                
+                // Ignores up to 2 digits (So when the user gives \1234, we set it to color \12, and leave 34 alone)
                 if(ColorID >= 0 && ColorID < 16)
                 {
-                    // Change color and move ahead until non-numeric
-                    do {
+                    i++; // Ignores the first slash
+                    for(int j = 0; j < 2 && TextBuffer[i] >= '0' && TextBuffer[i] <= '9'; j++)
                         i++;
-                    } while(TextBuffer[i] >= '0' && TextBuffer[i] <= '9');
                     g2Label::GetTemplateColor(ColorID, &Tr, &Tg, &Tb);
                 }
             }
