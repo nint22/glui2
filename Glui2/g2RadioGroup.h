@@ -40,6 +40,9 @@ public:
     // Add a live variable; pass NULL (or leave blank) to disconnect
     __g2EXPORT void SetLiveVariable(int* LiveIndex = NULL);
     
+    // Returns the width of the controller (which is the check box icon + offset + width of longest string)
+    __g2EXPORT int GetWidth();
+    
 protected:
     
     // Render

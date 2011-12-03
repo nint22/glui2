@@ -80,6 +80,13 @@ void g2RadioGroup::SetLiveVariable(int* LiveIndex)
     this->LiveIndex = LiveIndex;
 }
 
+int g2RadioGroup::GetWidth()
+{
+    int w, h;
+    this->GetCollisionRect(&w, &h);
+    return w;
+}
+
 void g2RadioGroup::Render(int pX, int pY)
 {
     // Get the size of a radio button
