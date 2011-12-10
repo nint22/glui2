@@ -32,7 +32,10 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
         // Allocate an OpenGL texture
         glGenTextures(1, &Image.GlTextureID);
         glBindTexture(GL_TEXTURE_2D, Image.GlTextureID);
-        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image.Width, Image.Height, Image.Channels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
+        if(Image.Channels == 3)
+            gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, Image.Width, Image.Height, GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
+        else
+            gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image.Width, Image.Height, GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
         
         // Generate mipmaps if desired
         if(GenerateMips)

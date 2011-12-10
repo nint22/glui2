@@ -58,8 +58,6 @@ public:
     // Get a color from the internal 4-bit template
     __g2EXPORT static void GetTemplateColor(int Index, float* r, float* g, float* b);
     
-protected:
-    
     // Render
     __g2EXPORT void Render(int pX, int pY);
     
