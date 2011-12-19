@@ -52,8 +52,8 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
         }
         
         // Wrap texture around
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Wrap ? GL_REPEAT : GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Wrap ? GL_REPEAT : GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE);
         
         // Done setting image parameters
         glDisable(GL_TEXTURE_2D);
