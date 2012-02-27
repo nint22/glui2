@@ -182,6 +182,9 @@ void g2LabelEdit::CopyBuffer()
         
         // Paste into clipboard
         PasteboardPutItemFlavor(ClipboardHandle, (PasteboardItemID)1, CFSTR("public.utf8-plain-text"), DataBuffer, kPasteboardFlavorNoFlags);
+        
+        // Release data buffer
+        CFRelease(DataBuffer);
     
     // Linux clipboard implementation
     #elif __linux__

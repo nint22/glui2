@@ -81,12 +81,12 @@ bool __g2ShowOpenDialog(const char* Message, const char* FileExtension, char* Ou
     [opanel setTitle:[NSString stringWithCString:Message encoding:NSASCIIStringEncoding]];
     [opanel setAllowsMultipleSelection:NO];
     [opanel setAllowedFileTypes:[NSArray arrayWithObjects:[NSString stringWithCString:FileExtension encoding:NSASCIIStringEncoding], nil]];
-    NSInteger returnCode = [opanel runModalForDirectory:nil file:nil types:nil];
+    NSInteger returnCode = [opanel runModal];
     
     if(returnCode == NSOKButton)
     {
-        NSArray* filenames = [opanel filenames];
-        NSString* file = [filenames objectAtIndex:0];
+        NSArray* filenames = [opanel URLs];
+        NSString* file = [NSString stringWithContentsOfURL:[filenames objectAtIndex:0] encoding:NSASCIIStringEncoding error:NULL];
         if([file length] < OutLength)
         {
             strcpy(OutBuffer, [file cStringUsingEncoding:NSASCIIStringEncoding]);
