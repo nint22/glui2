@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		062530EF14FC3C9400EAA25C /* Glui2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 062530EE14FC3C9400EAA25C /* Glui2.framework */; };
-		062530F014FC3C9E00EAA25C /* Glui2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 062530EE14FC3C9400EAA25C /* Glui2.framework */; };
+		06645BA714FC5556004C1BE5 /* Glui2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06645BA614FC5556004C1BE5 /* Glui2.framework */; };
 		06B7A91D14F5BF7200305A03 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48388492143405EB009A5F90 /* OpenGL.framework */; };
 		4838848C143405CA009A5F90 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4838848B143405CA009A5F90 /* main.cpp */; };
 		4838848D143405DF009A5F90 /* default.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48388488143405CA009A5F90 /* default.png */; };
@@ -24,7 +23,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				062530EF14FC3C9400EAA25C /* Glui2.framework in CopyFiles */,
 				4838848D143405DF009A5F90 /* default.png in CopyFiles */,
 				4838848E143405DF009A5F90 /* g2Default.cfg in CopyFiles */,
 				4838848F143405DF009A5F90 /* g2Default.png in CopyFiles */,
@@ -34,7 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		062530EE14FC3C9400EAA25C /* Glui2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Glui2.framework; sourceTree = "<group>"; };
+		06645BA614FC5556004C1BE5 /* Glui2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Glui2.framework; path = ../../Glui2.framework; sourceTree = "<group>"; };
 		4838847214340594009A5F90 /* Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Example; sourceTree = BUILT_PRODUCTS_DIR; };
 		48388488143405CA009A5F90 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 		48388489143405CA009A5F90 /* g2Default.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = g2Default.cfg; sourceTree = "<group>"; };
@@ -49,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				062530F014FC3C9E00EAA25C /* Glui2.framework in Frameworks */,
+				06645BA714FC5556004C1BE5 /* Glui2.framework in Frameworks */,
 				06B7A91D14F5BF7200305A03 /* OpenGL.framework in Frameworks */,
 				48388495143405EE009A5F90 /* GLUT.framework in Frameworks */,
 			);
@@ -61,7 +59,7 @@
 		4838846714340594009A5F90 = {
 			isa = PBXGroup;
 			children = (
-				062530EE14FC3C9400EAA25C /* Glui2.framework */,
+				06645BA614FC5556004C1BE5 /* Glui2.framework */,
 				48388486143405B5009A5F90 /* Source */,
 				48388487143405BB009A5F90 /* Frameworks */,
 				4838847314340594009A5F90 /* Products */,
@@ -193,6 +191,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../build/Debug\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../..\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -209,6 +208,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../build/Debug\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../..\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
