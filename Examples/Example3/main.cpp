@@ -51,7 +51,7 @@ g2ProgressBar* SampleProgressBar = NULL;
 /*** Global Functions ***/
 
 // Main render function
-void Render()
+static void Render()
 {
     // Clear the back buffer (nice light blue color)
     glClearColor(0.92f, 0.94f, 0.97f, 1.0f);
@@ -82,28 +82,28 @@ void Render()
 }
 
 // Rescale the viewport as needed
-void Reshape(int NewWidth, int NewHeight)
+static void Reshape(int NewWidth, int NewHeight)
 {
 	// Apply needed glut viewport updates
 	glViewport(0, 0, NewWidth, NewHeight);
 }
 
 // Callback to the application
-void Quit(g2Controller* Caller)
+static void Quit(g2Controller* Caller)
 {
     exit(0);
 }
 
 /*** Callback for g2Dialog examples ***/
 
-void DialogShow(g2Controller* Caller)
+static void DialogShow(g2Controller* Caller)
 {
     g2Dialog Dialog(g2DialogType_Notification, "Hello, World!");
     Dialog.Show();
     printf("User's result: %d\n", (int)Dialog.GetInput());
 }
 
-void DialogOpen(g2Controller* Caller)
+static void DialogOpen(g2Controller* Caller)
 {
 	// Open any file
     g2Dialog Dialog(g2DialogType_Open, "Open File...");
@@ -116,7 +116,7 @@ void DialogOpen(g2Controller* Caller)
     delete[] String;
 }
 
-void DialogSave(g2Controller* Caller)
+static void DialogSave(g2Controller* Caller)
 {
 	// Save only text files (for the demo)
     g2Dialog Dialog(g2DialogType_Save, "Save File...", "txt");
@@ -131,7 +131,7 @@ void DialogSave(g2Controller* Caller)
 
 /*** Console Toggle ***/
 
-void ToggleConsole(g2Controller* Caller)
+static void ToggleConsole(g2Controller* Caller)
 {
     // Flip the visability
     Console->SetVisibility(!Console->GetVisibility());
@@ -140,7 +140,7 @@ void ToggleConsole(g2Controller* Caller)
 /*** Main and Init Functions ***/
 
 // Initialize OpenGL's GLUT
-void InitGLUT(int argc, char** argv)
+static void InitGLUT(int argc, char** argv)
 {
     // Initialize glut
 	glutInit(&argc, argv);
@@ -168,7 +168,7 @@ void InitGLUT(int argc, char** argv)
 }
 
 // Initialize Glui2 library
-void InitGlui2()
+static void InitGlui2()
 {
     // Create a glui instance and register necessary handles
     GluiHandle = new Glui2("g2Blue.cfg", NULL, Reshape);

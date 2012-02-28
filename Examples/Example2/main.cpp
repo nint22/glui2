@@ -39,7 +39,7 @@ Glui2* GluiHandle = NULL;
 /*** Global Functions ***/
 
 // Main render function
-void Render()
+static void Render()
 {
     // Clear the back buffer (nice light blue color)
     glClearColor(0.92f, 0.94f, 0.97f, 1.0f);
@@ -62,7 +62,7 @@ void Render()
 }
 
 // Handle all incoming keyboard functions
-void KeyboardFunc(unsigned char key, int x, int y)
+static void KeyboardFunc(unsigned char key, int x, int y)
 {
     // If this is the "esc" key, then quit the application
     if(key == 27)
@@ -73,21 +73,21 @@ void KeyboardFunc(unsigned char key, int x, int y)
 }
 
 // Handle all incoming mouse button events
-void MouseFunc(int button, int state, int x, int y)
+static void MouseFunc(int button, int state, int x, int y)
 {
     // Simply print the mouse function status
     printf("Button: %d, State: %d, Position: (%d, %d)\n", button, state, x, y);
 }
 
 // Rescale the viewport as needed
-void Reshape(int NewWidth, int NewHeight)
+static void Reshape(int NewWidth, int NewHeight)
 {
     // Apply needed glut viewport updates
     glViewport(0, 0, NewWidth, NewHeight);
 }
 
 // Initialize OpenGL's GLUT
-void InitGLUT(int argc, char** argv)
+static void InitGLUT(int argc, char** argv)
 {
     // Initialize glut
     glutInit(&argc, argv);
@@ -115,7 +115,7 @@ void InitGLUT(int argc, char** argv)
 }
 
 // Initialize Glui2 library
-void InitGlui2()
+static void InitGlui2()
 {
     // Create a glui instance and register necessary handles
     GluiHandle = new Glui2("g2Default.cfg", NULL, Reshape, KeyboardFunc, NULL, MouseFunc);
