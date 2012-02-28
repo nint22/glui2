@@ -41,7 +41,7 @@ g2Panel* MainPanel = NULL;
 /*** Global Functions ***/
 
 // Main render function
-void Render()
+static void Render()
 {
     // Clear the back buffer (nice light blue color)
     glClearColor(0.92f, 0.94f, 0.97f, 1.0f);
@@ -63,20 +63,20 @@ void Render()
 }
 
 // Rescale the viewport as needed
-void Reshape(int NewWidth, int NewHeight)
+static void Reshape(int NewWidth, int NewHeight)
 {
 	// Apply needed glut viewport updates
 	glViewport(0, 0, NewWidth, NewHeight);
 }
 
 // Callback to the application
-void Quit(g2Controller* Caller)
+static void Quit(g2Controller* Caller)
 {
     exit(0);
 }
 
 // Callback to any radio-button change
-void AnchorTypeChanged(g2Controller* Caller)
+static void AnchorTypeChanged(g2Controller* Caller)
 {
     // Get the user's choise [bottom, left, top, right]
     // We know the caller will be a radio group
@@ -114,7 +114,7 @@ void AnchorTypeChanged(g2Controller* Caller)
 /*** Main and Init Functions ***/
 
 // Initialize OpenGL's GLUT
-void InitGLUT(int argc, char** argv)
+static void InitGLUT(int argc, char** argv)
 {
     // Initialize glut
 	glutInit(&argc, argv);
@@ -142,7 +142,7 @@ void InitGLUT(int argc, char** argv)
 }
 
 // Initialize Glui2 library
-void InitGlui2()
+static void InitGlui2()
 {
     // Create a glui instance and register necessary handles
     GluiHandle = new Glui2("g2Blue.cfg", NULL, Reshape);
