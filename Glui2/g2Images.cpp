@@ -32,28 +32,31 @@ GLuint g2LoadImage(const char* ImagePath, int* Width, int* Height, int* Channels
         // Allocate an OpenGL texture
         glGenTextures(1, &Image.GlTextureID);
         glBindTexture(GL_TEXTURE_2D, Image.GlTextureID);
-        if(Image.Channels == 3)
-            gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, Image.Width, Image.Height, GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
-        else
-            gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image.Width, Image.Height, GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
         
         // Generate mipmaps if desired
         if(GenerateMips)
         {
+            // Build mip map
+            gluBuild2DMipmaps(GL_TEXTURE_2D, (Image.Channels == 3) ? GL_RGB8 : GL_RGBA8, Image.Width, Image.Height, (Image.Channels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
+            
+            // Linear (simple and smooth) interpolation
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         }
         // Else, make very accurate sans blending
         else
         {
-            //glTexImage2D(GL_TEXTURE_2D, GL_RGBA, Image.Width, Image.Height, Image.Channels == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            // Build the image buffer
+            glTexImage2D(GL_TEXTURE_2D, 0, (Image.Channels == 3) ? GL_RGB8 : GL_RGBA8, Image.Width, Image.Height, 0, (Image.Channels == 3) ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, DataBuffer);
+            
+            // Nearest-neighbor (i.e. no smoothing) interpolation
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
         
         // Wrap texture around
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Wrap ? GL_REPEAT : GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Wrap ? GL_REPEAT : GL_CLAMP);
         
         // Done setting image parameters
         glDisable(GL_TEXTURE_2D);

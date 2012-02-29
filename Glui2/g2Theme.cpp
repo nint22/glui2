@@ -28,11 +28,11 @@ void g2Theme::Load(const char* ThemeFile)
     int Channels;
     
     Configuration.GetValue("general", "image", &TextureName);
-    TextureID = g2LoadImage(TextureName, &TextureWidth, &TextureHeight, &Channels);
+    TextureID = g2LoadImage(TextureName, &TextureWidth, &TextureHeight, &Channels, false, false);
     g2Assert(TextureID > 0, "Unable to load image: %s", TextureName);
     
     Configuration.GetValue("general", "font", &TextureName);
-    CharacterMapID = g2LoadImage(TextureName, &CharacterMapWidth, &CharacterMapHeight, &Channels);
+    CharacterMapID = g2LoadImage(TextureName, &CharacterMapWidth, &CharacterMapHeight, &Channels, false, false);
     g2Assert(CharacterMapID > 0, "Unable to load image: %s", TextureName);
     
     // Get the character map image buffer
