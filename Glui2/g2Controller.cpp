@@ -521,58 +521,12 @@ void g2Controller::DrawCharacter(int DestX, int DestY, float ScaleW, float Scale
     glDisable(GL_TEXTURE_2D);
 }
 
-void g2Controller::DrawComponentTile(g2ThemeElement ElementType, int DestX, int DestY, int Width, int StartHeight, int EndHeight)
+void g2Controller::DrawComponentRect(g2ThemeElement ElementType, int DestX, int DestY, int Width, int Height)
 {
-    DrawComponentTile(GetTheme()->GetElementName(ElementType), DestX, DestY, Width, StartHeight, EndHeight);
+    DrawComponentRect(GetTheme()->GetElementName(ElementType), DestX, DestY, Width, Height);
 }
 
-void g2Controller::DrawComponentTile(const char* ElementName, int DestX, int DestY, int Width, int StartHeight, int EndHeight)
-{
-    // Get the source texture coordinates of the element
-    float SourceX, SourceY, SourceWidth, SourceHeight;
-    int OutWidth, OutHeight;
-    GetTheme()->GetComponent(ElementName, &SourceX, &SourceY, &SourceWidth, &SourceHeight, &OutWidth, &OutHeight);
-    
-    // Compute the three-component's placement and width
-    // Left, middle, right
-    int X1 = DestX;
-    int W1 = OutWidth / 3;
-    float SourceWidthLeft = SourceWidth / 3.0f;
-    if(Width < W1 * 2)
-    {
-        W1 = Width / 2;
-        SourceWidthLeft *= float(W1) / float(float(OutWidth) / 3.0f);
-    }
-    
-    int X2 = X1 + W1;
-    int W2 = fmax(0, Width - 2 * W1);
-    float SourceWidthMiddle = SourceWidth / 100.0f;
-    
-    int X3 = X2 + W2;
-    int W3 = Width - W1 - W2;
-    float SourceWidthRight = SourceWidth / 3.0f;
-    if(Width < W3 * 2)
-    {
-        W3 = Width / 2;
-        SourceWidthRight *= float(W3) / float(float(OutWidth) / 3.0f);
-    }
-    
-    // Draw the left and right components
-    DrawComponent(X1, DestY, W1, OutHeight, SourceX, SourceY, SourceWidthLeft, SourceHeight);
-    DrawComponent(X3, DestY, W3, OutHeight, SourceX + SourceWidth - SourceWidthLeft, SourceY, SourceWidthLeft, SourceHeight);
-    
-    // Fill out the middle; for each full component
-    int MiddleWidth = float(OutWidth) * (SourceWidth / 3.0f);
-    for(int i = 0; i < W2 / MiddleWidth; i++)
-        DrawComponent(X2 + i * MiddleWidth, DestY, W2, OutHeight, SourceX + SourceWidthLeft, SourceY, SourceWidthMiddle, SourceHeight);
-}
-
-void g2Controller::DrawComponentRect(g2ThemeElement ElementType, int DestX, int DestY, int Width, int Height, bool TileFill)
-{
-    DrawComponentRect(GetTheme()->GetElementName(ElementType), DestX, DestY, Width, Height, TileFill);
-}
-
-void g2Controller::DrawComponentRect(const char* ElementName, int DestX, int DestY, int Width, int Height, bool TileFill)
+void g2Controller::DrawComponentRect(const char* ElementName, int DestX, int DestY, int Width, int Height)
 {
     // Get the size of the source image
     int ImageWidth, ImageHeight;
@@ -590,36 +544,17 @@ void g2Controller::DrawComponentRect(const char* ElementName, int DestX, int Des
     
     /*** Draw ***/
     
-    // If just doing a stretch fill
-    if(!TileFill)
-    {
-        // Draw the top
-        DrawComponentStretch(ElementName, DestX, Y1, Width, 0, H1 - 1);
-        
-        // Draw the bottom
-        DrawComponentStretch(ElementName, DestX, Y3, Width, ImageHeight - H3, ImageHeight - 1);
-        
-        // Fill each row as best as possible
-        int i;
-        for(i = 0; i < (Height - H1 - H2) / H2; i++)
-            DrawComponentStretch(ElementName, DestX, Y2 + i * H2, Width, H1, H1 + H2 - 1);
-        DrawComponentStretch(ElementName, DestX, Y2 + H2 * i, Width, H1, H1 + Height - H1 - H2 * i - H3 - 1);
-    }
-    // Else, doing a repeated-tile fill
-    else
-    {
-        // Draw the top
-        DrawComponentTile(ElementName, DestX, Y1, Width, 0, H1 - 1);
-        
-        // Draw the bottom
-        DrawComponentTile(ElementName, DestX, Y3, Width, ImageHeight - H3, ImageHeight - 1);
-        
-        // Fill each row as best as possible
-        int i;
-        for(i = 0; i < (Height - H1 - H2) / H2; i++)
-            DrawComponentTile(ElementName, DestX, Y2 + i * H2, Width, H1, H1 + H2 - 1);
-        DrawComponentTile(ElementName, DestX, Y2 + H2 * i, Width, H1, H1 + Height - H1 - H2 * i - H3 - 1);
-    }
+    // Draw the top
+    DrawComponentStretch(ElementName, DestX, Y1, Width, 0, H1 - 1);
+    
+    // Draw the bottom
+    DrawComponentStretch(ElementName, DestX, Y3, Width, ImageHeight - H3, ImageHeight - 1);
+    
+    // Fill each row as best as possible
+    int i;
+    for(i = 0; i < (Height - H1 - H2) / H2; i++)
+        DrawComponentStretch(ElementName, DestX, Y2 + i * H2, Width, H1, H1 + H2 - 1);
+    DrawComponentStretch(ElementName, DestX, Y2 + H2 * i, Width, H1, H1 + Height - H1 - H2 * i - H3 - 1);
 }
 
 void g2Controller::__Update(float dT)
