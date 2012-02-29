@@ -165,7 +165,7 @@ g2Spinner* g2Panel::AddSpinner(int x, int y, g2SpinnerType Type, __g2CallBack(ca
 
 void g2Panel::Render(int pX, int pY)
 {
-    DrawComponentRect(g2Theme_Panel, pX, pY, Width, Height);
+    DrawComponentRect(g2Theme_Panel, pX, pY, Width, Height, true);
 }
 
 void g2Panel::GetCollisionRect(int* Width, int* Height)

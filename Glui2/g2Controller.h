@@ -153,23 +153,22 @@ protected:
     
     // Draw a given source location into a spcific width, like a three-part button
     __g2EXPORT void DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width);
-    
-    // Draw a given source location into a spcific width, like a three-part button
     __g2EXPORT void DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width);
     
     // Draw a given source location into a specific width (stretched), and a limited height (cut)
     // The start and end height are y-pixel values and are defined as 0 at the top and [Element height - 1] bottom
     __g2EXPORT void DrawComponentStretch(g2ThemeElement ElementType, int DestX, int DestY, int Width, int StartHeight, int EndHeight);
-    
-    // Draw a given source location into a specific width (stretched), and a limited height (cut)
-    // The start and end height are y-pixel values and are defined as 0 at the top and [Element height - 1] bottom
     __g2EXPORT void DrawComponentStretch(const char* ElementName, int DestX, int DestY, int Width, int StartHeight, int EndHeight);
     
-    // Draw the object into a square-like output
-    __g2EXPORT void DrawComponentRect(g2ThemeElement ElementType, int DestX, int DestY, int Width, int Height);
+    // Draw a given source location into a specific width (with repeated tiles), and a limited height (cut)
+    // The start and end height are y-pixel values and are defined as 0 at the top and [Element height - 1] bottom
+    __g2EXPORT void DrawComponentTile(g2ThemeElement ElementType, int DestX, int DestY, int Width, int StartHeight, int EndHeight);
+    __g2EXPORT void DrawComponentTile(const char* ElementName, int DestX, int DestY, int Width, int StartHeight, int EndHeight);
     
     // Draw the object into a square-like output
-    __g2EXPORT void DrawComponentRect(const char* ElementName, int DestX, int DestY, int Width, int Height);
+    // Note that if the TileFill argument is set to true, then the rectangle will be filled using repeated tiles in both dimensions
+    __g2EXPORT void DrawComponentRect(g2ThemeElement ElementType, int DestX, int DestY, int Width, int Height, bool TileFill = false);
+    __g2EXPORT void DrawComponentRect(const char* ElementName, int DestX, int DestY, int Width, int Height, bool TileFill = false);
     
     // Draw a character with 1-1 scale
     __g2EXPORT void DrawCharacter(int DestX, int DestY, char Character);
